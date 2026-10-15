@@ -68,14 +68,95 @@ docker compose down
 
 ---
 
+## Phase 1: Foundation & Authentication
+
+### 1. Database Migrations
+Make sure the database container is running (`docker compose up -d db redis`), then apply the database migrations:
+```bash
+cd backend
+py -m alembic upgrade head
+```
+
+### 2. Running Pytest Suite
+Run the automated test suite for authentication, JWT guards, and Farm GIS endpoints:
+```bash
+cd backend
+py -m pytest tests/ -v
+```
+
+### 3. Local Development
+
+**Start Backend (Port 8000):**
+```bash
+cd backend
+py -m uvicorn app.main:app --reload --port 8000
+```
+
+**Start Frontend (Port 3000):**
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+### 4. API Verification with cURL
+
+#### Health Checks
+```bash
+curl -s http://127.0.0.1:8000/health
+curl -s http://127.0.0.1:8000/health/db
+```
+
+#### User Registration
+```bash
+curl -X POST http://127.0.0.1:8000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"email":"farmer@example.com","password":"SecretPassword123!","full_name":"Ramesh Patil","role":"farmer"}'
+```
+
+#### User Login
+```bash
+curl -X POST http://127.0.0.1:8000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"farmer@example.com","password":"SecretPassword123!"}'
+```
+
+#### Get Current User (Bearer Token)
+```bash
+curl -X GET http://127.0.0.1:8000/api/auth/me \
+  -H "Authorization: Bearer <ACCESS_TOKEN>"
+```
+
+#### Create Farm Plot (GPS Point + Polygon Boundary)
+```bash
+curl -X POST http://127.0.0.1:8000/api/farms \
+  -H "Authorization: Bearer <ACCESS_TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Nashik Vineyard Plot 1","latitude":19.9975,"longitude":73.7898,"area_ha":8.5,"boundary":{"type":"Polygon","coordinates":[[[73.78,19.99],[73.79,19.99],[73.79,20.00],[73.78,20.00],[73.78,19.99]]]}}'
+```
+
+#### List User Farms
+```bash
+curl -X GET http://127.0.0.1:8000/api/farms \
+  -H "Authorization: Bearer <ACCESS_TOKEN>"
+```
+
+#### Delete Farm
+```bash
+curl -X DELETE http://127.0.0.1:8000/api/farms/<FARM_ID> \
+  -H "Authorization: Bearer <ACCESS_TOKEN>"
+```
+
+---
+
 ## Development Milestones
 
-- [x] **Step 0: Project Setup** - Monorepo structure, Docker Compose (PostGIS & Redis), FastAPI minimal skeleton with Alembic setup & `/health` endpoints, React+Vite placeholder.
-- [ ] **Step 1: Core Foundation & Auth** *(Future Phase)*
-- [ ] **Step 2: Field & Geospatial Management** *(Future Phase)*
-- [ ] **Step 3: Crop Monitoring & Satellite Integration** *(Future Phase)*
-- [ ] **Step 4: AI & ML Engine Integration** *(Future Phase)*
-- [ ] **Step 5: Alert System & Dashboards** *(Future Phase)*
+- [x] **Step 0: Project Setup** - Monorepo structure, Docker Compose (PostGIS & Redis), FastAPI minimal skeleton with Alembic setup & `/health` endpoints.
+- [x] **Phase 1: Foundation & Authentication** - Core database models (users, farms, model_registry, analyses, pest_detections, disease_results, severity_results, weather_snapshots, ndvi_snapshots, risk_results, alerts, chat_messages), JWT Auth, Farm CRUD, error handling, React Router UI with sidebar, and automated pytest suite.
+- [ ] **Phase 2: Field & Geospatial Management** *(Future Phase)*
+- [ ] **Phase 3: Crop Monitoring & Satellite Integration** *(Future Phase)*
+- [ ] **Phase 4: AI & ML Engine Integration** *(Future Phase)*
+- [ ] **Phase 5: Alert System & Dashboards** *(Future Phase)*
 
 ---
 

@@ -56,6 +56,12 @@ ml/datasets/*
 !ml/datasets/.gitkeep
 ml/models/*
 !ml/models/.gitkeep
+ml_training/datasets/raw/*
+!ml_training/datasets/raw/.gitkeep
+ml_training/datasets/processed/*
+!ml_training/datasets/processed/.gitkeep
+datasets/raw/
+datasets/processed/
 *.pt
 *.pth
 *.onnx

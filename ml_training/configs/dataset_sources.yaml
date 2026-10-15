@@ -1,0 +1,14 @@
+# Dataset Sources & Provenance Metadata
+# Fill in real dataset provenance details before generating dataset_report.py
+# Schema per dataset entry:
+# datasets:
+#   <dataset_name>:
+#     crop: rice | wheat | maize | cotton | soybean | sugarcane
+#     task: classification | detection
+#     source_name: "Dataset Name / Repository"
+#     source_url: "https://..."
+#     license: "CC BY 4.0 / Open Access / Research Only"
+#     citation: "Author et al., 2024"
+#     description: "Brief description of collected real-world imagery"
+
+datasets: {}

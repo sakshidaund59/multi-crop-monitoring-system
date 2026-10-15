@@ -1,0 +1,8 @@
+# Dataset pipeline & validation dependencies
+Pillow>=10.0.0
+imagehash>=4.3.1
+pyyaml>=6.0.1
+numpy>=1.24.0
+scipy>=1.10.0
+tqdm>=4.66.0
+pytest>=7.4.0

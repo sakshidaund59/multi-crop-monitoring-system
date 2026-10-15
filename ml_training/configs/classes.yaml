@@ -1,0 +1,27 @@
+# Class Registry for the 6 Monitored Crops
+# Populate ONLY from class names actually found in real datasets by validate_dataset.py.
+# DO NOT fabricate or invent class names.
+
+rice:
+  pests: []
+  diseases: []
+
+wheat:
+  pests: []
+  diseases: []
+
+maize:
+  pests: []
+  diseases: []
+
+cotton:
+  pests: []
+  diseases: []
+
+soybean:
+  pests: []
+  diseases: []
+
+sugarcane:
+  pests: []
+  diseases: []
