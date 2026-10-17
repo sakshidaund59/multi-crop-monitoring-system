@@ -1,0 +1,43 @@
+{
+  "dataset_name": "rice_pest_lakthuru",
+  "dataset_version": "e35b6f785e0e",
+  "total_images": 5229,
+  "total_groups": 1009,
+  "splits": {
+    "train": 3660,
+    "val": 1045,
+    "test": 524
+  },
+  "class_boxes_per_split": {
+    "whorl-maggot": {
+      "train": 1558,
+      "val": 19,
+      "test": 39
+    },
+    "leaf-folder": {
+      "train": 1073,
+      "val": 274,
+      "test": 112
+    },
+    "stem-borer": {
+      "train": 837,
+      "val": 157,
+      "test": 78
+    },
+    "rice-bug": {
+      "train": 998,
+      "val": 168,
+      "test": 128
+    },
+    "green-leafhopper": {
+      "train": 625,
+      "val": 321,
+      "test": 131
+    },
+    "brown-planthopper": {
+      "train": 724,
+      "val": 622,
+      "test": 232
+    }
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "layout": "yolo",
+  "dataset_path": "ml_training\\datasets\\raw\\rice_pest_lakthuru",
+  "total_images": 5229,
+  "valid_images": 5229,
+  "missing_labels": [],
+  "empty_labels": [
+    "valid\\labels\\GREEN-LEAFHOPPERS_original_70142-jpg_a038e843-9e7f-45d7-be66-4fd6187e2fb9_jpg.rf.38b7abba230f9674dd06dadadff1a21d.txt",
+    "valid\\labels\\GREEN-LEAFHOPPERS_original_70319-jpg_8565fcac-31ce-4740-b036-baed38e86a00_jpg.rf.256e338a4e5c373db8b0124ba7de366d.txt",
+    "valid\\labels\\STEM-BORER_original_sborer-268-jpg_14c2418e-fedf-4f70-a9ad-69a1c8d95199_jpg.rf.92657256c99a3e159abd4b6128e16627.txt",
+    "train\\labels\\69743_jpg.rf.e8ddb944f4b3d94222c4399871ba9b51.txt",
+    "train\\labels\\BROWN-PLANTHOPPER_original_bhopper-230-jpg_100aafa5-e51e-4e1d-bff6-201c8626738d_jpg.rf.767858f7a2ba98b30fac9ce366b86206.txt",
+    "train\\labels\\GREEN-LEAFHOPPERS_original_70203-jpg_8f4df46c-05fb-4ee1-90be-d3a91034bd9a_jpg.rf.1be913152748f25325e1c6210efe9e03.txt",
+    "train\\labels\\GREEN-LEAFHOPPERS_original_70259-jpg_a232631c-2e5e-4679-88a6-1ef57b49bf64_jpg.rf.e25294284e17fd95e6bf395197f16286.txt",
+    "train\\labels\\GREEN-LEAFHOPPERS_original_70267-jpg_7090b24c-29dc-41d8-b1f7-299f6339d5db_jpg.rf.c8e495595fa1ef06528e094de98c9fc2.txt",
+    "train\\labels\\rbug-117-_jpg.rf.d7cc78cf48cddfe640e5361cd5dc486d.txt",
+    "train\\labels\\RICE-BUGS_original_rbug-246-jpg_058e6cf5-6c12-4bf6-9ce2-8765b507a56e_jpg.rf.9e2f2333a3f60f7ca71dad6ec28457a3.txt",
+    "train\\labels\\RICE-BUGS_original_rbug-31-jpg_6947eb13-320b-4296-8f4e-9acfdc259833_jpg.rf.c7c2b5eebf7d93351092bf0c4c23f275.txt",
+    "train\\labels\\RICE-BUGS_original_rbug-34-jpg_62b1d07d-b08c-405a-8702-1d63dd09c542_jpg.rf.b2cf15b3d3ab2e73e9b5660bf8621c31.txt",
+    "train\\labels\\STEM-BORER_original_sborer-268-jpg_6eac0af2-a867-483b-8ee4-1dcb3bc02b2a_jpg.rf.b9456b63bde86ae04357019bf8258da0.txt",
+    "train\\labels\\WHORL-MAGGOTS_original_whorl-157-jpg_10fba4e4-372e-4f1f-977e-6f792644ad21_jpg.rf.45a09fccca822449fc533d465369ae31.txt",
+    "test\\labels\\rbug-94-_jpg.rf.bb364bf42b54b7d3254b0c945bf8f8cd.txt",
+    "test\\labels\\RICE-BUGS_original_rbug-270-jpg_259cd5dc-41d4-44ba-b9da-f5553f65263d_jpg.rf.bc9c60c3404c30f51131b89c45fe8267.txt",
+    "test\\labels\\STEM-BORER_original_sborer-268-jpg_1a129bf8-d62b-4d2d-b08d-4f79c2e95027_jpg.rf.995afde38ad9846e347616b44507e510.txt"
+  ],
+  "invalid_bboxes": [
+    {
+      "label_path": "train\\labels\\STEM-BORER_original_sborer-265-jpg_180a18c8-f340-4331-98b6-b08136a07cfb_jpg.rf.28fd10f2014eaeff6e47a5da8edd3568.txt",
+      "line": 1,
+      "coords": [
+        0.0,
+        0.0,
+        0.0,
+        0.9953245359375
+      ],
+      "reason": "YOLO coordinates out of valid [0.0, 1.0] range or non-positive size"
+    },
+    {
+      "label_path": "train\\labels\\STEM-BORER_original_sborer-266-jpg_00344bad-1901-4585-9dfb-677f51dff1fe_jpg.rf.6e7519b08c7b8f70982da4c6da3b2f5d.txt",
+      "line": 1,
+      "coords": [
+        0.0,
+        0.0,
+        0.0,
+        0.997596153125
+      ],
+      "reason": "YOLO coordinates out of valid [0.0, 1.0] range or non-positive size"
+    },
+    {
+      "label_path": "train\\labels\\STEM-BORER_original_sborer-266-jpg_0d23a838-004c-497b-b449-fba26e482df6_jpg.rf.cfccc9f96e2b3353f4ef4fa6b267d629.txt",
+      "line": 1,
+      "coords": [
+        0.0536261125,
+        0.0,
+        0.0,
+        0.0011480437499999999
+      ],
+      "reason": "YOLO coordinates out of valid [0.0, 1.0] range or non-positive size"
+    },
+    {
+      "label_path": "train\\labels\\STEM-BORER_original_sborer-266-jpg_c133f9f3-3459-407c-b161-a81a9b9d9f5c_jpg.rf.a9534a5b2577cad6176e42af181e0206.txt",
+      "line": 1,
+      "coords": [
+        0.0,
+        0.0,
+        0.0,
+        0.997596153125
+      ],
+      "reason": "YOLO coordinates out of valid [0.0, 1.0] range or non-positive size"
+    },
+    {
+      "label_path": "train\\labels\\STEM-BORER_original_sborer-267-jpg_253f5b62-d349-4cb2-8b5c-4f6203c62d0c_jpg.rf.1e63dab9360ae09c971ddae4781b95ee.txt",
+      "line": 1,
+      "coords": [
+        0.0,
+        0.0,
+        0.0,
+        0.40586527187500004
+      ],
+      "reason": "YOLO coordinates out of valid [0.0, 1.0] range or non-positive size"
+    },
+    {
+      "label_path": "train\\labels\\STEM-BORER_original_sborer-268-jpg_d5f73641-294e-4d9b-b23e-2c2f0ce3f064_jpg.rf.010e247988f983d9dcef198f9ce7c5e9.txt",
+      "line": 1,
+      "coords": [
+        0.0,
+        0.0,
+        0.0,
+        0.2382042765625
+      ],
+      "reason": "YOLO coordinates out of valid [0.0, 1.0] range or non-positive size"
+    },
+    {
+      "label_path": "train\\labels\\STEM-BORER_original_sborer-42-jpg_ba5de9bb-78cd-4b0a-b398-764abf4021ce_jpg.rf.dfa82ef896a94368b34cccd2c5d4fe86.txt",
+      "line": 1,
+      "coords": [
+        0.050894884375000005,
+        0.0,
+        0.0,
+        0.07775790625
+      ],
+      "reason": "YOLO coordinates out of valid [0.0, 1.0] range or non-positive size"
+    },
+    {
+      "label_path": "train\\labels\\STEM-BORER_original_sborer-72-jpg_4c0004e5-2ec5-477b-8f65-c51c1a4dcfa2_jpg.rf.65ee17fc591642d40a17af3081475502.txt",
+      "line": 1,
+      "coords": [
+        0.0,
+        0.0,
+        0.0,
+        0.16629555468749999
+      ],
+      "reason": "YOLO coordinates out of valid [0.0, 1.0] range or non-positive size"
+    }
+  ],
+  "corrupt_images": [],
+  "tiny_images": [],
+  "exact_duplicates": [],
+  "classes": {
+    "green-leafhopper": 1077,
+    "brown-planthopper": 1578,
+    "leaf-folder": 1459,
+    "rice-bug": 1294,
+    "stem-borer": 1080,
+    "whorl-maggot": 1616
+  },
+  "summary": {
+    "status": "FAIL",
+    "corrupt_count": 0,
+    "missing_label_count": 0,
+    "empty_label_count": 17,
+    "invalid_bbox_count": 8,
+    "exact_duplicate_groups": 0
+  }
+}

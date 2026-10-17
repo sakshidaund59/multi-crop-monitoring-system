@@ -1,0 +1,39 @@
+{
+  "dataset_name": "cotton_mendeley",
+  "dataset_version": "aab6a48b9a45",
+  "total_images": 980,
+  "total_groups": 979,
+  "splits": {
+    "train": 684,
+    "val": 194,
+    "test": 102
+  },
+  "classes_per_split": {
+    "bacterial blight": {
+      "train": 83,
+      "val": 23,
+      "test": 13
+    },
+    "curl virus": {
+      "train": 17,
+      "val": 5,
+      "test": 3
+    },
+    "fussarium wilt": {
+      "train": 32,
+      "val": 9,
+      "test": 6
+    },
+    "healthy": {
+      "train": 552,
+      "val": 157,
+      "test": 80
+    }
+  },
+  "train_class_weights": {
+    "bacterial blight": 2.0602,
+    "curl virus": 10.0588,
+    "fussarium wilt": 5.3438,
+    "healthy": 0.3098
+  }
+}

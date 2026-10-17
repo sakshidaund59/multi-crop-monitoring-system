@@ -274,3 +274,81 @@ def test_dataset_report_generator(tmp_path):
     assert "CC BY 4.0" in content
     assert "128x128" in content
     assert "256x256" in content
+
+
+def test_rice_pest_groupsplit_leakage_zero():
+    """Automated Leakage Test: Verify 0 exact and near-duplicate cross-split pairs."""
+    from collections import defaultdict
+    manifest_path = Path("ml_training/manifests/rice_pest_lakthuru_groupsplit_manifest.csv")
+    if not manifest_path.exists():
+        pytest.skip("rice_pest_lakthuru_groupsplit_manifest.csv not yet generated")
+
+    sha_to_splits = defaultdict(set)
+    group_to_splits = defaultdict(set)
+    source_id_to_splits = defaultdict(set)
+
+    from ml_training.scripts.fix_phase2_datasets import extract_rice_source_id
+
+    with open(manifest_path, "r", encoding="utf-8") as f:
+        lines = [l for l in f if not l.startswith("#")]
+        reader = csv.DictReader(lines)
+        for r in reader:
+            sp = r["split"]
+            sha_to_splits[r["sha256"]].add(sp)
+            group_to_splits[r["group_id"]].add(sp)
+            s_id = extract_rice_source_id(r["path"])
+            source_id_to_splits[s_id].add(sp)
+
+    # 1. Exact duplicates must not cross splits
+    cross_split_sha = {sha: sps for sha, sps in sha_to_splits.items() if len(sps) > 1}
+    assert len(cross_split_sha) == 0, f"Found {len(cross_split_sha)} exact duplicate cross-split leaks!"
+
+    # 2. Groups must not cross splits
+    cross_split_grp = {grp: sps for grp, sps in group_to_splits.items() if len(sps) > 1}
+    assert len(cross_split_grp) == 0, f"Found {len(cross_split_grp)} group cross-split leaks!"
+
+    # 3. Source IDs must not cross splits
+    cross_split_src = {sid: sps for sid, sps in source_id_to_splits.items() if len(sps) > 1}
+    assert len(cross_split_src) == 0, f"Found {len(cross_split_src)} source ID cross-split leaks: {cross_split_src}!"
+
+
+def test_sugarcane_use_for_eval_flag():
+    """Test that sugarcane manifest includes use_for_eval column and single representation in val/test."""
+    from collections import defaultdict
+    manifest_path = Path("ml_training/manifests/sugarcane_sppu_manifest.csv")
+    if not manifest_path.exists():
+        pytest.skip("sugarcane_sppu_manifest.csv does not exist")
+
+    with open(manifest_path, "r", encoding="utf-8") as f:
+        lines = [l for l in f if not l.startswith("#")]
+        reader = csv.DictReader(lines)
+        assert "use_for_eval" in reader.fieldnames, "use_for_eval column missing from sugarcane manifest"
+
+        eval_by_split_group = defaultdict(int)
+        for r in reader:
+            sp = r["split"]
+            grp = r["group_id"]
+            is_eval = r["use_for_eval"].lower() == "true"
+            if sp in ("val", "test") and is_eval:
+                eval_by_split_group[(sp, grp)] += 1
+
+        # In val and test, at most 1 representative image per duplicate group should be used for eval
+        for (sp, grp), count in eval_by_split_group.items():
+            assert count == 1, f"Group {grp} in {sp} has {count} eval images, expected exactly 1!"
+
+
+def test_cotton_disease_manifest():
+    """Test that cotton manifest maps 4 disease classes and retains severity metadata."""
+    manifest_path = Path("ml_training/manifests/cotton_mendeley_manifest.csv")
+    if not manifest_path.exists():
+        pytest.skip("cotton_mendeley_manifest.csv does not exist")
+
+    valid_diseases = {"healthy", "bacterial blight", "fussarium wilt", "curl virus"}
+    with open(manifest_path, "r", encoding="utf-8") as f:
+        lines = [l for l in f if not l.startswith("#")]
+        reader = csv.DictReader(lines)
+        assert "severity" in reader.fieldnames, "severity metadata column missing from cotton manifest"
+        for r in reader:
+            assert r["class"] in valid_diseases, f"Unexpected cotton disease class: {r['class']}"
+            assert r["severity"] in ("critical", "mild", "moderate", "none"), f"Unexpected severity: {r['severity']}"
+

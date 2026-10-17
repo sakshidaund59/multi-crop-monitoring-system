@@ -1,0 +1,74 @@
+[
+  {
+    "dataset": "rice_pest_lakthuru",
+    "label_path": "train/labels/STEM-BORER_original_sborer-265-jpg_180a18c8-f340-4331-98b6-b08136a07cfb_jpg.rf.28fd10f2014eaeff6e47a5da8edd3568.txt",
+    "line": 1,
+    "class_id": 4,
+    "class_name": "stem-borer",
+    "coords": [0.0, 0.0, 0.0, 0.9953245359375],
+    "reason": "Degenerate bounding box (width = 0.0)"
+  },
+  {
+    "dataset": "rice_pest_lakthuru",
+    "label_path": "train/labels/STEM-BORER_original_sborer-266-jpg_00344bad-1901-4585-9dfb-677f51dff1fe_jpg.rf.6e7519b08c7b8f70982da4c6da3b2f5d.txt",
+    "line": 1,
+    "class_id": 4,
+    "class_name": "stem-borer",
+    "coords": [0.0, 0.0, 0.0, 0.997596153125],
+    "reason": "Degenerate bounding box (width = 0.0)"
+  },
+  {
+    "dataset": "rice_pest_lakthuru",
+    "label_path": "train/labels/STEM-BORER_original_sborer-266-jpg_0d23a838-004c-497b-b449-fba26e482df6_jpg.rf.cfccc9f96e2b3353f4ef4fa6b267d629.txt",
+    "line": 1,
+    "class_id": 4,
+    "class_name": "stem-borer",
+    "coords": [0.0536261125, 0.0, 0.0, 0.00114804375],
+    "reason": "Degenerate bounding box (width = 0.0)"
+  },
+  {
+    "dataset": "rice_pest_lakthuru",
+    "label_path": "train/labels/STEM-BORER_original_sborer-266-jpg_c133f9f3-3459-407c-b161-a81a9b9d9f5c_jpg.rf.a9534a5b2577cad6176e42af181e0206.txt",
+    "line": 1,
+    "class_id": 4,
+    "class_name": "stem-borer",
+    "coords": [0.0, 0.0, 0.0, 0.997596153125],
+    "reason": "Degenerate bounding box (width = 0.0)"
+  },
+  {
+    "dataset": "rice_pest_lakthuru",
+    "label_path": "train/labels/STEM-BORER_original_sborer-267-jpg_253f5b62-d349-4cb2-8b5c-4f6203c62d0c_jpg.rf.1e63dab9360ae09c971ddae4781b95ee.txt",
+    "line": 1,
+    "class_id": 4,
+    "class_name": "stem-borer",
+    "coords": [0.0, 0.0, 0.0, 0.405865271875],
+    "reason": "Degenerate bounding box (width = 0.0)"
+  },
+  {
+    "dataset": "rice_pest_lakthuru",
+    "label_path": "train/labels/STEM-BORER_original_sborer-268-jpg_d5f73641-294e-4d9b-b23e-2c2f0ce3f064_jpg.rf.010e247988f983d9dcef198f9ce7c5e9.txt",
+    "line": 1,
+    "class_id": 4,
+    "class_name": "stem-borer",
+    "coords": [0.0, 0.0, 0.0, 0.2382042765625],
+    "reason": "Degenerate bounding box (width = 0.0)"
+  },
+  {
+    "dataset": "rice_pest_lakthuru",
+    "label_path": "train/labels/STEM-BORER_original_sborer-42-jpg_ba5de9bb-78cd-4b0a-b398-764abf4021ce_jpg.rf.dfa82ef896a94368b34cccd2c5d4fe86.txt",
+    "line": 1,
+    "class_id": 4,
+    "class_name": "stem-borer",
+    "coords": [0.050894884375, 0.0, 0.0, 0.07775790625],
+    "reason": "Degenerate bounding box (width = 0.0)"
+  },
+  {
+    "dataset": "rice_pest_lakthuru",
+    "label_path": "train/labels/STEM-BORER_original_sborer-72-jpg_4c0004e5-2ec5-477b-8f65-c51c1a4dcfa2_jpg.rf.65ee17fc591642d40a17af3081475502.txt",
+    "line": 1,
+    "class_id": 4,
+    "class_name": "stem-borer",
+    "coords": [0.0, 0.0, 0.0, 0.1662955546875],
+    "reason": "Degenerate bounding box (width = 0.0)"
+  }
+]

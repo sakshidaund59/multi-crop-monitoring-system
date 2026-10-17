@@ -240,7 +240,7 @@ def generate_dataset_report(
 
         lines.append("#### Class Breakdown & Split Stratification")
         lines.append("")
-        lines.append("| Class Name | Total Count | % of Dataset | Train (70%) | Val (20%) | Test (10%) |")
+        lines.append("| Class Name | Total Count | % of Dataset | Train | Val | Test |")
         lines.append("| :--- | :--- | :--- | :--- | :--- | :--- |")
 
         for cls_name, count in m["classes"].items():
@@ -260,14 +260,15 @@ def generate_dataset_report(
     lines.append("| Dataset | Crop | Source Repository | License | Usage Permitted |")
     lines.append("| :--- | :--- | :--- | :--- | :--- |")
 
-    for item in dataset_details:
-        ds_name = item["name"]
-        src = item["source_info"]
+    all_ds_names = sorted(list(set(sources_meta.keys()).union(set(item["name"] for item in dataset_details))))
+    for ds_name in all_ds_names:
+        src = sources_meta.get(ds_name, {})
+        crop = src.get("crop", "unassigned").capitalize()
         lic = src.get("license", "Unspecified")
         src_name = src.get("source_name", ds_name)
         url = src.get("source_url", "")
         repo_link = f"[{src_name}]({url})" if url else src_name
-        lines.append(f"| `{ds_name}` | {item['crop']} | {repo_link} | {lic} | Research & Operational Evaluation |")
+        lines.append(f"| `{ds_name}` | {crop} | {repo_link} | `{lic}` | Research & Operational Evaluation |")
 
     lines.append("")
     content = "\n".join(lines)

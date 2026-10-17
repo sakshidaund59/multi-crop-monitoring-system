@@ -1,0 +1,3827 @@
+{
+  "layout": "classification",
+  "dataset_path": "ml_training\\datasets\\raw\\sugarcane_sppu",
+  "total_images": 2521,
+  "valid_images": 2521,
+  "classes": {
+    "Healthy": 522,
+    "Mosaic": 462,
+    "RedRot": 518,
+    "Rust": 514,
+    "Yellow": 505
+  },
+  "corrupt_images": [],
+  "tiny_images": [],
+  "exact_duplicates": [
+    {
+      "sha256": "c0a7d2ab895e917e09f07bc8bd9a7d990d1de621a8e6e775ed93a016fad64a90",
+      "paths": [
+        "Healthy\\healthy (137).jpeg",
+        "Healthy\\healthy (216).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "66d9f27961194cf1e906b1933e498bb8417797e0c98b73e48e534519cf10ad82",
+      "paths": [
+        "Healthy\\healthy (158).jpeg",
+        "Healthy\\healthy (189).jpeg",
+        "Healthy\\healthy (203).jpeg",
+        "Healthy\\healthy (215).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "e76bb2404dc12c5d7f5576735be97bcc9a911031a1cff78a92036ee015dbbcd2",
+      "paths": [
+        "Healthy\\healthy (169).jpeg",
+        "Healthy\\healthy (214).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "6a5ee1be22c1dd43d0af91df683bfd4ab33242b9c8943d25c04b860871bcc228",
+      "paths": [
+        "Healthy\\healthy (17).jpeg",
+        "Healthy\\healthy (31).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "1164b8beb44392712eca91ce4317c2ac766e446af2dd02ce18aca141e9b8b9b5",
+      "paths": [
+        "Healthy\\healthy (188).jpeg",
+        "Healthy\\healthy (198).jpeg",
+        "Healthy\\healthy (210).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "30841c9ee19d61f92282ee0026ef30f893468202985b9c83e101e0d2437aeca0",
+      "paths": [
+        "Healthy\\healthy (190).jpeg",
+        "Healthy\\healthy (202).jpeg",
+        "Healthy\\healthy (213).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "471a8792ac3664fcf95e054f6638bdb69396e878439c9e1599a9de6a428aa581",
+      "paths": [
+        "Healthy\\healthy (191).jpeg",
+        "Healthy\\healthy (201).jpeg",
+        "Healthy\\healthy (212).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "9694a4a18ea61289346bfdf76e79a13609e04aba34d3d2236b9fa5713ad0946f",
+      "paths": [
+        "Healthy\\healthy (192).jpeg",
+        "Healthy\\healthy (204).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "caf354b7bcc6d3a490da48610a0bad108797c49e797459e315c841c5e3b0547d",
+      "paths": [
+        "Healthy\\healthy (193).jpeg",
+        "Healthy\\healthy (205).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "5a5609d1f79edd400bbb6b827a3cd55e943663a7d822e91f5614b988b56b8527",
+      "paths": [
+        "Healthy\\healthy (194).jpeg",
+        "Healthy\\healthy (206).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "e2762e5d3af03f1c4336f952b517fd54cf5bcf63d4222b882b6c8451d32ac997",
+      "paths": [
+        "Healthy\\healthy (195).jpeg",
+        "Healthy\\healthy (209).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "4926d9c2cff084079f9d678271a0aaa8efab9c8850c665666e2b01d01de2a097",
+      "paths": [
+        "Healthy\\healthy (196).jpeg",
+        "Healthy\\healthy (207).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "40e0b6b019575a556ac83a618b726b5dbaea723fdf7cf058617bf9a409ebc1a2",
+      "paths": [
+        "Healthy\\healthy (197).jpeg",
+        "Healthy\\healthy (208).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "bc88e655e9beb45fbf85146525894a4555ff7c36070ab4074d884fe3cf750da8",
+      "paths": [
+        "Healthy\\healthy (199).jpeg",
+        "Healthy\\healthy (211).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "8c5012d1679f448a8082c73758d9497bb0422edebe6cd4c7cb7159fd1fbe7f6a",
+      "paths": [
+        "Healthy\\healthy (224).jpeg",
+        "Healthy\\healthy (396).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "7b66d2a54d522531cf3f059118e037c7420c651275cd60dd80bf8f3a651dc26f",
+      "paths": [
+        "Healthy\\healthy (225).jpeg",
+        "Healthy\\healthy (400).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "d151c7f3f96975393ab5be844c5173a7f31ceab22c6a6af2f70882654b11d822",
+      "paths": [
+        "Healthy\\healthy (226).jpeg",
+        "Healthy\\healthy (399).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "4dd58997b17ba4f40623376e8d38ca05002806a976425133210635af56617c24",
+      "paths": [
+        "Healthy\\healthy (227).jpeg",
+        "Healthy\\healthy (398).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "60dec2961b49e766b5d29cb099eea05b59b26aa494f7a920ab2d76953434d680",
+      "paths": [
+        "Healthy\\healthy (229).jpeg",
+        "Healthy\\healthy (393).jpeg",
+        "Healthy\\healthy (397).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "07e947c206a57223888ca47f71f356a7f7a285c458d44667c6bf85e9a48eb66d",
+      "paths": [
+        "Healthy\\healthy (230).jpeg",
+        "Healthy\\healthy (395).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "229d8e317061e9010bcd37350210a030e8d4638f7c4bbda3217af164f00e78f4",
+      "paths": [
+        "Healthy\\healthy (253).jpeg",
+        "Healthy\\healthy (255).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "904db537cad83e8100dd4df5857b55b18925667d9e7a87f808509d55c1f3775e",
+      "paths": [
+        "Healthy\\healthy (254).jpeg",
+        "Healthy\\healthy (256).jpeg",
+        "Healthy\\healthy (415).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "3ecae2c64249a33a92da6f6fd4bda585b588ad7470fe3961938c4508429ebef8",
+      "paths": [
+        "Healthy\\healthy (265).jpeg",
+        "Healthy\\healthy (414).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "d2fcb59439b7085365ac80424294dd253e451dd9b3c16a13a545528d96edf358",
+      "paths": [
+        "Healthy\\healthy (402).jpeg",
+        "Healthy\\healthy (506).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "9fba70ab8c6391517dacc2e4a8e10a02d17d5d76bb7b18893c1a35a2b30576e8",
+      "paths": [
+        "Healthy\\healthy (404).jpeg",
+        "Healthy\\healthy (482).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "f04c2598e8845adad9dd9b6f00e7cfb274d1b0ad132560840b0864ba84121748",
+      "paths": [
+        "Healthy\\healthy (406).jpeg",
+        "Healthy\\healthy (481).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "6484f00e5f4ceea1d1b487e381b0d1e13b1084d590c49f56c5bfccebbab40502",
+      "paths": [
+        "Healthy\\healthy (407).jpeg",
+        "Healthy\\healthy (483).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "53f6108c789c2dacdbf725a17f8837dc494615b2d0c35d5c53c7349c972f9c78",
+      "paths": [
+        "Healthy\\healthy (408).jpeg",
+        "Healthy\\healthy (459).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "b6ecdf1b20bfeb5f86284872f64c47e8757e1b3214f70f3db8eb458bcdff6b06",
+      "paths": [
+        "Healthy\\healthy (410).jpeg",
+        "Healthy\\healthy (467).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "fd3751decc673eb4a5e8d2c786b7b86fcf6073a05b597c21835a56b67999f9a2",
+      "paths": [
+        "Healthy\\healthy (411).jpeg",
+        "Healthy\\healthy (421).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "d698fb2720acc443e221959a3dd6d4654cc12e23707f87f37219f9ec3d740f32",
+      "paths": [
+        "Healthy\\healthy (484).jpeg",
+        "Healthy\\healthy (511).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "678109f91e578f875c750218f4cdda69613951e48a4f53788b9fc3297ba4e423",
+      "paths": [
+        "Healthy\\healthy (485).jpeg",
+        "Healthy\\healthy (510).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "244dc8dd70c90f916006d108843af7d9ca120fd512f6751b7016aec9023f51dc",
+      "paths": [
+        "Healthy\\healthy (486).jpeg",
+        "Healthy\\healthy (493).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "2a1b224385910aa618f5d259cf6fc436330dba17615f14d7c9d23f31f6a2d4ca",
+      "paths": [
+        "Healthy\\healthy (487).jpeg",
+        "Healthy\\healthy (512).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "f67d0bdf8bdee320515325e425b61e6480b8c98b1f7615ee29094f29212fb961",
+      "paths": [
+        "Healthy\\healthy (488).jpeg",
+        "Healthy\\healthy (513).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "298a205704303ecf6772f47ba31ae1481bdc4b548df4d88ab879f71bff9838c1",
+      "paths": [
+        "Healthy\\healthy (489).jpeg",
+        "Healthy\\healthy (494).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "5bf421bd0dfc858642d7feedda86f286cd08ad820698035ebd31195ce23e34cb",
+      "paths": [
+        "Healthy\\healthy (490).jpeg",
+        "Healthy\\healthy (515).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "88283df2cf2ef5e7e1be8777073cb7427538b1be8001ef775370c5d8f8aeded6",
+      "paths": [
+        "Healthy\\healthy (491).jpeg",
+        "Healthy\\healthy (508).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "2ff5e8d75089c0b237b58f552740dede66aff396a751ab3c5f8cf7e1ea0f0269",
+      "paths": [
+        "Healthy\\healthy (492).jpeg",
+        "Healthy\\healthy (514).jpeg"
+      ],
+      "classes": [
+        "Healthy"
+      ]
+    },
+    {
+      "sha256": "5107e39d1eadd3b02448b9bdbe30a91aab70877c2501d53823c6c526586de08e",
+      "paths": [
+        "Mosaic\\mosaic (165).jpeg",
+        "Mosaic\\mosaic (235).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "deec8b688d3f627febd99758abf929825b662377b71c45d2426be9b2a7391c4e",
+      "paths": [
+        "Mosaic\\mosaic (166).jpeg",
+        "Mosaic\\mosaic (236).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "d034ad106cbda7d293075115d3a9b6f7c16fc30ee7b02bb5c0e3e9e17a749023",
+      "paths": [
+        "Mosaic\\mosaic (167).jpeg",
+        "Mosaic\\mosaic (237).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "73e890a95d9b6f164a165d7858badb10700901f8114cc8354351e6cc8e69f2e5",
+      "paths": [
+        "Mosaic\\mosaic (271).jpeg",
+        "Mosaic\\mosaic (360).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "38b441a8876ef2a2b66577118b2298124cb5dd9ef41d2eb308c40fe4de35ac57",
+      "paths": [
+        "Mosaic\\mosaic (272).jpeg",
+        "Mosaic\\mosaic (359).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "c83ca0ae34fc9aaf3debb65db6dd1cc0d31bd970169b818e804b46b0bde9abbd",
+      "paths": [
+        "Mosaic\\mosaic (273).jpeg",
+        "Mosaic\\mosaic (361).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "982f4a4626a14b538ba52a25dad48740a0d59ba8ff955b4b512877b99ecb5441",
+      "paths": [
+        "Mosaic\\mosaic (274).jpeg",
+        "Mosaic\\mosaic (362).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "844bff593aa8c45e93ce0e335226083df32f6b0b377a6d05f691ffd1221000f6",
+      "paths": [
+        "Mosaic\\mosaic (275).jpeg",
+        "Mosaic\\mosaic (363).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "cd4163ba31e43d9a9732234060b7387f21c08c7395648bd909ba4527d72379dd",
+      "paths": [
+        "Mosaic\\mosaic (276).jpeg",
+        "Mosaic\\mosaic (365).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "d88e8eb2ec1ecd05d4631e08571dcbe50a689079c5d51fa57fb17dfb78e369be",
+      "paths": [
+        "Mosaic\\mosaic (277).jpeg",
+        "Mosaic\\mosaic (366).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "bd350c1490f794b9491a1bda4bf6af970484384616be6caf8e121fc535ad6a41",
+      "paths": [
+        "Mosaic\\mosaic (281).jpeg",
+        "Mosaic\\mosaic (369).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "84b8e1eb846b581c8e11257bc747568f038dc67474e4199d874125e2d649eed9",
+      "paths": [
+        "Mosaic\\mosaic (282).jpeg",
+        "Mosaic\\mosaic (368).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "dc36c3f52a7cf3f1c74dbdef81a2b00c761aeb52f09d960cf8c1ec8de25361c5",
+      "paths": [
+        "Mosaic\\mosaic (283).jpeg",
+        "Mosaic\\mosaic (371).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "20bfe3b903e717b851b95430ec2add1a575b6d22b3f7e4292602ec0289282b48",
+      "paths": [
+        "Mosaic\\mosaic (284).jpeg",
+        "Mosaic\\mosaic (370).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "fc4a196d28c3945dd68203d5088b0808788f384d48bae7e41f9ae3a89e57c519",
+      "paths": [
+        "Mosaic\\mosaic (285).jpeg",
+        "Mosaic\\mosaic (372).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "f978ff799279c7066be1c55b87cda6e1a4e6d98be182fdaa1cf31ace67eed022",
+      "paths": [
+        "Mosaic\\mosaic (286).jpeg",
+        "Mosaic\\mosaic (373).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "ba0406d662854151331ad82be8aee7ce7d74cc846d8bb9cc7a702e168b47cb4e",
+      "paths": [
+        "Mosaic\\mosaic (287).jpeg",
+        "Mosaic\\mosaic (374).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "e9f621361bc7ac027dcdec387474e5b1fdd517e1e08c7189ee8ead8efb3a79fa",
+      "paths": [
+        "Mosaic\\mosaic (288).jpeg",
+        "Mosaic\\mosaic (375).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "ff614a5b36f1bcd3e544cba18bbe614f75742fc7cea946ebcb22a2603f4869fd",
+      "paths": [
+        "Mosaic\\mosaic (289).jpeg",
+        "Mosaic\\mosaic (376).jpeg",
+        "Mosaic\\mosaic (407).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "77e7c735a11352246cc0751da35a947bdb29cb2e8f254a54f461eeccacb8e4a3",
+      "paths": [
+        "Mosaic\\mosaic (290).jpeg",
+        "Mosaic\\mosaic (377).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "986248af610ba28120fd7f2a5dba3ca480b747420ad6c15c2e5a54e8ce7fbd70",
+      "paths": [
+        "Mosaic\\mosaic (291).jpeg",
+        "Mosaic\\mosaic (378).jpeg",
+        "Mosaic\\mosaic (408).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "efc9211768b31fa7803da38f4be318e1224843eb4bd05a6a1a73e99cc9cef51f",
+      "paths": [
+        "Mosaic\\mosaic (292).jpeg",
+        "Mosaic\\mosaic (379).jpeg",
+        "Mosaic\\mosaic (409).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "ae6062c65f586b68420049a19529ea3a1d7d18ac6ffe51295b51eb417db0fcd1",
+      "paths": [
+        "Mosaic\\mosaic (293).jpeg",
+        "Mosaic\\mosaic (381).jpeg",
+        "Mosaic\\mosaic (411).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "2d86b2cccc6504b5874908759a19540a59dce0dc73b6fc83828e1846d2c2cfb3",
+      "paths": [
+        "Mosaic\\mosaic (294).jpeg",
+        "Mosaic\\mosaic (383).jpeg",
+        "Mosaic\\mosaic (412).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "705700e00b6b73826f16df725cd069a27e22aa126432ccaebf6f32e3bb75c848",
+      "paths": [
+        "Mosaic\\mosaic (295).jpeg",
+        "Mosaic\\mosaic (382).jpeg",
+        "Mosaic\\mosaic (413).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "4fdaa26dcf640442b4abb44eb973688c3ac77059e2fed89e039a00c52d2566fa",
+      "paths": [
+        "Mosaic\\mosaic (296).jpeg",
+        "Mosaic\\mosaic (384).jpeg",
+        "Mosaic\\mosaic (415).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "7e059d9b0a47004f751b211f724d30198ef6a76de27676168b2f5680c29a4a29",
+      "paths": [
+        "Mosaic\\mosaic (297).jpeg",
+        "Mosaic\\mosaic (414).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "83b9b17b8ab9f67c018230dad01f005ac5495d12803cb8a108b1dc43bd947638",
+      "paths": [
+        "Mosaic\\mosaic (298).jpeg",
+        "Mosaic\\mosaic (386).jpeg",
+        "Mosaic\\mosaic (390).jpeg",
+        "Mosaic\\mosaic (416).jpeg",
+        "Mosaic\\mosaic (422).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "8db15a9a949372764befa200da2e28f06730db48c3b1e76c977a6ce298d953d7",
+      "paths": [
+        "Mosaic\\mosaic (299).jpeg",
+        "Mosaic\\mosaic (385).jpeg",
+        "Mosaic\\mosaic (389).jpeg",
+        "Mosaic\\mosaic (417).jpeg",
+        "Mosaic\\mosaic (419).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "939d1b31a33c9c4fe72dbc0488d9db6c725c2818ef424acf7805b7f42a342af7",
+      "paths": [
+        "Mosaic\\mosaic (300).jpeg",
+        "Mosaic\\mosaic (387).jpeg",
+        "Mosaic\\mosaic (391).jpeg",
+        "Mosaic\\mosaic (418).jpeg",
+        "Mosaic\\mosaic (421).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "d5aea54ef0a3f1c105f5b673a2f758e16e335c569271466ac68cbc162cedc488",
+      "paths": [
+        "Mosaic\\mosaic (301).jpeg",
+        "Mosaic\\mosaic (388).jpeg",
+        "Mosaic\\mosaic (392).jpeg",
+        "Mosaic\\mosaic (420).jpeg",
+        "Mosaic\\mosaic (423).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "a1c47ed8b007604d144ce0691df612f59f6233bbf56163fec1c6ca9a4c994f38",
+      "paths": [
+        "Mosaic\\mosaic (314).jpeg",
+        "Mosaic\\mosaic (443).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "e0e204ddd26ac42de15afacf1302d6ef0aad59248fb95b5bd17c6ce547a63d69",
+      "paths": [
+        "Mosaic\\mosaic (316).jpeg",
+        "Mosaic\\mosaic (446).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "a6984b5c355aa02e33298b72cc2fab87a71337f6c83b31f0801aa27c42ad54c6",
+      "paths": [
+        "Mosaic\\mosaic (317).jpeg",
+        "Mosaic\\mosaic (447).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "b22ef0a2a6ef34047e856328ae15a233a70aa1fdacf086d69f58bbd5f968bac4",
+      "paths": [
+        "Mosaic\\mosaic (318).jpeg",
+        "Mosaic\\mosaic (448).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "34a50dfe5b769b3fc7fcaf523f1ce02aca8f4022cc95531277106626b075826e",
+      "paths": [
+        "Mosaic\\mosaic (330).jpeg",
+        "Mosaic\\mosaic (42).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "e6e334efd0c7b2acef1ff82f9c59986635d54e39b6b1ef892c85344a0175f75b",
+      "paths": [
+        "Mosaic\\mosaic (331).jpeg",
+        "Mosaic\\mosaic (44).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "61c23ad6d43bf48497f0185dd40324fc024dceed8008556d4bd4857d95233137",
+      "paths": [
+        "Mosaic\\mosaic (332).jpeg",
+        "Mosaic\\mosaic (43).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "9ab754d63711083aab55d361d6eed1fb24975a589d754933ec5a16fc016e45d8",
+      "paths": [
+        "Mosaic\\mosaic (333).jpeg",
+        "Mosaic\\mosaic (45).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "e13cb1f2bb04cfd9b9ecc5b075ffc7ad022a59a839967a3a3edabf2d96a4576a",
+      "paths": [
+        "Mosaic\\mosaic (334).jpeg",
+        "Mosaic\\mosaic (46).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "0ee22f39620de21c25343c43f83ec1a827eb759c5b9217855133ef566bd2a55d",
+      "paths": [
+        "Mosaic\\mosaic (335).jpeg",
+        "Mosaic\\mosaic (47).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "fa4f37217c87e4aaaf33d3e02f9cba61d75798220416e1bd2f3bd2f535eb4641",
+      "paths": [
+        "Mosaic\\mosaic (336).jpeg",
+        "Mosaic\\mosaic (49).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "7d86f12cc89048724b3e40f673fc781caf5cca857518666625c038dab4b3de26",
+      "paths": [
+        "Mosaic\\mosaic (337).jpeg",
+        "Mosaic\\mosaic (48).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "9b7e7152eb87e7a3f7f4de2c162560042fd51a4eff731fafd19bb4394ff6de8f",
+      "paths": [
+        "Mosaic\\mosaic (338).jpeg",
+        "Mosaic\\mosaic (52).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "295d5120debd9dc0b36b1fc58304c46f8d087f57927be8c88fe28c83bb39ae12",
+      "paths": [
+        "Mosaic\\mosaic (339).jpeg",
+        "Mosaic\\mosaic (51).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "ec6f19c69845dd630c3a47a2cdc51e9aa3a65cb00ed48a4632c0e1362a6e98cc",
+      "paths": [
+        "Mosaic\\mosaic (340).jpeg",
+        "Mosaic\\mosaic (50).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "64f094ab170775398a56affc5a39df0bd81b7213408e9926695806a4afb246da",
+      "paths": [
+        "Mosaic\\mosaic (341).jpeg",
+        "Mosaic\\mosaic (53).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "2952859517d2a6e9dd4e3c7ca01853bd148f1f2408f93bc9bc0db32eac2dab0f",
+      "paths": [
+        "Mosaic\\mosaic (342).jpeg",
+        "Mosaic\\mosaic (54).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "d19bcd4d753f3e9032ec503f9c0288e8838350b0eb0278ef9e0711d7d1043619",
+      "paths": [
+        "Mosaic\\mosaic (343).jpeg",
+        "Mosaic\\mosaic (55).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "f99f7e85c1957e2473719a10bd3b41f07d44e4f319230fbe6700092a60752a22",
+      "paths": [
+        "Mosaic\\mosaic (344).jpeg",
+        "Mosaic\\mosaic (58).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "ce769cc7746d741d5089e56b9beb92ae9b127e6a141d744bb3c33f8eac124b31",
+      "paths": [
+        "Mosaic\\mosaic (345).jpeg",
+        "Mosaic\\mosaic (56).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "bb060b356c39e58f942becc80a6d3aa0cc788f4519c7a93b9709d07634a37085",
+      "paths": [
+        "Mosaic\\mosaic (346).jpeg",
+        "Mosaic\\mosaic (57).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "cfc1cc23c70e52ec9c97eda51f7fc9ab2ef04cbf0e8d3f3c7407ca1994e34ffd",
+      "paths": [
+        "Mosaic\\mosaic (380).jpeg",
+        "Mosaic\\mosaic (410).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "5964600a4cadf130b3f2f0c2d83267fbb38cb3f0f5175299f10c3189679646cc",
+      "paths": [
+        "Mosaic\\mosaic (393).jpeg",
+        "Mosaic\\mosaic (425).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "affc4ed3d01b594eb8152e0f359599bf7f1af5fae7aa0393350ee1f6622eb7bc",
+      "paths": [
+        "Mosaic\\mosaic (394).jpeg",
+        "Mosaic\\mosaic (424).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "95e300ca0e4178f9eda7830f3549c03ac4fda4cf05720d6e429f8a3de2be9930",
+      "paths": [
+        "Mosaic\\mosaic (395).jpeg",
+        "Mosaic\\mosaic (426).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "685a4919cc51bf9633b2ebffbde5fdee504ab8e08c1174ac0712b13f46abc0d1",
+      "paths": [
+        "Mosaic\\mosaic (396).jpeg",
+        "Mosaic\\mosaic (427).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "669e2607366314dd47efc0638b595277e01cfc4ebb4cb60e8c52bb49e75f5946",
+      "paths": [
+        "Mosaic\\mosaic (397).jpeg",
+        "Mosaic\\mosaic (428).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "80405876fb35bc3b149821e1a3846dee3c0aad4bc843943a2c8d3c568f945cf9",
+      "paths": [
+        "Mosaic\\mosaic (398).jpeg",
+        "Mosaic\\mosaic (429).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "ac44fa988891a41d3a4cde013904fa23857e8689f40cf9a09930f96fca50e038",
+      "paths": [
+        "Mosaic\\mosaic (399).jpeg",
+        "Mosaic\\mosaic (430).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "9e97895a2f51c5e3c512d9fb8d4abd29b0a263f11c7de8f6aaf1d803e827f735",
+      "paths": [
+        "Mosaic\\mosaic (401).jpeg",
+        "Mosaic\\mosaic (432).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "45833078f377b1c5a9fdb7d0d40b9569fed72f201275a945c430099c315273d8",
+      "paths": [
+        "Mosaic\\mosaic (402).jpeg",
+        "Mosaic\\mosaic (431).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "2b374570f79f5cab62701858de10cfe1517a8214972ab2da0db168dac01cfd38",
+      "paths": [
+        "Mosaic\\mosaic (403).jpeg",
+        "Mosaic\\mosaic (433).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "0ea49f7dbb049a7adcec3b4cd9c4b76956f2ed13272387eecf8667508babbfe1",
+      "paths": [
+        "Mosaic\\mosaic (404).jpeg",
+        "Mosaic\\mosaic (434).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "da2c8d6783020a7559a83048fecddc03d4e92db1c38334e55179415ae3bedb7b",
+      "paths": [
+        "Mosaic\\mosaic (405).jpeg",
+        "Mosaic\\mosaic (435).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "e44a0699515febe8a21124fe5a7cba90680e0d3e7b8e1c16d677252cd0bff4ab",
+      "paths": [
+        "Mosaic\\mosaic (406).jpeg",
+        "Mosaic\\mosaic (436).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "37bacb3abf054f0616680fc33712be5e9ddbd8d1ebd7060bc9af84decb7d0098",
+      "paths": [
+        "Mosaic\\mosaic (86).jpeg",
+        "Mosaic\\mosaic (88).jpeg"
+      ],
+      "classes": [
+        "Mosaic"
+      ]
+    },
+    {
+      "sha256": "a22c0c847b042065ace9c75158cb15f20b022c7b94373011a4f64204167b18a7",
+      "paths": [
+        "Rust\\rust (1).jpeg",
+        "Rust\\rust (64).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "ef2b9e7866dffb66c0dc2bd1dea2e1961ea7743301fb695903df5230f38ce6c8",
+      "paths": [
+        "Rust\\rust (136).jpeg",
+        "Rust\\rust (26).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "123d21d971cbb0b58f4a2a36af9bc4410a96b310d1e634bdfa27e5d43617d061",
+      "paths": [
+        "Rust\\rust (137).jpeg",
+        "Rust\\rust (15).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "a0c2f52f5e219536aa2a6da82624bb9b3bc4a38e6d0e6972cdc4939a36fa23b3",
+      "paths": [
+        "Rust\\rust (172).jpeg",
+        "Rust\\rust (173).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "b0fc22065010ece5ed408569fc6cab995c08ae78654dfa3ec39c47759efe4c9e",
+      "paths": [
+        "Rust\\rust (203).jpeg",
+        "Rust\\rust (259).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "e6a24416ca597a53edc2b5ef7aba5a3c634d9cff6f53cad2532dbe3ed886496b",
+      "paths": [
+        "Rust\\rust (204).jpeg",
+        "Rust\\rust (325).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "d751cdc1cac66bd4a5b97892db32a7aa35c454f32ded6918c7373c3c783d0887",
+      "paths": [
+        "Rust\\rust (205).jpeg",
+        "Rust\\rust (260).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "976ce4f12a6b885ecb4ee78d137a36b1b9d2d823f746603b64c084dff0ee4ca6",
+      "paths": [
+        "Rust\\rust (206).jpeg",
+        "Rust\\rust (394).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "0116cb2e616f4a63f9efdda2eba02781e6ec36ebc2dc311f44924df62c3e82c1",
+      "paths": [
+        "Rust\\rust (207).jpeg",
+        "Rust\\rust (324).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "51ce343b8b69e757b6f3bd6de17aa39166466db81557804a0155451c80701fcd",
+      "paths": [
+        "Rust\\rust (208).jpeg",
+        "Rust\\rust (399).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "572b01aae5d9ae402a00e0c3d01e1c09457fed04b1b443972164e06e07a7c1e2",
+      "paths": [
+        "Rust\\rust (209).jpeg",
+        "Rust\\rust (323).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "63aecab1689c48167a0a8a3f52bc920c9e0d240f02d3c19442131e7d294ae878",
+      "paths": [
+        "Rust\\rust (210).jpeg",
+        "Rust\\rust (348).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "0e638d71dc467f93fc042b644e961ff152e653cdd8404e6b029b3add365675cd",
+      "paths": [
+        "Rust\\rust (211).jpeg",
+        "Rust\\rust (351).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "d6e6659913f9069e475a2b15e22689c6e2bc27012949e3a81780e07c117aadcd",
+      "paths": [
+        "Rust\\rust (212).jpeg",
+        "Rust\\rust (398).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "981419921d584b6c7f14e0c45343e1ebe2640a17309ce23cd870d5bf14f7abc3",
+      "paths": [
+        "Rust\\rust (213).jpeg",
+        "Rust\\rust (328).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "744c265850f4225de0218f3126c0d211ac3a3242eda19bd8d10ec3ad30e9fb8f",
+      "paths": [
+        "Rust\\rust (214).jpeg",
+        "Rust\\rust (329).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "bf35ab527047d63922cccd95d184b92293e6b21aba32c7cc195da301641f3634",
+      "paths": [
+        "Rust\\rust (215).jpeg",
+        "Rust\\rust (314).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "dffcd76d8794490dc642ede9c14d8dda414a83925dbd6a7498d8158f788ce98a",
+      "paths": [
+        "Rust\\rust (216).jpeg",
+        "Rust\\rust (405).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "a4e9c4cd180d458c7714ec6d085dfdeee594030e4c0573c185a59d6ba3d6bc7e",
+      "paths": [
+        "Rust\\rust (217).jpeg",
+        "Rust\\rust (400).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "ffedc480c140f9d57a77d127554ad7f9315cf75d9188a8272ea256c52ff46e92",
+      "paths": [
+        "Rust\\rust (218).jpeg",
+        "Rust\\rust (331).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "847ad17884eb502856793fc3847eaab0d7026a06e9594542a292125fd3ee4d5c",
+      "paths": [
+        "Rust\\rust (219).jpeg",
+        "Rust\\rust (402).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "94fcda4d4daf5edf821c5b06810bea9543235cccaf71de3223bae4ccd48207a8",
+      "paths": [
+        "Rust\\rust (220).jpeg",
+        "Rust\\rust (363).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "3fc7f8060491e6eb64ca94dd4ac9e09959ff36ce4d52c0589ac2c0d8ba0ea9df",
+      "paths": [
+        "Rust\\rust (221).jpeg",
+        "Rust\\rust (401).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "d37adac10f7466b2ff8c528d5f8738f8f0d3fcbbfe137038d40c7a8fff22e32f",
+      "paths": [
+        "Rust\\rust (222).jpeg",
+        "Rust\\rust (335).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "be2f031ce57b4d21630b7c790e2a69b4e731bd220b6c2fe4b7caf7443d3250c8",
+      "paths": [
+        "Rust\\rust (223).jpeg",
+        "Rust\\rust (365).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "fbc59daa65aee9b8eb8db4f0a32a898b79bac9225c9cc5fffed683d304d77a58",
+      "paths": [
+        "Rust\\rust (224).jpeg",
+        "Rust\\rust (362).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "bf0a68c009e60eb9a9532d47b1d661c5840cf8a37faa4e52d975c256925b5f00",
+      "paths": [
+        "Rust\\rust (225).jpeg",
+        "Rust\\rust (338).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "f6e0bf63532ced48853731cc38ce699d0e51b9ea75d89febbbce94748cdda0f9",
+      "paths": [
+        "Rust\\rust (226).jpeg",
+        "Rust\\rust (392).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "230d8a11cf791be1fdbf510343c05f49d85255a09868945fe8c848a63d78972e",
+      "paths": [
+        "Rust\\rust (227).jpeg",
+        "Rust\\rust (367).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "aaa79d1f4b3abb5ccd10f3fdfa6891b615af25506ae20c5c4762382b796ad0dc",
+      "paths": [
+        "Rust\\rust (228).jpeg",
+        "Rust\\rust (418).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "921ebb931fcaa2a5573bb01df967a61e45502c33daba3460bf11842a30f9898d",
+      "paths": [
+        "Rust\\rust (229).jpeg",
+        "Rust\\rust (368).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "164093f680c43ca34a8dd2748ef3f0984d8e13cf849447ac3b2cffabeaed08f0",
+      "paths": [
+        "Rust\\rust (230).jpeg",
+        "Rust\\rust (366).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "d1f011e4e4498944c17546c5d9c53ccadadd5a65f2b7efbe8fa3875d8022bf14",
+      "paths": [
+        "Rust\\rust (231).jpeg",
+        "Rust\\rust (413).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "27d954d43ca1c09931c29fa36d3216e91cde7b4e06381ee6e1d59669d302c814",
+      "paths": [
+        "Rust\\rust (232).jpeg",
+        "Rust\\rust (393).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "49b3e1e15f0251dafb12793b92db63d1887da9f8eca90f30326317555e510176",
+      "paths": [
+        "Rust\\rust (233).jpeg",
+        "Rust\\rust (411).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "a045db91054f1a5b0aaf27142ea09818d60c653d7ab5654f6d1fb4f688397541",
+      "paths": [
+        "Rust\\rust (234).jpeg",
+        "Rust\\rust (315).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "761710be115df7ffa88b0ea3ef924888616a8a80abcdb1cd9619cfddec8df0aa",
+      "paths": [
+        "Rust\\rust (235).jpeg",
+        "Rust\\rust (420).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "6462240ebe33d95222df20ce6db876b8ea8f412d4fad87f2027e9fbe77f7599b",
+      "paths": [
+        "Rust\\rust (236).jpeg",
+        "Rust\\rust (406).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "b39594834a3e88c633b6a6677584c086b094370d50c4fe8a1c29ff540771962e",
+      "paths": [
+        "Rust\\rust (237).jpeg",
+        "Rust\\rust (347).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "17d7c3f3cb155bc5204f97b51632ed413f5090dcce52a22b91d68501d4790f51",
+      "paths": [
+        "Rust\\rust (238).jpeg",
+        "Rust\\rust (391).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "1132660af8eb8fa1c044486a665a162ca91190f500fec7aed31b589a234b00f5",
+      "paths": [
+        "Rust\\rust (239).jpeg",
+        "Rust\\rust (375).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "7f9dc59395e4e6d8bf7729db61b6e6744c0752c05eeea868de909c5f12352c55",
+      "paths": [
+        "Rust\\rust (240).jpeg",
+        "Rust\\rust (378).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "d1b29f07a6573b6bfb7c375f511d95b276c91f47f055996ccc5c5b9e9ac5c850",
+      "paths": [
+        "Rust\\rust (241).jpeg",
+        "Rust\\rust (356).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "25bb878ae8b41e3f1bb8b066d7b5b650b1e2141462201b4abfbd0595f58f0454",
+      "paths": [
+        "Rust\\rust (242).jpeg",
+        "Rust\\rust (345).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "b132f16f53ac27039b05010abd803401cdad7e182531031fc1bfb25aa53ac4b3",
+      "paths": [
+        "Rust\\rust (243).jpeg",
+        "Rust\\rust (384).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "c68443c15004db4e37d2c8e7edbefc37c6656e8dc666ddfbd96b6c973df4fab4",
+      "paths": [
+        "Rust\\rust (244).jpeg",
+        "Rust\\rust (417).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "80748113c96a77f1ab2853bba0b4729d22d5f86b5f3bed3be87122ca6b87af3d",
+      "paths": [
+        "Rust\\rust (245).jpeg",
+        "Rust\\rust (352).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "55823f811d5bab60109ba4acd09b0cd173e980450c3a942d5904ba9f77ae818c",
+      "paths": [
+        "Rust\\rust (246).jpeg",
+        "Rust\\rust (383).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "88fba4db0eb1f390f552e2a48d809c59f223fc294e501bc11f9b7f95e82df427",
+      "paths": [
+        "Rust\\rust (247).jpeg",
+        "Rust\\rust (354).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "8017d05285318111aa88905d0e0aacaa00f15b72ff52dcf9498a8b47466013a3",
+      "paths": [
+        "Rust\\rust (248).jpeg",
+        "Rust\\rust (409).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "f76d23b6e97c0eb899cbeca2d3b9d8ce08fe41f3373e113ae70e3a85923f9c8e",
+      "paths": [
+        "Rust\\rust (249).jpeg",
+        "Rust\\rust (361).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "7cc477a7a79d3e1b3c96e731ebd3204fa63e51533189c455f6d57501c17dc792",
+      "paths": [
+        "Rust\\rust (250).jpeg",
+        "Rust\\rust (377).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "77db248562057275f932f14fb43f1f63880c887aad5ad086a33cfa1de7bc4210",
+      "paths": [
+        "Rust\\rust (251).jpeg",
+        "Rust\\rust (318).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "41abc1e10e8f5654f3f5e5fafe61425d2bf4c59624c70abf606193d3d65fa26e",
+      "paths": [
+        "Rust\\rust (252).jpeg",
+        "Rust\\rust (390).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "d643dd9360c987fe762ffaaf65991a8e653d93f5531364ee51f52f77c0b27e38",
+      "paths": [
+        "Rust\\rust (253).jpeg",
+        "Rust\\rust (412).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "7e92a2db8e2ac5f085a8b84b9bff9ecd00c67cfd48154e7559f4769033579583",
+      "paths": [
+        "Rust\\rust (254).jpeg",
+        "Rust\\rust (374).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "610e612f4f4d83a8e15e37659d3e0d325e7309a3400b58c5b00cd59cfa928742",
+      "paths": [
+        "Rust\\rust (255).jpeg",
+        "Rust\\rust (396).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "0f459e17745acb4d1d33254b04bff387a9aabec9ecf4255fba7216b9b369e5dd",
+      "paths": [
+        "Rust\\rust (256).jpeg",
+        "Rust\\rust (397).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "e99663c7310569a80497426d9aa6e8b67e92c79e6c7da551a354434750627250",
+      "paths": [
+        "Rust\\rust (257).jpeg",
+        "Rust\\rust (404).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "c4a27fc53f5dd34f44ea7eb55480a1443a3bf7e49b4c69942669030ab764e1b9",
+      "paths": [
+        "Rust\\rust (258).jpeg",
+        "Rust\\rust (408).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "ad42195e1336cff25794477dc654c341091453fc71f45c9ba346fc398eaefe89",
+      "paths": [
+        "Rust\\rust (263).jpeg",
+        "Rust\\rust (513).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "34952a769fcbbc037ab514446fc59280cba3e6a680f8c95465f057bad91a11dc",
+      "paths": [
+        "Rust\\rust (267).jpeg",
+        "Rust\\rust (514).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "e34eabd084c9dd176f2ff09e97d55716a328573d73241d6021e71701955a71c4",
+      "paths": [
+        "Rust\\rust (3).jpeg",
+        "Rust\\rust (61).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "def63b4fcabd926d077a3c3a63a76dfa9ecd8948c2168b799edfa2cf2f40ab75",
+      "paths": [
+        "Rust\\rust (35).jpeg",
+        "Rust\\rust (69).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "35b4ebfa80e9bfb6343c095726b2d523b03caf66ae64bf3c68209c44a68cf23e",
+      "paths": [
+        "Rust\\rust (37).jpeg",
+        "Rust\\rust (66).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "6b515f19b626ae5f59a2e0ec026b1fc6f2f89d2be25a7b27ab97a975c4cb070d",
+      "paths": [
+        "Rust\\rust (38).jpeg",
+        "Rust\\rust (67).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "b34df75c7c20e0826a256903545bb5718682f4c81648e1bc2d42ddd63cc5577e",
+      "paths": [
+        "Rust\\rust (4).jpeg",
+        "Rust\\rust (60).jpeg"
+      ],
+      "classes": [
+        "Rust"
+      ]
+    },
+    {
+      "sha256": "46e213a802b786c1dfe44357f17f3a373a4c31c12276960409e78f627caa2603",
+      "paths": [
+        "Yellow\\yellow (1).jpeg",
+        "Yellow\\yellow (7).jpeg"
+      ],
+      "classes": [
+        "Yellow"
+      ]
+    },
+    {
+      "sha256": "c23f1f739dc9a785352a5dfbb15549c9afa4e85daff25a8f386d12195579146f",
+      "paths": [
+        "Yellow\\yellow (12).jpeg",
+        "Yellow\\yellow (2).jpeg"
+      ],
+      "classes": [
+        "Yellow"
+      ]
+    },
+    {
+      "sha256": "c41a00260f5e149a6957da1f0562ad8d51bb45a6dd3c614cee6f07acebdb7651",
+      "paths": [
+        "Yellow\\yellow (147).jpeg",
+        "Yellow\\yellow (225).jpeg"
+      ],
+      "classes": [
+        "Yellow"
+      ]
+    },
+    {
+      "sha256": "45ba98eebc28a4927b1b258192b6b518b4a7c61964dd132b1ea564cc315aa094",
+      "paths": [
+        "Yellow\\yellow (148).jpeg",
+        "Yellow\\yellow (218).jpeg"
+      ],
+      "classes": [
+        "Yellow"
+      ]
+    },
+    {
+      "sha256": "ead04945d12c376cd569e1a97f1f369ad76bc2f9ea1a83419121f76128ba9ae0",
+      "paths": [
+        "Yellow\\yellow (149).jpeg",
+        "Yellow\\yellow (163).jpeg"
+      ],
+      "classes": [
+        "Yellow"
+      ]
+    },
+    {
+      "sha256": "649ee77995f2cc3bf6974d6bceb9022c1a194707d9ff484f70279045d4f90c02",
+      "paths": [
+        "Yellow\\yellow (358).jpeg",
+        "Yellow\\yellow (366).jpeg"
+      ],
+      "classes": [
+        "Yellow"
+      ]
+    },
+    {
+      "sha256": "c2e0167eba32045b1ddd447c8f3d5cc555926c37033d28c4ef17156182c96f34",
+      "paths": [
+        "Yellow\\yellow (465).jpeg",
+        "Yellow\\yellow (471).jpeg"
+      ],
+      "classes": [
+        "Yellow"
+      ]
+    },
+    {
+      "sha256": "102935205f0773f00525aa3ad6e0a03cff97e29418d51057f4b17a77bcfffb45",
+      "paths": [
+        "Yellow\\yellow (466).jpeg",
+        "Yellow\\yellow (472).jpeg"
+      ],
+      "classes": [
+        "Yellow"
+      ]
+    },
+    {
+      "sha256": "bc095d8143366be17f9ea9335cffebd19534da0d6ad35cc0dce76db10cd12207",
+      "paths": [
+        "Yellow\\yellow (467).jpeg",
+        "Yellow\\yellow (491).jpeg"
+      ],
+      "classes": [
+        "Yellow"
+      ]
+    },
+    {
+      "sha256": "2d2065f69b47a5e38f45817f26049cf907ff048e0da79e4c3c56cba78f69c84a",
+      "paths": [
+        "Yellow\\yellow (468).jpeg",
+        "Yellow\\yellow (490).jpeg"
+      ],
+      "classes": [
+        "Yellow"
+      ]
+    },
+    {
+      "sha256": "6ccd73fab8403c348fc3b354500806c2b0521ec892d2fe627869d464683b8b71",
+      "paths": [
+        "Yellow\\yellow (470).jpeg",
+        "Yellow\\yellow (492).jpeg"
+      ],
+      "classes": [
+        "Yellow"
+      ]
+    }
+  ],
+  "near_duplicates": [
+    {
+      "path1": "Healthy\\healthy (137).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (216).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (158).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (189).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (158).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (203).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (158).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (215).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (169).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (214).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (17).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (31).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (188).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (198).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (188).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (210).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (189).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (203).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (189).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (215).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (190).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (202).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (190).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (213).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (191).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (201).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (191).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (212).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (192).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (204).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (193).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (205).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (194).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (206).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (195).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (209).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (196).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (207).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (197).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (208).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (198).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (210).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (199).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (211).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (201).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (212).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (202).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (213).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (203).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (215).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (224).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (396).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (225).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (400).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (226).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (399).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (227).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (398).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (229).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (393).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (229).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (397).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (230).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (395).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (253).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (255).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (254).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (256).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (254).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (415).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (256).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (415).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (265).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (414).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (393).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (397).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (402).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (503).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (402).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (504).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (402).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (505).jpeg",
+      "class2": "Healthy",
+      "distance": 2
+    },
+    {
+      "path1": "Healthy\\healthy (402).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (506).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (402).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (507).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (404).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (482).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (406).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (481).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (407).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (483).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (408).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (459).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (410).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (467).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (411).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (421).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (484).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (511).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (485).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (510).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (486).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (493).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (487).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (512).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (488).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (513).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (489).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (494).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (490).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (515).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (491).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (508).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (492).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (514).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (503).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (504).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (503).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (505).jpeg",
+      "class2": "Healthy",
+      "distance": 2
+    },
+    {
+      "path1": "Healthy\\healthy (503).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (506).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (503).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (507).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (504).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (505).jpeg",
+      "class2": "Healthy",
+      "distance": 2
+    },
+    {
+      "path1": "Healthy\\healthy (504).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (506).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (504).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (507).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Healthy\\healthy (505).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (506).jpeg",
+      "class2": "Healthy",
+      "distance": 2
+    },
+    {
+      "path1": "Healthy\\healthy (505).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (507).jpeg",
+      "class2": "Healthy",
+      "distance": 2
+    },
+    {
+      "path1": "Healthy\\healthy (506).jpeg",
+      "class1": "Healthy",
+      "path2": "Healthy\\healthy (507).jpeg",
+      "class2": "Healthy",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (165).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (235).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (166).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (236).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (167).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (237).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (271).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (360).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (272).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (359).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (273).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (361).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (274).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (362).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (275).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (363).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (276).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (365).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (277).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (366).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (281).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (369).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (282).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (368).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (283).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (371).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (284).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (370).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (285).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (372).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (286).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (373).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (287).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (374).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (288).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (375).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (289).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (376).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (289).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (407).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (290).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (377).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (291).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (378).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (291).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (408).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (292).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (379).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (292).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (409).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (293).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (381).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (293).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (411).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (294).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (383).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (294).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (412).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (295).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (382).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (295).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (413).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (296).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (384).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (296).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (415).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (297).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (414).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (298).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (386).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (298).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (390).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (298).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (416).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (298).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (422).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (299).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (385).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (299).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (389).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (299).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (417).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (299).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (419).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (300).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (387).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (300).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (391).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (300).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (418).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (300).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (421).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (301).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (388).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (301).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (392).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (301).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (420).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (301).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (423).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (314).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (443).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (316).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (446).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (317).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (447).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (318).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (448).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (330).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (42).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (331).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (44).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (332).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (43).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (333).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (45).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (334).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (46).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (335).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (47).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (336).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (49).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (337).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (48).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (338).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (52).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (339).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (51).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (340).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (50).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (341).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (53).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (342).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (54).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (343).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (55).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (344).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (58).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (345).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (56).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (346).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (57).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (376).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (407).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (378).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (408).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (379).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (409).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (380).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (410).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (381).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (411).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (382).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (413).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (383).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (412).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (384).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (415).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (385).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (389).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (385).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (417).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (385).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (419).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (386).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (390).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (386).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (416).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (386).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (422).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (387).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (391).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (387).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (418).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (387).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (421).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (388).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (392).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (388).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (420).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (388).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (423).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (389).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (417).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (389).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (419).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (390).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (416).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (390).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (422).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (391).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (418).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (391).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (421).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (392).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (420).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (392).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (423).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (393).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (425).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (394).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (424).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (395).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (426).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (396).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (427).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (397).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (428).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (398).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (429).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (399).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (430).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (401).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (432).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (402).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (431).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (403).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (433).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (404).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (434).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (405).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (435).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (406).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (436).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (416).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (422).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (417).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (419).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (418).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (421).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (420).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (423).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "Mosaic\\mosaic (86).jpeg",
+      "class1": "Mosaic",
+      "path2": "Mosaic\\mosaic (88).jpeg",
+      "class2": "Mosaic",
+      "distance": 0
+    },
+    {
+      "path1": "RedRot\\redrot (112).jpeg",
+      "class1": "RedRot",
+      "path2": "RedRot\\redrot (78).jpeg",
+      "class2": "RedRot",
+      "distance": 0
+    },
+    {
+      "path1": "RedRot\\redrot (144).jpeg",
+      "class1": "RedRot",
+      "path2": "RedRot\\redrot (204).jpeg",
+      "class2": "RedRot",
+      "distance": 0
+    },
+    {
+      "path1": "RedRot\\redrot (149).jpeg",
+      "class1": "RedRot",
+      "path2": "RedRot\\redrot (203).jpeg",
+      "class2": "RedRot",
+      "distance": 0
+    },
+    {
+      "path1": "RedRot\\redrot (150).jpeg",
+      "class1": "RedRot",
+      "path2": "RedRot\\redrot (202).jpeg",
+      "class2": "RedRot",
+      "distance": 0
+    },
+    {
+      "path1": "RedRot\\redrot (152).jpeg",
+      "class1": "RedRot",
+      "path2": "RedRot\\redrot (201).jpeg",
+      "class2": "RedRot",
+      "distance": 2
+    },
+    {
+      "path1": "RedRot\\redrot (157).jpeg",
+      "class1": "RedRot",
+      "path2": "RedRot\\redrot (200).jpeg",
+      "class2": "RedRot",
+      "distance": 2
+    },
+    {
+      "path1": "RedRot\\redrot (164).jpeg",
+      "class1": "RedRot",
+      "path2": "RedRot\\redrot (199).jpeg",
+      "class2": "RedRot",
+      "distance": 0
+    },
+    {
+      "path1": "RedRot\\redrot (171).jpeg",
+      "class1": "RedRot",
+      "path2": "RedRot\\redrot (194).jpeg",
+      "class2": "RedRot",
+      "distance": 0
+    },
+    {
+      "path1": "RedRot\\redrot (173).jpeg",
+      "class1": "RedRot",
+      "path2": "RedRot\\redrot (192).jpeg",
+      "class2": "RedRot",
+      "distance": 2
+    },
+    {
+      "path1": "RedRot\\redrot (191).jpeg",
+      "class1": "RedRot",
+      "path2": "RedRot\\redrot (196).jpeg",
+      "class2": "RedRot",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (1).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (64).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (136).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (26).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (137).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (15).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (172).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (173).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (2).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (65).jpeg",
+      "class2": "Rust",
+      "distance": 2
+    },
+    {
+      "path1": "Rust\\rust (203).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (259).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (204).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (325).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (205).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (260).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (206).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (394).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (207).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (324).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (208).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (399).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (209).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (323).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (210).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (348).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (211).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (351).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (212).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (398).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (213).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (328).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (214).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (329).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (215).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (314).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (216).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (405).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (217).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (400).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (218).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (331).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (219).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (402).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (220).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (363).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (221).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (401).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (222).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (335).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (223).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (365).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (224).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (362).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (225).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (338).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (226).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (392).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (227).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (367).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (228).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (418).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (229).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (368).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (230).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (366).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (231).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (413).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (232).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (393).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (233).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (411).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (234).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (315).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (235).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (420).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (236).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (406).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (237).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (347).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (238).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (391).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (239).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (375).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (240).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (378).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (241).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (356).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (242).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (345).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (243).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (384).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (244).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (417).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (245).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (352).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (246).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (383).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (247).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (354).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (248).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (409).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (249).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (361).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (250).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (377).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (251).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (318).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (252).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (390).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (253).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (412).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (254).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (374).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (255).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (396).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (256).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (397).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (257).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (404).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (258).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (408).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (263).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (513).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (267).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (514).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (3).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (61).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (35).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (69).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (37).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (66).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (38).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (67).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (4).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (60).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Rust\\rust (62).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (7).jpeg",
+      "class2": "Rust",
+      "distance": 2
+    },
+    {
+      "path1": "Rust\\rust (63).jpeg",
+      "class1": "Rust",
+      "path2": "Rust\\rust (8).jpeg",
+      "class2": "Rust",
+      "distance": 0
+    },
+    {
+      "path1": "Yellow\\yellow (1).jpeg",
+      "class1": "Yellow",
+      "path2": "Yellow\\yellow (7).jpeg",
+      "class2": "Yellow",
+      "distance": 0
+    },
+    {
+      "path1": "Yellow\\yellow (12).jpeg",
+      "class1": "Yellow",
+      "path2": "Yellow\\yellow (2).jpeg",
+      "class2": "Yellow",
+      "distance": 0
+    },
+    {
+      "path1": "Yellow\\yellow (147).jpeg",
+      "class1": "Yellow",
+      "path2": "Yellow\\yellow (225).jpeg",
+      "class2": "Yellow",
+      "distance": 0
+    },
+    {
+      "path1": "Yellow\\yellow (148).jpeg",
+      "class1": "Yellow",
+      "path2": "Yellow\\yellow (218).jpeg",
+      "class2": "Yellow",
+      "distance": 0
+    },
+    {
+      "path1": "Yellow\\yellow (149).jpeg",
+      "class1": "Yellow",
+      "path2": "Yellow\\yellow (163).jpeg",
+      "class2": "Yellow",
+      "distance": 0
+    },
+    {
+      "path1": "Yellow\\yellow (358).jpeg",
+      "class1": "Yellow",
+      "path2": "Yellow\\yellow (366).jpeg",
+      "class2": "Yellow",
+      "distance": 0
+    },
+    {
+      "path1": "Yellow\\yellow (465).jpeg",
+      "class1": "Yellow",
+      "path2": "Yellow\\yellow (471).jpeg",
+      "class2": "Yellow",
+      "distance": 0
+    },
+    {
+      "path1": "Yellow\\yellow (466).jpeg",
+      "class1": "Yellow",
+      "path2": "Yellow\\yellow (472).jpeg",
+      "class2": "Yellow",
+      "distance": 0
+    },
+    {
+      "path1": "Yellow\\yellow (467).jpeg",
+      "class1": "Yellow",
+      "path2": "Yellow\\yellow (491).jpeg",
+      "class2": "Yellow",
+      "distance": 0
+    },
+    {
+      "path1": "Yellow\\yellow (468).jpeg",
+      "class1": "Yellow",
+      "path2": "Yellow\\yellow (490).jpeg",
+      "class2": "Yellow",
+      "distance": 0
+    },
+    {
+      "path1": "Yellow\\yellow (470).jpeg",
+      "class1": "Yellow",
+      "path2": "Yellow\\yellow (492).jpeg",
+      "class2": "Yellow",
+      "distance": 0
+    }
+  ],
+  "cross_class_near_duplicates": [],
+  "summary": {
+    "status": "PASS",
+    "num_classes": 5,
+    "corrupt_count": 0,
+    "tiny_count": 0,
+    "exact_duplicate_groups": 184,
+    "near_duplicate_pairs": 276,
+    "cross_class_near_duplicates": 0
+  }
+}

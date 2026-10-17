@@ -214,11 +214,23 @@ def validate_classification(
 
     # Detect near duplicates via imagehash (Hamming distance)
     if HAS_IMAGEHASH and len(phash_list) > 1:
+        # Precompute parsed perceptual hashes to avoid O(N^2) hex string re-parsing
+        parsed_hashes = []
+        for p in phash_list:
+            try:
+                parsed_hashes.append(imagehash.hex_to_hash(p["phash"]))
+            except Exception:
+                parsed_hashes.append(None)
+
         # Compare perceptual hashes
         for i in range(len(phash_list)):
-            hash_i = imagehash.hex_to_hash(phash_list[i]["phash"])
+            hash_i = parsed_hashes[i]
+            if hash_i is None:
+                continue
             for j in range(i + 1, len(phash_list)):
-                hash_j = imagehash.hex_to_hash(phash_list[j]["phash"])
+                hash_j = parsed_hashes[j]
+                if hash_j is None:
+                    continue
                 dist = hash_i - hash_j
                 if dist <= hash_dist_threshold:
                     entry = {
@@ -263,6 +275,23 @@ def validate_yolo(
         "summary": {},
     }
 
+    # Parse class names from data.yaml if present
+    names_map = {}
+    yaml_candidates = list(dataset_dir.glob("*.yaml")) + list(dataset_dir.glob("*.yml"))
+    for yf in yaml_candidates:
+        try:
+            with open(yf, "r", encoding="utf-8") as f:
+                ydata = yaml.safe_load(f) or {}
+                raw_names = ydata.get("names", None)
+                if isinstance(raw_names, list):
+                    names_map = {str(i): str(name) for i, name in enumerate(raw_names)}
+                elif isinstance(raw_names, dict):
+                    names_map = {str(k): str(v) for k, v in raw_names.items()}
+                if names_map:
+                    break
+        except Exception:
+            pass
+
     # Find images
     images_dir = dataset_dir / "images"
     labels_dir = dataset_dir / "labels"
@@ -275,6 +304,7 @@ def validate_yolo(
         img_candidates.extend([p for p in dataset_dir.rglob("*") if p.suffix.lower() in SUPPORTED_IMAGE_EXTS])
 
     sha256_map = defaultdict(list)
+    phash_list = []
     class_counter = defaultdict(int)
 
     for img_p in img_candidates:
@@ -282,7 +312,7 @@ def validate_yolo(
         rel_img = str(img_p.relative_to(dataset_dir))
 
         # Check image validity
-        is_valid, err, dims, sha256, _ = validate_single_image(img_p, min_size=min_size)
+        is_valid, err, dims, sha256, phash = validate_single_image(img_p, min_size=min_size)
         if not is_valid:
             if "Tiny image" in (err or ""):
                 report["tiny_images"].append({"path": rel_img, "reason": err, "dimensions": dims})
@@ -292,6 +322,8 @@ def validate_yolo(
 
         report["valid_images"] += 1
         sha256_map[sha256].append(rel_img)
+        if phash:
+            phash_list.append({"path": rel_img, "phash": phash})
 
         # Locate corresponding label file
         label_file = None
@@ -309,7 +341,12 @@ def validate_yolo(
                         label_file = mirrored
                 except Exception:
                     pass
-        else:
+        elif img_p.parent.name.lower() == "images":
+            sibling_labels = img_p.parent.parent / "labels" / f"{img_p.stem}.txt"
+            if sibling_labels.exists():
+                label_file = sibling_labels
+
+        if label_file is None:
             cand = img_p.parent / f"{img_p.stem}.txt"
             if cand.exists():
                 label_file = cand
@@ -335,8 +372,9 @@ def validate_yolo(
                     })
                     continue
 
-                class_id = parts[0]
-                class_counter[str(class_id)] += 1
+                class_id = str(parts[0])
+                class_name = names_map.get(class_id, class_id)
+                class_counter[class_name] += 1
 
                 try:
                     xc, yc, w, h = float(parts[1]), float(parts[2]), float(parts[3]), float(parts[4])
@@ -537,6 +575,7 @@ def validate_dataset(
     hash_dist: int = 2,
     output_dir: Optional[Path] = None,
     crop_name: Optional[str] = None,
+    task_type: Optional[str] = None,
 ) -> Dict:
     """
     Main validation entry point for a single dataset.
@@ -601,7 +640,10 @@ def validate_dataset(
 
     # Optional classes update
     if crop_name and "classes" in report and report["classes"]:
-        update_classes_yaml(crop_name, list(report["classes"].keys()))
+        effective_task = task_type
+        if not effective_task:
+            effective_task = "pests" if (layout == "yolo" or "pest" in dataset_path.name.lower()) else "diseases"
+        update_classes_yaml(crop_name, list(report["classes"].keys()), task_type=effective_task)
 
     return report
 
@@ -614,6 +656,7 @@ def main():
     parser.add_argument("--hash-dist", type=int, default=2, help="Max perceptual hash distance for near-duplicates")
     parser.add_argument("--output-dir", type=str, default="ml_training/reports", help="Directory for JSON reports")
     parser.add_argument("--crop", type=str, default=None, help="Associated crop name (rice, wheat, maize, cotton, soybean, sugarcane)")
+    parser.add_argument("--task-type", type=str, default=None, choices=["pests", "diseases"], help="Task type in classes.yaml (pests or diseases)")
     parser.add_argument("--all", action="store_true", help="Validate all datasets found in raw-dir")
 
     args = parser.parse_args()
@@ -637,6 +680,7 @@ def main():
                 hash_dist=args.hash_dist,
                 output_dir=Path(args.output_dir),
                 crop_name=args.crop,
+                task_type=args.task_type,
             )
     elif args.dataset:
         report = validate_dataset(
@@ -646,6 +690,7 @@ def main():
             hash_dist=args.hash_dist,
             output_dir=Path(args.output_dir),
             crop_name=args.crop,
+            task_type=args.task_type,
         )
         if "error" in report:
             sys.exit(1)

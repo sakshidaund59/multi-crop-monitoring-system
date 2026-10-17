@@ -1,0 +1,27 @@
+{
+  "layout": "classification",
+  "dataset_path": "ml_training\\datasets\\raw\\wheat_zenodo_jic",
+  "total_images": 999,
+  "valid_images": 999,
+  "classes": {
+    "BrownRust": 128,
+    "Healthy": 122,
+    "Mildew": 161,
+    "Septoria": 349,
+    "YellowRust": 239
+  },
+  "corrupt_images": [],
+  "tiny_images": [],
+  "exact_duplicates": [],
+  "near_duplicates": [],
+  "cross_class_near_duplicates": [],
+  "summary": {
+    "status": "PASS",
+    "num_classes": 5,
+    "corrupt_count": 0,
+    "tiny_count": 0,
+    "exact_duplicate_groups": 0,
+    "near_duplicate_pairs": 0,
+    "cross_class_near_duplicates": 0
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "dataset_name": "sugarcane_sppu",
+  "dataset_version": "c2396e678992",
+  "total_images": 2521,
+  "total_groups": 2294,
+  "splits": {
+    "train": 1762,
+    "val": 502,
+    "test": 257
+  },
+  "classes_per_split": {
+    "Healthy": {
+      "train": 365,
+      "val": 104,
+      "test": 53
+    },
+    "Mosaic": {
+      "train": 323,
+      "val": 92,
+      "test": 47
+    },
+    "RedRot": {
+      "train": 362,
+      "val": 103,
+      "test": 53
+    },
+    "Rust": {
+      "train": 359,
+      "val": 102,
+      "test": 53
+    },
+    "Yellow": {
+      "train": 353,
+      "val": 101,
+      "test": 51
+    }
+  }
+}

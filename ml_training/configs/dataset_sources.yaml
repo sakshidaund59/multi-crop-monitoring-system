@@ -1,14 +1,62 @@
 # Dataset Sources & Provenance Metadata
-# Fill in real dataset provenance details before generating dataset_report.py
-# Schema per dataset entry:
-# datasets:
-#   <dataset_name>:
-#     crop: rice | wheat | maize | cotton | soybean | sugarcane
-#     task: classification | detection
-#     source_name: "Dataset Name / Repository"
-#     source_url: "https://..."
-#     license: "CC BY 4.0 / Open Access / Research Only"
-#     citation: "Author et al., 2024"
-#     description: "Brief description of collected real-world imagery"
+# Verified on 17-10-2026 directly from source repository pages.
+# All licenses verified as Creative Commons Attribution 4.0 International (CC BY 4.0).
 
-datasets: {}
+datasets:
+  rice_pest_lakthuru:
+    crop: rice
+    task: detection
+    source_name: "Rice Pests (laktharu / Roboflow Universe)"
+    source_url: "https://universe.roboflow.com/laktharu/rice-pests-ztbeq"
+    creators: "Laktharu (Roboflow workspace laktharu, project rice-pests-ztbeq)"
+    license: "CC BY 4.0"
+    license_url: "https://creativecommons.org/licenses/by/4.0/"
+    verified_date: "17-10-2026"
+    verification_status: "VERIFIED"
+    citation: "Laktharu (2023). Rice Pests Dataset. Roboflow Universe. https://universe.roboflow.com/laktharu/rice-pests-ztbeq"
+    description: "5,229 real-world images of rice insect pests across 6 classes: brown-planthopper, green-leafhopper, leaf-folder, rice-bug, stem-borer, whorl-maggot."
+
+  wheat_zenodo_jic:
+    crop: wheat
+    task: classification
+    source_name: "Wheat disease images (small dataset) - John Innes Centre / Zenodo"
+    source_url: "https://doi.org/10.5281/zenodo.7573133"
+    doi: "10.5281/zenodo.7573133"
+    creators: "Megan C. Long, Matthew Hartley, Richard J. Morris, James K. M. Brown (John Innes Centre)"
+    license: "CC BY 4.0"
+    license_url: "https://creativecommons.org/licenses/by/4.0/"
+    verified_date: "17-10-2026"
+    published_date: "26 Jan 2023"
+    verification_status: "VERIFIED"
+    citation: "Long, M. C., Hartley, M., Morris, R. J., & Brown, J. K. M. (2023). Wheat disease images (small dataset) - Long 2023 Plant Path 999 photos. Zenodo. doi: 10.5281/zenodo.7573133"
+    description: "999 field and glasshouse wheat leaf photos across 5 classes: BrownRust, Healthy, Mildew, Septoria, and YellowRust."
+
+  sugarcane_sppu:
+    crop: sugarcane
+    task: classification
+    source_name: "Sugarcane Leaf Disease Dataset (Savitribai Phule Pune University / Mendeley Data)"
+    source_url: "https://doi.org/10.17632/9424skmnrk.1"
+    doi: "10.17632/9424skmnrk.1"
+    creators: "Swapnil Daphal, Sanjay Koli (Savitribai Phule Pune University)"
+    license: "CC BY 4.0"
+    license_url: "https://creativecommons.org/licenses/by/4.0/"
+    verified_date: "17-10-2026"
+    published_date: "20 Aug 2022"
+    verification_status: "VERIFIED"
+    citation: "Daphal, S., & Koli, S. (2022). Sugarcane Leaf Disease Dataset, V1. Mendeley Data. doi: 10.17632/9424skmnrk.1"
+    description: "2,521 field images of sugarcane leaves covering 5 classes: Healthy, Mosaic, RedRot, Rust, and Yellow disease."
+
+  cotton_mendeley:
+    crop: cotton
+    task: classification
+    source_name: "Cotton Leaf Disease Dataset with Severity Levels (Mendeley Data)"
+    source_url: "https://doi.org/10.17632/74jsdxtmx2.3"
+    doi: "10.17632/74jsdxtmx2.3"
+    creators: "Shraddha Shingne, Parth Thakur, Abhishek Jangid, Punam Buchade, Ayush Jain, Meet Agarwal"
+    license: "CC BY 4.0"
+    license_url: "https://creativecommons.org/licenses/by/4.0/"
+    verified_date: "17-10-2026"
+    published_date: "11 Mar 2025"
+    verification_status: "VERIFIED"
+    citation: "Shingne, S., Thakur, P., Jangid, A., Buchade, P., Jain, A., & Agarwal, M. (2025). Cotton Leaf Disease Dataset with Severity Levels, V3. Mendeley Data. doi: 10.17632/74jsdxtmx2.3"
+    description: "980 un-augmented real-world cotton leaf images spanning bacterial blight, curl virus, fussarium wilt (with critical, mild, moderate severity stages), and healthy leaves."

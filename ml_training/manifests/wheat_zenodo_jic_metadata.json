@@ -1,0 +1,38 @@
+{
+  "dataset_name": "wheat_zenodo_jic",
+  "dataset_version": "d5dbead715ee",
+  "total_images": 999,
+  "total_groups": 999,
+  "splits": {
+    "train": 697,
+    "val": 197,
+    "test": 105
+  },
+  "classes_per_split": {
+    "BrownRust": {
+      "train": 89,
+      "val": 25,
+      "test": 14
+    },
+    "Healthy": {
+      "train": 85,
+      "val": 24,
+      "test": 13
+    },
+    "Mildew": {
+      "train": 112,
+      "val": 32,
+      "test": 17
+    },
+    "Septoria": {
+      "train": 244,
+      "val": 69,
+      "test": 36
+    },
+    "YellowRust": {
+      "train": 167,
+      "val": 47,
+      "test": 25
+    }
+  }
+}

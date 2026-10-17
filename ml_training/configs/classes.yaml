@@ -1,27 +1,40 @@
-# Class Registry for the 6 Monitored Crops
-# Populate ONLY from class names actually found in real datasets by validate_dataset.py.
-# DO NOT fabricate or invent class names.
-
 rice:
-  pests: []
+  pests:
+  - brown-planthopper
+  - green-leafhopper
+  - leaf-folder
+  - rice-bug
+  - stem-borer
+  - whorl-maggot
   diseases: []
-
 wheat:
   pests: []
-  diseases: []
-
+  diseases:
+  - BrownRust
+  - Healthy
+  - Mildew
+  - Septoria
+  - YellowRust
 maize:
   pests: []
   diseases: []
-
 cotton:
   pests: []
-  diseases: []
-
+  diseases:
+  - bacterial blight
+  - curl virus
+  - fussarium wilt
+  - healthy
+  display_names:
+    fussarium wilt: Fusarium wilt
 soybean:
   pests: []
   diseases: []
-
 sugarcane:
   pests: []
-  diseases: []
+  diseases:
+  - Healthy
+  - Mosaic
+  - RedRot
+  - Rust
+  - Yellow

@@ -1,0 +1,34 @@
+{
+  "layout": "classification",
+  "dataset_path": "ml_training\\datasets\\raw\\cotton_mendeley",
+  "total_images": 980,
+  "valid_images": 980,
+  "classes": {
+    "bacterial blight": 119,
+    "curl virus": 25,
+    "fussarium wilt": 47,
+    "healthy": 789
+  },
+  "corrupt_images": [],
+  "tiny_images": [],
+  "exact_duplicates": [],
+  "near_duplicates": [
+    {
+      "path1": "curl virus\\critical\\cotton-leaf-curl-virus-cotton-1595427323.jpg",
+      "class1": "curl virus",
+      "path2": "curl virus\\critical\\curl327.jpg",
+      "class2": "curl virus",
+      "distance": 0
+    }
+  ],
+  "cross_class_near_duplicates": [],
+  "summary": {
+    "status": "PASS",
+    "num_classes": 4,
+    "corrupt_count": 0,
+    "tiny_count": 0,
+    "exact_duplicate_groups": 0,
+    "near_duplicate_pairs": 1,
+    "cross_class_near_duplicates": 0
+  }
+}
