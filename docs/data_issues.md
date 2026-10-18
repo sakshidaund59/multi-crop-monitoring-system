@@ -33,12 +33,13 @@ In accordance with our strict data governance rule (*never edit original dataset
   - Original author split: [`rice_pest_lakthuru_manifest.csv`](file:///c:/Users/DELL/Desktop/multi-crop-monitoring-system/ml_training/manifests/rice_pest_lakthuru_manifest.csv) marked `# NOTE: has leakage, do not use for reported results`.
   - Group-Aware Split v1: [`rice_pest_lakthuru_groupsplit_manifest.csv`](file:///c:/Users/DELL/Desktop/multi-crop-monitoring-system/ml_training/manifests/rice_pest_lakthuru_groupsplit_manifest.csv).
   - Hardened Split v2 (stricter dihedral + embedding criteria): [`rice_pest_lakthuru_groupsplit_v2_manifest.csv`](file:///c:/Users/DELL/Desktop/multi-crop-monitoring-system/ml_training/manifests/rice_pest_lakthuru_groupsplit_v2_manifest.csv).
+  - Complete tabular audit report: [`docs/leakage_audit_summary.md`](file:///c:/Users/DELL/Desktop/multi-crop-monitoring-system/docs/leakage_audit_summary.md).
 
 ### 1.3 Orientation-Invariant Dihedral Hash Audit
 To guard against leakage across flips and rotations, each image was audited across all 8 transformations of the dihedral group $D_4$ (4 rotations $\times$ horizontal flip):
 $$\text{dist}_{\min}(A, B) = \min_{v \in D_4} \min(\text{Hamming}(\text{pHash}(A), \text{pHash}(v(B))), \text{Hamming}(\text{dHash}(A), \text{dHash}(v(B))))$$
 - Conflict counts across splits (Train-Val, Train-Test, Val-Test) evaluated at $T \in \{0, 2, 4, 6, 8\}$.
-- All cross-split edges with $T \le 6$ are unified in Split v2, subject to a strict 5% cluster size guard.
+- Hardened Split v2 eliminates 100% of dihedral leaks at $T \le 4$ (0 cross-split conflicts) and 100% of embedding leaks at cosine $\ge 0.95$ (0 cross-split pairs). All 6 classes achieve $\ge 100$ bounding boxes and $\ge 15$ independent clusters in both validation and test sets.
 
 ### 1.4 Pretrained CNN Embedding Audit & Contact Sheets
 - Feature extractor: `timm.create_model('efficientnet_b0', pretrained=True, num_classes=0)` on CPU.

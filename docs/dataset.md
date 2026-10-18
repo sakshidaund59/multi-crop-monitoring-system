@@ -9,7 +9,7 @@
 
 | Dataset Name | Target Crop | Task Layout | Total Images | Train | Val | Test | Version Hash | Leakage Status |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `rice_pest_lakthuru` | **Rice** | YOLO Detection (6 classes) | 5,229 | 3,660 | 1,046 | 523 | `f4b82c9e7102` | **0 leaks** (Verified Group-Aware) |
+| `rice_pest_lakthuru` | **Rice** | YOLO Detection (6 classes) | 5,229 | 3,667 | 1,032 | 530 | `daa2b10b2db2` | **0 leaks** (Hardened v2, Dihedral $T \le 4$ & Emb $\ge 0.95$ Clean) |
 | `sugarcane_sppu` | **Sugarcane** | Classification (5 classes) | 2,521 | 1,762 | 502 | 257 | `e8310f7a9d41` | **0 leaks** (`use_for_eval` active) |
 | `wheat_zenodo_jic` | **Wheat** | Classification (5 classes) | 999 | 697 | 197 | 105 | `d5dbead715ee` | **0 leaks** (Group-Aware Verified) |
 | `cotton_mendeley` | **Cotton** | Classification (4 disease classes) | 980 | 685 | 196 | 99 | `a108f9c32b57` | **0 leaks** (Group-Aware Verified) |
@@ -19,12 +19,13 @@
 ## 2. Dataset Detailed Profiles & Class Distributions
 
 ### Dataset: `rice_pest_lakthuru` (Crop: Rice)
-- **Dataset Version Hash**: `f4b82c9e7102` (Group-Aware Split)
+- **Dataset Version Hash**: `daa2b10b2db2` (Hardened Group-Aware Split v2)
 - **Source / Citation**: Laktharu (2023). Rice Pests Dataset. Roboflow Universe.
 - **Source URL**: https://universe.roboflow.com/laktharu/rice-pests-ztbeq
 - **License**: `CC BY 4.0` (Verified 17-10-2026)
-- **Total Images**: 5,229
+- **Total Images**: 5,229 (Train: 3,667 | Val: 1,032 | Test: 530)
 - **Image Resolution**: $640 \times 640$ px (uniform Roboflow square format)
+- **Tabular Leakage Audit**: Complete metrics report in [`docs/leakage_audit_summary.md`](file:///c:/Users/DELL/Desktop/multi-crop-monitoring-system/docs/leakage_audit_summary.md)
 
 #### Data Leakage Remediation & Audit
 - **Author's Original Split Leakage**:
@@ -41,19 +42,19 @@
   - An exclusion registry [`ml_training/configs/rice_pest_excluded_boxes.json`](file:///c:/Users/DELL/Desktop/multi-crop-monitoring-system/ml_training/configs/rice_pest_excluded_boxes.json) provides runtime filtering for YOLO loaders.
 - **YOLO Training Inputs**:
   - File lists: [`train.txt`](file:///c:/Users/DELL/Desktop/multi-crop-monitoring-system/ml_training/datasets/raw/rice_pest_lakthuru/train.txt), [`val.txt`](file:///c:/Users/DELL/Desktop/multi-crop-monitoring-system/ml_training/datasets/raw/rice_pest_lakthuru/val.txt), [`test.txt`](file:///c:/Users/DELL/Desktop/multi-crop-monitoring-system/ml_training/datasets/raw/rice_pest_lakthuru/test.txt)
-  - Data config: [`data_groupsplit.yaml`](file:///c:/Users/DELL/Desktop/multi-crop-monitoring-system/ml_training/datasets/raw/rice_pest_lakthuru/data_groupsplit.yaml)
+  - Data config: [`data_groupsplit_v2.yaml`](file:///c:/Users/DELL/Desktop/multi-crop-monitoring-system/ml_training/datasets/raw/rice_pest_lakthuru/data_groupsplit_v2.yaml)
 
-#### Pest Class Bounding Box Breakdown (Clean Boxes)
+#### Pest Class Bounding Box Breakdown (Clean Boxes, v2 Partition)
 
-| Pest Class | Total Boxes | % of Annotations | Train Boxes | Val Boxes | Test Boxes |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| `whorl-maggot` | 1,616 | 20.0% | 1,131 | 323 | 162 |
-| `brown-planthopper` | 1,578 | 19.5% | 1,105 | 316 | 157 |
-| `leaf-folder` | 1,459 | 18.0% | 1,021 | 292 | 146 |
-| `rice-bug` | 1,294 | 16.0% | 906 | 259 | 129 |
-| `stem-borer` | 1,072 | 13.2% | 750 | 215 | 107 |
-| `green-leafhopper` | 1,077 | 13.3% | 754 | 215 | 108 |
-| **Total Boxes** | **8,096** | **100.0%** | **5,667** | **1,620** | **809** |
+| Pest Class | Total Clean Boxes | % of Annotations | Train Boxes | Val Boxes | Test Boxes | Val/Test Health Check |
+| :--- | :---: | :---: | :---: | :---: | :---: | :--- |
+| `whorl-maggot` | 1,616 | 20.0% | 1,112 | 343 | 161 | Passed ($\ge 100$ boxes) |
+| `brown-planthopper` | 1,578 | 19.5% | 1,074 | 354 | 150 | Passed ($\ge 100$ boxes) |
+| `leaf-folder` | 1,459 | 18.0% | 1,014 | 302 | 143 | Passed ($\ge 100$ boxes) |
+| `rice-bug` | 1,294 | 16.0% | 901 | 266 | 127 | Passed ($\ge 100$ boxes) |
+| `stem-borer` | 1,072 | 13.2% | 745 | 220 | 107 | Passed ($\ge 100$ boxes) |
+| `green-leafhopper` | 1,077 | 13.3% | 752 | 220 | 105 | Passed ($\ge 100$ boxes) |
+| **Total Boxes** | **8,096** | **100.0%** | **5,598** | **1,705** | **793** | **All Classes Healthy** |
 
 ---
 

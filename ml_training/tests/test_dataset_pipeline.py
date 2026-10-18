@@ -290,6 +290,13 @@ def test_normalise_source_id_canonical():
         ("BROWN-PLANTHOPPER_original_bhopper-107-jpg_5aea44b9-6712-471b-85e4-38a4ef3d74f2_jpg.rf.d440726058ac5729bc04e27e3fc3d1a3.jpg", "bhopper-107"),
         ("LEAF-FOLDERS_original_lfolder-61-jpg_fd683a07-f809-41f6-8a89-8f6a8f42038a_jpg.rf.048577e650f8d74eca42655cd89de6f5.jpg", "lfolder-61"),
         ("WHORL-MAGGOTS_original_whorl-163-jpg_3615f528-3b1a-4e6f-a446-b2be4e748aab_jpg.rf.710ab760439253ef02eece7ee16ecabd.jpg", "whorl-163"),
+        ("bhopper-1-png", "bhopper-1"),
+        ("sborer-2-png", "sborer-2"),
+        ("bhopper-1_png", "bhopper-1"),
+        ("sborer-1-png", "sborer-1"),
+        ("bhopper-1-jpeg", "bhopper-1"),
+        ("BROWN-PLANTHOPPER_original_bhopper-1-png_5aea44b9-6712-471b-85e4-38a4ef3d74f2_jpg.rf.d440726058ac5729bc04e27e3fc3d1a3.jpg", "bhopper-1"),
+        ("STEM-BORER_original_sborer-2-png_317b597e-bca1-42fe-8560-bc3dfea292da_jpg.rf.ea0c3c9de86cb2b14f434d7278e62e1f.jpg", "sborer-2"),
     ]
     for fn, expected in cases:
         got = normalise_source_id(fn)
