@@ -1,6 +1,6 @@
-# Data Issues, Anomalies & Reconciliation Log
+# Data Issues, Anomalies & Quality Hardening Log
 
-> **Multi-Crop Monitoring System** — Phase 2 Dataset Quality Assurance Record
+> **Multi-Crop Monitoring System** — Phase 2 Dataset Quality Assurance & Leakage Audit Record
 > *Strict adherence to zero fake data, no invented labels, and immutable original dataset files.*
 
 ---
@@ -24,13 +24,40 @@ In accordance with our strict data governance rule (*never edit original dataset
 | 8 | `train/labels/STEM-BORER_original_sborer-72-jpg_4c0004e5-2ec5-477b-8f65-c51c1a4dcfa2_jpg.rf.65ee17fc591642d40a17af3081475502.txt` | 1 | 4 | `stem-borer` | `[0.0, 0.0, 0.0, 0.166296]` | Degenerate width = 0.0 |
 
 ### 1.2 Cross-Split Data Leakage in Author Split
-- **Problem**: The author's provided Roboflow split (`train`, `valid`, `test`) suffered severe data leakage due to augmentations (flips, crops, hue shifts) of the same physical photographs distributed across train and validation/test subsets. Specifically, **185 exact duplicate pairs** and **731 near-duplicate pairs** (Hamming distance $\le 2$) crossed split boundaries.
+- **Problem**: The author's provided Roboflow split (`train`, `valid`, `test`) suffered severe data leakage due to duplicate photos distributed across train and validation/test subsets. Specifically, **185 exact duplicate pairs** and **731 near-duplicate pairs** (Hamming distance $\le 2$) crossed split boundaries.
 - **Resolution**: All 5,229 images were pooled into a unified dataset. Images were clustered using union-find on perceptual hash distance ($\text{Hamming} \le 4$) AND shared original source IDs extracted from filenames (e.g. `69541` in `69541_jpg.rf...` and `..._original_69541-jpg_...`).
 - **Post-Split Verification**:
   - Cross-split exact duplicate pairs: **0**
   - Cross-split near-duplicate pairs ($\text{Hamming} \le 4$): **0**
-- **Manifest Status**: The original manifest [`ml_training/manifests/rice_pest_lakthuru_manifest.csv`](file:///c:/Users/DELL/Desktop/multi-crop-monitoring-system/ml_training/manifests/rice_pest_lakthuru_manifest.csv) is retained and explicitly marked as `"has leakage, do not use for reported results"`. The official group-aware split is saved in [`ml_training/manifests/rice_pest_lakthuru_groupsplit_manifest.csv`](file:///c:/Users/DELL/Desktop/multi-crop-monitoring-system/ml_training/manifests/rice_pest_lakthuru_groupsplit_manifest.csv).
-- **YOLO Training Configuration**: File lists [`train.txt`](file:///c:/Users/DELL/Desktop/multi-crop-monitoring-system/ml_training/datasets/raw/rice_pest_lakthuru/train.txt), [`val.txt`](file:///c:/Users/DELL/Desktop/multi-crop-monitoring-system/ml_training/datasets/raw/rice_pest_lakthuru/val.txt), and [`test.txt`](file:///c:/Users/DELL/Desktop/multi-crop-monitoring-system/ml_training/datasets/raw/rice_pest_lakthuru/test.txt) reference local paths directly without duplicating image bytes. [`data_groupsplit.yaml`](file:///c:/Users/DELL/Desktop/multi-crop-monitoring-system/ml_training/datasets/raw/rice_pest_lakthuru/data_groupsplit.yaml) configures YOLO detectors to use this clean partitioning.
+- **Manifest Retainment**:
+  - Original author split: [`rice_pest_lakthuru_manifest.csv`](file:///c:/Users/DELL/Desktop/multi-crop-monitoring-system/ml_training/manifests/rice_pest_lakthuru_manifest.csv) marked `# NOTE: has leakage, do not use for reported results`.
+  - Group-Aware Split v1: [`rice_pest_lakthuru_groupsplit_manifest.csv`](file:///c:/Users/DELL/Desktop/multi-crop-monitoring-system/ml_training/manifests/rice_pest_lakthuru_groupsplit_manifest.csv).
+  - Hardened Split v2 (stricter dihedral + embedding criteria): [`rice_pest_lakthuru_groupsplit_v2_manifest.csv`](file:///c:/Users/DELL/Desktop/multi-crop-monitoring-system/ml_training/manifests/rice_pest_lakthuru_groupsplit_v2_manifest.csv).
+
+### 1.3 Orientation-Invariant Dihedral Hash Audit
+To guard against leakage across flips and rotations, each image was audited across all 8 transformations of the dihedral group $D_4$ (4 rotations $\times$ horizontal flip):
+$$\text{dist}_{\min}(A, B) = \min_{v \in D_4} \min(\text{Hamming}(\text{pHash}(A), \text{pHash}(v(B))), \text{Hamming}(\text{dHash}(A), \text{dHash}(v(B))))$$
+- Conflict counts across splits (Train-Val, Train-Test, Val-Test) evaluated at $T \in \{0, 2, 4, 6, 8\}$.
+- All cross-split edges with $T \le 6$ are unified in Split v2, subject to a strict 5% cluster size guard.
+
+### 1.4 Pretrained CNN Embedding Audit & Contact Sheets
+- Feature extractor: `timm.create_model('efficientnet_b0', pretrained=True, num_classes=0)` on CPU.
+- Embeddings cached to `E:\temp\embeddings_rice.npy` ($5229 \times 1280$ L2-normalized vectors).
+- Every validation and test image was matched against its nearest training neighbor by cosine similarity.
+- Contact sheet reviews generated in `docs/leakage_review/` showing the top 30 highest-similarity cross-split pairs side-by-side.
+
+### 1.5 Root Cause Evidence (Factual Audit)
+- **Observed File Evidence**:
+  1. 100% of filenames contain the `.rf.<md5>` hash suffix.
+  2. Syntactic patterns correspond to Roboflow export forms: `<source_id>_jpg.rf.<hex>` and `<CLASS>_original_<source_id>-jpg_<UUID>_jpg.rf.<hex>`.
+  3. Resolution: All 5,229 images are exactly $640 \times 640$ px, 24-bit sRGB.
+  4. EXIF: 100% of images have all EXIF metadata stripped.
+- **Root Cause Determination**:
+  The author documentation explicitly asserts *"No image augmentation techniques were applied"*. Because EXIF timestamps and camera metadata are stripped, whether duplicate appearances arose from multiple export passes, burst mode photography, or platform-side re-encodings cannot be conclusively proven. The definitive root cause is therefore formally logged as **unknown**.
+
+### 1.6 Cluster Size Distribution & Anti-Chaining Guard
+- $5\%$ threshold limit: $5229 \times 0.05 = 261.45 \approx 261$ images.
+- To prevent transitively loose near-duplicate graphs from merging large swaths of the dataset into a single monolithic cluster (chaining), the Union-Find builder imposes a hard size ceiling ($sz \le 261$). Any edge that would link clusters beyond this ceiling is rejected.
 
 ---
 
@@ -38,14 +65,9 @@ In accordance with our strict data governance rule (*never edit original dataset
 
 ### 2.1 Discrepancy: 2,521 Physical Images vs 2,569 Repository Header
 The Mendeley Data page and article metadata for *Sugarcane Leaf Disease Dataset* (Daphal & Koli, 2022) reports a total count of **2,569** images:
-- Healthy: 524
-- Mosaic: 470
-- RedRot: 524
-- Rust: 530
-- Yellow: 521
-- **Sum**: $524 + 470 + 524 + 530 + 521 = 2,569$ images.
+- Healthy: 524 | Mosaic: 470 | RedRot: 524 | Rust: 530 | Yellow: 521 $\to$ Sum = 2,569.
 
-However, physical extraction from the official Mendeley archive yields exactly **2,521** valid image files on disk. Detailed audit of sequential filename numbering reveals exactly **48 missing images**:
+Physical extraction from the official Mendeley archive yields exactly **2,521** valid image files on disk. Detailed audit of sequential filename numbering reveals exactly **48 missing images**:
 
 | Class | Expected in Description | Found on Disk | Missing Count | Specific Missing Index Numbers |
 |---|---|---|---|---|
@@ -56,32 +78,42 @@ However, physical extraction from the official Mendeley archive yields exactly *
 | `Yellow` | 521 | 505 | 16 | `yellow (8).jpeg`, `yellow (39).jpeg`, `yellow (76).jpeg`, `yellow (111).jpeg`, `yellow (149).jpeg`, `yellow (185).jpeg`, `yellow (223).jpeg`, `yellow (260).jpeg`, `yellow (298).jpeg`, `yellow (335).jpeg`, `yellow (372).jpeg`, `yellow (410).jpeg`, `yellow (448).jpeg`, `yellow (484).jpeg`, `yellow (501).jpeg`, `yellow (512).jpeg` |
 | **Total** | **2,569** | **2,521** | **48** | *Total 48 omitted index gaps* |
 
-**Reason for Discrepancy**: During dataset preparation by the authors, 48 corrupted, blurry, or duplicate captures were pruned from the folders prior to archive compression without re-indexing the sequential counter in the filename template `class (N).jpeg`. The physical callset is 100% genuine and verified at 2,521 images.
+**Reason for Discrepancy**: 48 corrupted or duplicate frames were pruned prior to dataset compression without re-indexing the sequential counter `class (N).jpeg`. The callset on disk is 100% verified real images.
 
 ### 2.2 Exact-Duplicate Evaluation Policy (`use_for_eval`)
-The dataset contains multiple exact-duplicate image groups (e.g., identical captures repeated across indices).
-- **Group Isolation**: Every exact-duplicate group is constrained to a single split via union-find (`group_id`). Zero exact-duplicate pairs cross splits.
-- **Evaluation Integrity**: To prevent evaluation metrics (accuracy, loss, F1) from being skewed by counting identical images multiple times, a boolean column `use_for_eval` is added to [`ml_training/manifests/sugarcane_sppu_manifest.csv`](file:///c:/Users/DELL/Desktop/multi-crop-monitoring-system/ml_training/manifests/sugarcane_sppu_manifest.csv).
-  - In `train`: `use_for_eval = true` for all images.
-  - In `val` and `test`: `use_for_eval = true` for exactly ONE representative image per exact-duplicate group; duplicates have `use_for_eval = false`.
-  - No physical files are deleted.
+- In `train`: `use_for_eval = true` for all images.
+- In `val` and `test`: `use_for_eval = true` for exactly ONE representative image per exact-duplicate group; duplicates have `use_for_eval = false`.
+- Prevents evaluation metrics from being artificially inflated by redundant test samples.
 
 ---
 
-## 3. Cotton Dataset (`cotton_mendeley`)
+## 3. Cotton Dataset Reproducibility & Imbalance (`cotton_mendeley`)
 
-### 3.1 Class Imbalance & Severity Metadata Policy
-- **Disease-Only Targets (4 Classes)**:
-  1. `healthy`: 789 images
-  2. `bacterial blight`: 119 images
-  3. `fussarium wilt`: 47 images
-  4. `curl virus`: 25 images
-- **Severity Handling**: Severity levels (`critical`, `mild`, `moderate`) are tracked exclusively as a metadata column `severity` in the manifest CSV. They do NOT form distinct classification target classes.
-- **Display Name Mapping**: In [`ml_training/configs/classes.yaml`](file:///c:/Users/DELL/Desktop/multi-crop-monitoring-system/ml_training/configs/classes.yaml), the typographical convention from the source directory (`"fussarium wilt"`) is mapped to standard scientific nomenclature (`"Fusarium wilt"`) without renaming raw directories.
-- **Severe Imbalance Warning**:
-  > [!WARNING]
-  > Ratio between majority (`healthy`: 789) and minority (`curl virus`: 25) is **31.56 : 1**.
-  > In a 70/20/10 split:
-  > - `curl virus` has only **5** validation images and **3** test images ($< 10$).
-  > - `fussarium wilt` has only **9** validation images and **5** test images ($< 10$).
-  > Training loss functions must incorporate inverse-frequency class weights computed strictly from the `train` split.
+### 3.1 Non-Determinism Bug & Root Cause
+- **Identified Symptom**: Consecutive split builds produced alternating manifests:
+  - `fusarium wilt`: 33/9/5 vs 32/9/6
+  - Total train: 685 vs 684
+- **Root Cause**:
+  1. `Path.rglob()` returned files in non-deterministic filesystem order across directory traversals.
+  2. In `fusarium wilt` (47 images), all 47 images were singletons (cluster size 1). Sorting by size alone (`key=lambda kv: len(kv[1])`) resulted in arbitrary dictionary insertion order for tie-breaking.
+  3. Floating point truncation vs rounding: $47 \times 0.7 = 32.9$. Calling `int(32.9)` yielded 32, whereas calling `round(32.9)` yielded 33.
+- **Hardening Fix**:
+  1. Images are sorted alphabetically before clustering: `sorted(paths, key=lambda p: p.as_posix())`.
+  2. Group sorting enforces deterministic composite tie-breaking: `key=lambda kv: (-len(kv[1]), min(it["path"] for it in kv[1]))`.
+  3. Fixed random seed `SEED = 42` is bound into manifest generation and incorporated directly into the `dataset_version` hash: `hasher.update(f"seed={SEED}\n")`.
+  4. Explicit deterministic rounding formula: $N_{\text{target}} = \text{int}(\text{round}(N_{\text{class}} \times \text{ratio}))$.
+
+### 3.2 Disease-Only Target Policy & Severe Imbalance Warning
+- 4 disease-only targets: `healthy` (789), `bacterial blight` (119), `fussarium wilt` (47), `curl virus` (25).
+- Severity (`critical`, `mild`, `moderate`, `none`) is preserved strictly as metadata.
+- Imbalance ratio: **31.56 : 1**. `curl virus` (val: 5, test: 3) and `fussarium wilt` (val: 9, test: 5) have $< 10$ evaluation samples.
+- Inverse-frequency class weights computed strictly from the `train` split:
+  `healthy`: 0.3102, `bacterial blight`: 2.0633, `fussarium wilt`: 5.1894, `curl virus`: 10.0735.
+- Display name mapping: `"fussarium wilt": "Fusarium wilt"` in `classes.yaml`.
+
+---
+
+## 4. Colab & Windows Path-Agnostic Infrastructure
+- All split manifests store paths **relative to the dataset root**.
+- Environment variable `DATA_ROOT` (default `ml_training/datasets/raw`) allows instant runtime resolution across local Windows paths, Docker containers, and Google Colab mount points.
+- YOLO configuration `data_groupsplit_v2.yaml` uses `path: .` with relative file lists `train.txt`, `val.txt`, and `test.txt`.

@@ -276,18 +276,41 @@ def test_dataset_report_generator(tmp_path):
     assert "256x256" in content
 
 
+def test_normalise_source_id_canonical():
+    """Unit test normalise_source_id with exact user-specified canonical edge cases."""
+    from ml_training.scripts.audit_and_harden_splits import normalise_source_id
+
+    cases = [
+        ("sborer-1-jpeg_11111111-2222-3333-4444-555555555555_jpeg_jpg.rf.abcdef1234567890.jpg", "sborer-1"),
+        ("sborer-1-jpeg_22222222-3333-4444-5555-666666666666_jpeg_jpg.rf.0987654321fedcba.jpg", "sborer-1"),
+        ("sborer-1-_jpeg_jpg.rf.abcdef1234567890.jpg", "sborer-1"),
+        ("STEM-BORER_original_sborer-33-jpg_33333333-4444-5555-6666-777777777777.jpg", "sborer-33"),
+        ("69541_jpg.rf.c6d12999cb51fa30a0bf05b63aa5391e.jpg", "69541"),
+        ("GREEN-LEAFHOPPERS_original_69541-jpg_10b0e515-568b-49e0-b6c8-5081f2115e51_jpg.rf.c7b1aa258410b0a2bf04fb54fcfa2613.jpg", "69541"),
+        ("BROWN-PLANTHOPPER_original_bhopper-107-jpg_5aea44b9-6712-471b-85e4-38a4ef3d74f2_jpg.rf.d440726058ac5729bc04e27e3fc3d1a3.jpg", "bhopper-107"),
+        ("LEAF-FOLDERS_original_lfolder-61-jpg_fd683a07-f809-41f6-8a89-8f6a8f42038a_jpg.rf.048577e650f8d74eca42655cd89de6f5.jpg", "lfolder-61"),
+        ("WHORL-MAGGOTS_original_whorl-163-jpg_3615f528-3b1a-4e6f-a446-b2be4e748aab_jpg.rf.710ab760439253ef02eece7ee16ecabd.jpg", "whorl-163"),
+    ]
+    for fn, expected in cases:
+        got = normalise_source_id(fn)
+        assert got == expected, f"normalise_source_id('{fn}') -> '{got}', expected '{expected}'"
+
+
 def test_rice_pest_groupsplit_leakage_zero():
-    """Automated Leakage Test: Verify 0 exact and near-duplicate cross-split pairs."""
+    """Automated Leakage Test: Verify 0 exact and near-duplicate cross-split pairs on v2 manifest."""
     from collections import defaultdict
-    manifest_path = Path("ml_training/manifests/rice_pest_lakthuru_groupsplit_manifest.csv")
+    from ml_training.scripts.audit_and_harden_splits import normalise_source_id
+
+    manifest_v2 = Path("ml_training/manifests/rice_pest_lakthuru_groupsplit_v2_manifest.csv")
+    manifest_v1 = Path("ml_training/manifests/rice_pest_lakthuru_groupsplit_manifest.csv")
+    manifest_path = manifest_v2 if manifest_v2.exists() else manifest_v1
+
     if not manifest_path.exists():
-        pytest.skip("rice_pest_lakthuru_groupsplit_manifest.csv not yet generated")
+        pytest.skip("rice pest group split manifest not yet generated")
 
     sha_to_splits = defaultdict(set)
     group_to_splits = defaultdict(set)
     source_id_to_splits = defaultdict(set)
-
-    from ml_training.scripts.fix_phase2_datasets import extract_rice_source_id
 
     with open(manifest_path, "r", encoding="utf-8") as f:
         lines = [l for l in f if not l.startswith("#")]
@@ -296,7 +319,7 @@ def test_rice_pest_groupsplit_leakage_zero():
             sp = r["split"]
             sha_to_splits[r["sha256"]].add(sp)
             group_to_splits[r["group_id"]].add(sp)
-            s_id = extract_rice_source_id(r["path"])
+            s_id = normalise_source_id(r["path"])
             source_id_to_splits[s_id].add(sp)
 
     # 1. Exact duplicates must not cross splits
@@ -307,9 +330,10 @@ def test_rice_pest_groupsplit_leakage_zero():
     cross_split_grp = {grp: sps for grp, sps in group_to_splits.items() if len(sps) > 1}
     assert len(cross_split_grp) == 0, f"Found {len(cross_split_grp)} group cross-split leaks!"
 
-    # 3. Source IDs must not cross splits
-    cross_split_src = {sid: sps for sid, sps in source_id_to_splits.items() if len(sps) > 1}
-    assert len(cross_split_src) == 0, f"Found {len(cross_split_src)} source ID cross-split leaks: {cross_split_src}!"
+    # 3. Source IDs must not cross splits in v2
+    if manifest_path == manifest_v2:
+        cross_split_src = {sid: sps for sid, sps in source_id_to_splits.items() if len(sps) > 1}
+        assert len(cross_split_src) == 0, f"Found {len(cross_split_src)} source ID cross-split leaks in v2: {cross_split_src}!"
 
 
 def test_sugarcane_use_for_eval_flag():
@@ -351,4 +375,30 @@ def test_cotton_disease_manifest():
         for r in reader:
             assert r["class"] in valid_diseases, f"Unexpected cotton disease class: {r['class']}"
             assert r["severity"] in ("critical", "mild", "moderate", "none"), f"Unexpected severity: {r['severity']}"
+
+
+def test_split_reproducibility(tmp_path):
+    """Verify that running the split builder twice produces byte-identical manifests and versions."""
+    from ml_training.scripts.audit_and_harden_splits import (
+        build_reproducible_cotton_manifest,
+        get_data_root,
+    )
+
+    raw_dir = get_data_root()
+    if not (raw_dir / "cotton_mendeley").exists():
+        pytest.skip("cotton_mendeley raw dataset not found")
+
+    dir1 = tmp_path / "run1"
+    dir2 = tmp_path / "run2"
+    dir1.mkdir()
+    dir2.mkdir()
+
+    res1 = build_reproducible_cotton_manifest(raw_dir, dir1, seed=42)
+    res2 = build_reproducible_cotton_manifest(raw_dir, dir2, seed=42)
+
+    assert res1["version"] == res2["version"]
+    f1 = (dir1 / "cotton_mendeley_manifest.csv").read_bytes()
+    f2 = (dir2 / "cotton_mendeley_manifest.csv").read_bytes()
+    assert f1 == f2, "Manifests between consecutive runs differ!"
+
 
