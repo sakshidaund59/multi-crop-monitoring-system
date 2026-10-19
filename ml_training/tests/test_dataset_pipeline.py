@@ -6,7 +6,7 @@ fixtures using pytest's tmp_path. Never touches application or production data.
 
 import csv
 import json
-import xml.etree.ElementTree as ET
+from collections import defaultdict
 from pathlib import Path
 import pytest
 from PIL import Image
@@ -305,7 +305,6 @@ def test_normalise_source_id_canonical():
 
 def test_rice_pest_groupsplit_leakage_zero():
     """Automated Leakage Test: Verify 0 exact and near-duplicate cross-split pairs on v2 manifest."""
-    from collections import defaultdict
     from ml_training.scripts.audit_and_harden_splits import normalise_source_id
 
     manifest_v2 = Path("ml_training/manifests/rice_pest_lakthuru_groupsplit_v2_manifest.csv")
@@ -345,7 +344,6 @@ def test_rice_pest_groupsplit_leakage_zero():
 
 def test_sugarcane_use_for_eval_flag():
     """Test that sugarcane manifest includes use_for_eval column and single representation in val/test."""
-    from collections import defaultdict
     manifest_path = Path("ml_training/manifests/sugarcane_sppu_manifest.csv")
     if not manifest_path.exists():
         pytest.skip("sugarcane_sppu_manifest.csv does not exist")
@@ -407,5 +405,190 @@ def test_split_reproducibility(tmp_path):
     f1 = (dir1 / "cotton_mendeley_manifest.csv").read_bytes()
     f2 = (dir2 / "cotton_mendeley_manifest.csv").read_bytes()
     assert f1 == f2, "Manifests between consecutive runs differ!"
+
+
+def test_leakage_audit_summary_integrity():
+    """
+    Automated integrity test for docs/leakage_audit_summary.md:
+    1. Asserts no forbidden phrases ('0 leaks', 'zero leakage', 'leak-free', case-insensitive).
+    2. Parses Section 1 table and verifies against physical labels and rice v2 manifest.
+    3. Parses Section 2 table and verifies min val/test boxes & clusters.
+    4. Parses Section 6 inventory table and verifies against metadata JSONs on disk.
+    Fails on any mismatch.
+    """
+    summary_path = Path("docs/leakage_audit_summary.md")
+    assert summary_path.exists(), "docs/leakage_audit_summary.md does not exist"
+    content = summary_path.read_text(encoding="utf-8")
+
+    # 1. Assert NO forbidden phrases (case-insensitive)
+    content_lower = content.lower()
+    for phrase in ["0 leaks", "zero leakage", "leak-free"]:
+        assert phrase not in content_lower, f"Forbidden phrase '{phrase}' found in docs/leakage_audit_summary.md"
+
+    # Helper to parse markdown table under a header
+    def parse_markdown_table(header_text: str):
+        lines = content.splitlines()
+        found_header = False
+        table_lines = []
+        for line in lines:
+            if header_text in line:
+                found_header = True
+                continue
+            if found_header:
+                if line.startswith("## ") or (line.strip() == "---" and len(table_lines) > 2):
+                    break
+                if line.strip().startswith("|"):
+                    table_lines.append(line.strip())
+
+        assert found_header, f"Header '{header_text}' not found in docs/leakage_audit_summary.md"
+        assert len(table_lines) >= 3, f"Table under '{header_text}' has fewer than 3 lines"
+
+        headers = [c.strip() for c in table_lines[0].strip("|").split("|")]
+        rows = []
+        for l in table_lines[2:]:  # skip header and separator
+            cells = [c.strip() for c in l.strip("|").split("|")]
+            if len(cells) == len(headers):
+                rows.append(dict(zip(headers, cells)))
+        return rows
+
+    # 2. Recompute and verify Section 1 (Rice Pest v2 Class & Split Representation)
+    from ml_training.scripts.audit_and_harden_splits import get_data_root, RICE_CLASSES
+    raw_dir = get_data_root()
+    rice_raw = raw_dir / "rice_pest_lakthuru"
+    manifest_path = Path("ml_training/manifests/rice_pest_lakthuru_groupsplit_v2_manifest.csv")
+    excl_path = Path("ml_training/configs/rice_pest_excluded_boxes.json")
+
+    excluded_set = set()
+    if excl_path.exists():
+        with open(excl_path, "r", encoding="utf-8") as ef:
+            data = json.load(ef)
+            raw_excl = data.get("excluded_boxes", []) if isinstance(data, dict) else (data if isinstance(data, list) else [])
+            for item in raw_excl:
+                l_path = item.get("label_path", "").replace("\\", "/").lower()
+                l_num = item.get("line", item.get("box_line_number", 0))
+                excluded_set.add((l_path, l_num))
+
+    manifest_rows = []
+    with open(manifest_path, "r", encoding="utf-8") as f:
+        r_lines = [l for l in f if not l.startswith("#")]
+        reader = csv.DictReader(r_lines)
+        manifest_rows = list(reader)
+
+    # Recompute ground-truth independently
+    true_images = {sp: {c: set() for c in RICE_CLASSES} for sp in ["train", "val", "test"]}
+    true_boxes = {sp: {c: 0 for c in RICE_CLASSES} for sp in ["train", "val", "test"]}
+    true_clusters = {sp: {c: set() for c in RICE_CLASSES} for sp in ["train", "val", "test"]}
+
+    for r in manifest_rows:
+        rel_p = r["path"]
+        sp = r["split"]
+        grp = r["group_id"]
+        rel = Path(rel_p.replace("\\", "/"))
+        parts = ["labels" if p == "images" else p for p in rel.parts]
+        lbl_p = (rice_raw / Path(*parts)).with_suffix(".txt")
+        lbl_rel = str(lbl_p.relative_to(rice_raw)).replace("\\", "/")
+
+        if not lbl_p.exists():
+            continue
+        try:
+            with open(lbl_p, "r", encoding="utf-8") as lf:
+                for l_num, line in enumerate(lf, 1):
+                    parts_l = line.strip().split()
+                    if len(parts_l) >= 5:
+                        c_id = int(float(parts_l[0]))
+                        w = float(parts_l[3])
+                        if w <= 0.0 or (lbl_rel.lower(), l_num) in excluded_set:
+                            continue
+                        if 0 <= c_id < len(RICE_CLASSES):
+                            c_name = RICE_CLASSES[c_id]
+                            true_boxes[sp][c_name] += 1
+                            true_images[sp][c_name].add(rel.as_posix())
+                            true_clusters[sp][c_name].add(grp)
+        except Exception:
+            pass
+
+    sec1_rows = parse_markdown_table("## 1. Rice Pest v2 Class & Split Representation")
+    assert len(sec1_rows) == 18, f"Expected 18 rows in Section 1, got {len(sec1_rows)}"
+
+    for row in sec1_rows:
+        c_name = row["Pest Class"].strip("`")
+        sp = row["Split"]
+        n_imgs = int(row["Images Containing Class"].replace(",", ""))
+        n_boxes = int(row["Clean Bounding Boxes"].replace(",", ""))
+        n_clust = int(row["Independent Clusters"].replace(",", ""))
+        status = row["Split Health & Diversity Status"]
+
+        exp_imgs = len(true_images[sp][c_name])
+        exp_boxes = true_boxes[sp][c_name]
+        exp_clust = len(true_clusters[sp][c_name])
+
+        assert n_imgs == exp_imgs, f"Section 1 mismatch for {c_name} {sp} images: parsed {n_imgs} != true {exp_imgs}"
+        assert n_boxes == exp_boxes, f"Section 1 mismatch for {c_name} {sp} boxes: parsed {n_boxes} != true {exp_boxes}"
+        assert n_clust == exp_clust, f"Section 1 mismatch for {c_name} {sp} clusters: parsed {n_clust} != true {exp_clust}"
+
+        if sp in ["val", "test"]:
+            if exp_boxes < 100 or exp_clust < 15:
+                assert "WARNING" in status and "Indicative only" in status, f"Expected WARNING in status for {c_name} {sp}, got '{status}'"
+                assert "Healthy" not in status, f"Class {c_name} {sp} has active warnings but status says 'Healthy': '{status}'"
+            else:
+                assert "Healthy" in status, f"Expected Healthy in status for {c_name} {sp}, got '{status}'"
+
+    # 3. Verify Section 2 (Representation Summary Across Splits)
+    sec2_rows = parse_markdown_table("## 2. Representation Summary Across Splits")
+    assert len(sec2_rows) == 6, f"Expected 6 rows in Section 2, got {len(sec2_rows)}"
+    for row in sec2_rows:
+        c_name = row["Pest Class"].strip("`")
+        min_b = int(row["Min Val/Test Boxes"].replace(",", ""))
+        min_c = int(row["Min Val/Test Clusters"].replace(",", ""))
+        eval_status = row["Evaluation Health Status"]
+
+        exp_min_b = min(true_boxes["val"][c_name], true_boxes["test"][c_name])
+        exp_min_c = min(len(true_clusters["val"][c_name]), len(true_clusters["test"][c_name]))
+
+        assert min_b == exp_min_b, f"Section 2 mismatch for {c_name} min boxes: parsed {min_b} != true {exp_min_b}"
+        assert min_c == exp_min_c, f"Section 2 mismatch for {c_name} min clusters: parsed {min_c} != true {exp_min_c}"
+
+        if exp_min_b < 100 or exp_min_c < 15:
+            assert "**WARNING**" in eval_status and "Indicative only" in eval_status, f"Expected WARNING for {c_name}, got: {eval_status}"
+            assert "Healthy" not in eval_status, f"Class {c_name} has active warnings but status says 'Healthy': '{eval_status}'"
+        else:
+            assert "**PASSED** (Healthy representation)" in eval_status, f"Expected PASSED for {c_name}, got: {eval_status}"
+
+    # 4. Verify Section 6 (Dataset Partition Inventory & Version Register)
+    sec6_rows = parse_markdown_table("## 6. Dataset Partition Inventory & Version Register")
+    assert len(sec6_rows) == 5, f"Expected 5 rows in Section 6, got {len(sec6_rows)}"
+
+    manifests_dir = Path("ml_training/manifests")
+    sec6_expected = {
+        "Rice Pest v1 (`groupsplit`)": "rice_pest_lakthuru_groupsplit_metadata.json",
+        "Rice Pest v2 (`groupsplit_v2`)": "rice_pest_lakthuru_groupsplit_v2_metadata.json",
+        "Cotton Mendeley (`reproducible`)": "cotton_mendeley_metadata.json",
+        "Wheat Disease (`zenodo_jic`)": "wheat_zenodo_jic_metadata.json",
+        "Sugarcane SPPU (`mendeley`)": "sugarcane_sppu_metadata.json",
+    }
+
+    for row in sec6_rows:
+        p_name = row["Dataset Partition"]
+        assert p_name in sec6_expected, f"Unexpected partition in Section 6: {p_name}"
+        meta_file = manifests_dir / sec6_expected[p_name]
+        assert meta_file.exists(), f"Metadata file {meta_file} does not exist"
+        with open(meta_file, "r", encoding="utf-8") as mf:
+            meta_data = json.load(mf)
+
+        v_hash = row["Version Hash"].strip("`")
+        tr_cnt = int(row["Train Images"].replace(",", ""))
+        va_cnt = int(row["Val Images"].replace(",", ""))
+        te_cnt = int(row["Test Images"].replace(",", ""))
+        tot_cnt = int(row["Total Images"].replace(",", ""))
+        grp_cnt = int(row["Independent Groups"].replace(",", ""))
+
+        assert v_hash == meta_data["dataset_version"], f"Version hash mismatch for {p_name}: {v_hash} != {meta_data['dataset_version']}"
+        assert tr_cnt == meta_data["splits"]["train"], f"Train mismatch for {p_name}: {tr_cnt} != {meta_data['splits']['train']}"
+        assert va_cnt == meta_data["splits"]["val"], f"Val mismatch for {p_name}: {va_cnt} != {meta_data['splits']['val']}"
+        assert te_cnt == meta_data["splits"]["test"], f"Test mismatch for {p_name}: {te_cnt} != {meta_data['splits']['test']}"
+        assert tot_cnt == meta_data["total_images"], f"Total mismatch for {p_name}: {tot_cnt} != {meta_data['total_images']}"
+        if "total_groups" in meta_data:
+            assert grp_cnt == meta_data["total_groups"], f"Groups mismatch for {p_name}: {grp_cnt} != {meta_data['total_groups']}"
+
 
 

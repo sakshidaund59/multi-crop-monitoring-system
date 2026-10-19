@@ -9,21 +9,21 @@
 
 | Dataset Name | Target Crop | Task Layout | Total Images | Train | Val | Test | Version Hash | Leakage Status |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `rice_pest_lakthuru` | **Rice** | YOLO Detection (6 classes) | 5,229 | 3,667 | 1,032 | 530 | `daa2b10b2db2` | **0 leaks** (Hardened v2, Dihedral $T \le 4$ & Emb $\ge 0.95$ Clean) |
-| `sugarcane_sppu` | **Sugarcane** | Classification (5 classes) | 2,521 | 1,762 | 502 | 257 | `e8310f7a9d41` | **0 leaks** (`use_for_eval` active) |
-| `wheat_zenodo_jic` | **Wheat** | Classification (5 classes) | 999 | 697 | 197 | 105 | `d5dbead715ee` | **0 leaks** (Group-Aware Verified) |
-| `cotton_mendeley` | **Cotton** | Classification (4 disease classes) | 980 | 685 | 196 | 99 | `a108f9c32b57` | **0 leaks** (Group-Aware Verified) |
+| `rice_pest_lakthuru` | **Rice** | YOLO Detection (6 classes) | 5,229 | 3,639 | 1,033 | 557 | `6b9e5c4ed209` | Hardened v2 (No leaks at pHash $\le 4$ or Cosine $\ge 0.95$) |
+| `sugarcane_sppu` | **Sugarcane** | Classification (5 classes) | 2,521 | 1,762 | 502 | 257 | `c2396e678992` | Group-Aware Verified (`use_for_eval` active) |
+| `wheat_zenodo_jic` | **Wheat** | Classification (5 classes) | 999 | 697 | 197 | 105 | `d5dbead715ee` | Group-Aware Verified |
+| `cotton_mendeley` | **Cotton** | Classification (4 disease classes) | 980 | 686 | 196 | 98 | `99c7fa25ceeb` | Group-Aware Verified (Deterministic split) |
 
 ---
 
 ## 2. Dataset Detailed Profiles & Class Distributions
 
 ### Dataset: `rice_pest_lakthuru` (Crop: Rice)
-- **Dataset Version Hash**: `daa2b10b2db2` (Hardened Group-Aware Split v2)
+- **Dataset Version Hash**: `6b9e5c4ed209` (Hardened Group-Aware Split v2)
 - **Source / Citation**: Laktharu (2023). Rice Pests Dataset. Roboflow Universe.
 - **Source URL**: https://universe.roboflow.com/laktharu/rice-pests-ztbeq
 - **License**: `CC BY 4.0` (Verified 17-10-2026)
-- **Total Images**: 5,229 (Train: 3,667 | Val: 1,032 | Test: 530)
+- **Total Images**: 5,229 (Train: 3,639 | Val: 1,033 | Test: 557)
 - **Image Resolution**: $640 \times 640$ px (uniform Roboflow square format)
 - **Tabular Leakage Audit**: Complete metrics report in [`docs/leakage_audit_summary.md`](file:///c:/Users/DELL/Desktop/multi-crop-monitoring-system/docs/leakage_audit_summary.md)
 
@@ -33,9 +33,11 @@
   - Near-duplicate cross-split pairs (Hamming distance $\le 2$): **731**
   - Cause: Augmented variations of the same capture were scattered across train and valid/test folders.
 - **New Group-Aware Partition**:
-  - All 5,229 images pooled and clustered via Union-Find using filename source IDs (e.g. `69541`, `bhopper-86`, `sborer-268`) and perceptual hash distance (Hamming $\le 4$).
+  - All 5,229 images pooled and clustered via Union-Find using canonical filename source IDs (e.g. `69541`, `bhopper-86`, `sborer-268`, with `-png`/`-jpeg` stripped) and perceptual hash distance (Hamming $\le 4$).
   - Post-split cross-split exact duplicate pairs: **0**
   - Post-split cross-split near-duplicate pairs (Hamming $\le 4$): **0**
+  - Post-split cross-split CNN nearest-neighbor pairs (Cosine $\ge 0.95$): **0**
+  - Boundary claim: *No cross-split near-duplicates at perceptual-hash distance $\le 4$ or CNN cosine $\ge 0.95$ (residual similarity remains at looser thresholds: hash $T \le 6 = 86$ pairs, cosine $\ge 0.90 = 86$ val / 22 test images).*
 - **Degenerate Bounding Boxes**:
   - 8 bounding boxes in `train/labels/STEM-BORER_original_sborer-...` had $width = 0.0$.
   - Original label files remain strictly untouched (zero modification policy).
@@ -48,18 +50,21 @@
 
 | Pest Class | Total Clean Boxes | % of Annotations | Train Boxes | Val Boxes | Test Boxes | Val/Test Health Check |
 | :--- | :---: | :---: | :---: | :---: | :---: | :--- |
-| `whorl-maggot` | 1,616 | 20.0% | 1,112 | 343 | 161 | Passed ($\ge 100$ boxes) |
-| `brown-planthopper` | 1,578 | 19.5% | 1,074 | 354 | 150 | Passed ($\ge 100$ boxes) |
-| `leaf-folder` | 1,459 | 18.0% | 1,014 | 302 | 143 | Passed ($\ge 100$ boxes) |
-| `rice-bug` | 1,294 | 16.0% | 901 | 266 | 127 | Passed ($\ge 100$ boxes) |
-| `stem-borer` | 1,072 | 13.2% | 745 | 220 | 107 | Passed ($\ge 100$ boxes) |
-| `green-leafhopper` | 1,077 | 13.3% | 752 | 220 | 105 | Passed ($\ge 100$ boxes) |
-| **Total Boxes** | **8,096** | **100.0%** | **5,598** | **1,705** | **793** | **All Classes Healthy** |
+| `whorl-maggot` | 1,616 | 20.0% | 1,139 | 330 | 147 | **WARNING**: < 15 clusters in val (13) & test (3) — Indicative only |
+| `brown-planthopper` | 1,578 | 19.5% | 1,086 | 357 | 135 | **WARNING**: < 15 clusters in val (7) & test (13) — Indicative only |
+| `leaf-folder` | 1,459 | 18.0% | 1,031 | 300 | 128 | Passed ($\ge 100$ boxes, $\ge 15$ clusters) |
+| `rice-bug` | 1,294 | 16.0% | 916 | 266 | 112 | Passed ($\ge 100$ boxes, $\ge 15$ clusters) |
+| `stem-borer` | 1,072 | 13.2% | 758 | 220 | 94 | **WARNING**: < 100 boxes (94) & < 15 clusters (12) in test — Indicative only |
+| `green-leafhopper` | 1,077 | 13.3% | 762 | 220 | 95 | **WARNING**: < 100 boxes in test (95 boxes) — Indicative only |
+| **Total Boxes** | **8,096** | **100.0%** | **5,692** | **1,693** | **711** | **Evaluation warnings active for 4 classes** |
+
+> [!NOTE]
+> Metrics for classes with active warnings (`brown-planthopper`, `green-leafhopper`, `stem-borer`, `whorl-maggot`) are indicative only due to bounding box counts < 100 or independent cluster counts < 15 in those specific evaluation partitions. Two classes (`leaf-folder`, `rice-bug`) satisfy both $\ge 100$ boxes and $\ge 15$ clusters across all evaluation splits.
 
 ---
 
 ### Dataset: `sugarcane_sppu` (Crop: Sugarcane)
-- **Dataset Version Hash**: `e8310f7a9d41`
+- **Dataset Version Hash**: `c2396e678992`
 - **Source / Citation**: Daphal, S., & Koli, S. (2022). Sugarcane Leaf Disease Dataset. Mendeley Data, V1. doi: 10.17632/9424skmnrk.1
 - **Source URL**: https://doi.org/10.17632/9424skmnrk.1
 - **License**: `CC BY 4.0` (Verified 17-10-2026)
@@ -114,11 +119,12 @@ All duplicate image groups sit strictly within the same split (0 cross-split lea
 ---
 
 ### Dataset: `cotton_mendeley` (Crop: Cotton)
-- **Dataset Version Hash**: `a108f9c32b57`
+- **Dataset Version Hash**: `99c7fa25ceeb`
 - **Source / Citation**: Shingne, S., Thakur, P., Jangid, A., Buchade, P., Jain, A., & Agarwal, M. (2025). Cotton Leaf Disease Dataset with Severity Levels. Mendeley Data, V3. doi: 10.17632/74jsdxtmx2.3
 - **Source URL**: https://doi.org/10.17632/74jsdxtmx2.3
 - **License**: `CC BY 4.0` (Verified 17-10-2026)
 - **Total Real Images**: 980 (Augmented ZIP archives excluded)
+- **Split Distribution**: Train: 686 | Val: 196 | Test: 98
 - **Class Structure**: 4 disease-only targets (`healthy`, `bacterial blight`, `fussarium wilt`, `curl virus`). Severity (`critical`, `mild`, `moderate`) is preserved as a metadata column `severity` in the manifest.
 - **Display Name Mapping**: `"fussarium wilt"` $\to$ `"Fusarium wilt"` configured in [`ml_training/configs/classes.yaml`](file:///c:/Users/DELL/Desktop/multi-crop-monitoring-system/ml_training/configs/classes.yaml).
 
@@ -126,20 +132,20 @@ All duplicate image groups sit strictly within the same split (0 cross-split lea
 > [!WARNING]
 > Ratio between majority (`healthy`: 789) and minority (`curl virus`: 25) is **31.56 : 1**.
 > In evaluation splits:
-> - `curl virus`: **5** validation images, **3** test images ($< 10$ samples).
+> - `curl virus`: **5** validation images, **2** test images ($< 10$ samples).
 > - `fussarium wilt`: **9** validation images, **5** test images ($< 10$ samples).
 
-#### Train-Split Class Weights ($N_{\text{train}} = 685$, $K = 4$)
+#### Train-Split Class Weights ($N_{\text{train}} = 686$, $K = 4$)
 Computed strictly on the `train` split using balanced inverse frequency:
 $$w_c = \frac{N_{\text{train}}}{4 \times N_{c, \text{train}}}$$
 
 | Disease Class | Total Images | Train | Val | Test | Train Split Weight $w_c$ | Severity Subfolders |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `healthy` | 789 | 552 | 158 | 79 | **0.3102** | *(none)* |
-| `bacterial blight` | 119 | 83 | 24 | 12 | **2.0633** | critical: 19, mild: 50, moderate: 50 |
-| `fussarium wilt` | 47 | 33 | 9 | 5 | **5.1894** | critical: 11, mild: 19, moderate: 17 |
-| `curl virus` | 25 | 17 | 5 | 3 | **10.0735** | critical: 11, mild: 9, moderate: 5 |
-| **Total** | **980** | **685** | **196** | **99** | — | — |
+| `healthy` | 789 | 552 | 158 | 79 | **0.3107** | *(none)* |
+| `bacterial blight` | 119 | 83 | 24 | 12 | **2.0663** | critical: 19, mild: 50, moderate: 50 |
+| `fussarium wilt` | 47 | 33 | 9 | 5 | **5.1970** | critical: 11, mild: 19, moderate: 17 |
+| `curl virus` | 25 | 18 | 5 | 2 | **9.5278** | critical: 11, mild: 9, moderate: 5 |
+| **Total** | **980** | **686** | **196** | **98** | — | — |
 
 ---
 
@@ -147,7 +153,7 @@ $$w_c = \frac{N_{\text{train}}}{4 \times N_{c, \text{train}}}$$
 
 | Dataset | Target Crop | Source Reference | License | Integrity Status |
 | :--- | :--- | :--- | :--- | :--- |
-| `rice_pest_lakthuru` | Rice | [Roboflow Universe (Laktharu)](https://universe.roboflow.com/laktharu/rice-pests-ztbeq) | `CC BY 4.0` | Group-aware split; 0 leakage; 8 degenerate bboxes excluded |
+| `rice_pest_lakthuru` | Rice | [Roboflow Universe (Laktharu)](https://universe.roboflow.com/laktharu/rice-pests-ztbeq) | `CC BY 4.0` | Group-aware split v2; no leaks at pHash $\le 4$ or Cosine $\ge 0.95$; 8 degenerate bboxes excluded |
 | `sugarcane_sppu` | Sugarcane | [Mendeley Data V1 (SPPU)](https://doi.org/10.17632/9424skmnrk.1) | `CC BY 4.0` | 2,521 physical images reconciled; `use_for_eval` active |
-| `wheat_zenodo_jic` | Wheat | [Zenodo (John Innes Centre)](https://doi.org/10.5281/zenodo.7573133) | `CC BY 4.0` | Verified 999 images; leak-free split |
+| `wheat_zenodo_jic` | Wheat | [Zenodo (John Innes Centre)](https://doi.org/10.5281/zenodo.7573133) | `CC BY 4.0` | Verified 999 images; group-aware partition |
 | `cotton_mendeley` | Cotton | [Mendeley Data V3 (Shingne et al.)](https://doi.org/10.17632/74jsdxtmx2.3) | `CC BY 4.0` | 4 disease classes; severity in metadata; train class weights |

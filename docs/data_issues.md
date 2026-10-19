@@ -39,7 +39,7 @@ In accordance with our strict data governance rule (*never edit original dataset
 To guard against leakage across flips and rotations, each image was audited across all 8 transformations of the dihedral group $D_4$ (4 rotations $\times$ horizontal flip):
 $$\text{dist}_{\min}(A, B) = \min_{v \in D_4} \min(\text{Hamming}(\text{pHash}(A), \text{pHash}(v(B))), \text{Hamming}(\text{dHash}(A), \text{dHash}(v(B))))$$
 - Conflict counts across splits (Train-Val, Train-Test, Val-Test) evaluated at $T \in \{0, 2, 4, 6, 8\}$.
-- Hardened Split v2 eliminates 100% of dihedral leaks at $T \le 4$ (0 cross-split conflicts) and 100% of embedding leaks at cosine $\ge 0.95$ (0 cross-split pairs). All 6 classes achieve $\ge 100$ bounding boxes and $\ge 15$ independent clusters in both validation and test sets.
+- Hardened Split v2 eliminates cross-split near-duplicates at dihedral $T \le 4$ (0 cross-split conflicts) and embedding cosine $\ge 0.95$ (0 cross-split pairs). Boundary claim: *No cross-split near-duplicates at perceptual-hash distance $\le 4$ or CNN cosine $\ge 0.95$ (residual similarity remains at looser thresholds: hash $T \le 6 = 86$ pairs, cosine $\ge 0.90 = 86$ val / 22 test images)*. Four classes carry active evaluation warnings (`brown-planthopper` in val/test, `green-leafhopper` in test, `stem-borer` in test, and `whorl-maggot` in val/test) indicating that evaluation metrics for these classes are indicative only due to $< 100$ bounding boxes or $< 15$ clusters.
 
 ### 1.4 Pretrained CNN Embedding Audit & Contact Sheets
 - Feature extractor: `timm.create_model('efficientnet_b0', pretrained=True, num_classes=0)` on CPU.
@@ -107,9 +107,9 @@ Physical extraction from the official Mendeley archive yields exactly **2,521** 
 ### 3.2 Disease-Only Target Policy & Severe Imbalance Warning
 - 4 disease-only targets: `healthy` (789), `bacterial blight` (119), `fussarium wilt` (47), `curl virus` (25).
 - Severity (`critical`, `mild`, `moderate`, `none`) is preserved strictly as metadata.
-- Imbalance ratio: **31.56 : 1**. `curl virus` (val: 5, test: 3) and `fussarium wilt` (val: 9, test: 5) have $< 10$ evaluation samples.
+- Imbalance ratio: **31.56 : 1**. `curl virus` (val: 5, test: 2) and `fussarium wilt` (val: 9, test: 5) have $< 10$ evaluation samples.
 - Inverse-frequency class weights computed strictly from the `train` split:
-  `healthy`: 0.3102, `bacterial blight`: 2.0633, `fussarium wilt`: 5.1894, `curl virus`: 10.0735.
+  `healthy`: 0.3107, `bacterial blight`: 2.0663, `fussarium wilt`: 5.1970, `curl virus`: 9.5278.
 - Display name mapping: `"fussarium wilt": "Fusarium wilt"` in `classes.yaml`.
 
 ---

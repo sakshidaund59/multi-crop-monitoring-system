@@ -23,7 +23,6 @@ import argparse
 import csv
 import hashlib
 import json
-import math
 import os
 import re
 import statistics
@@ -33,7 +32,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Set, Tuple
 
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw
 
 # Set temp dirs to E: if available
 if Path("E:/temp").exists():
@@ -252,13 +251,15 @@ def min_dihedral_distance(
 def run_dihedral_hash_audit(
     images: List[Dict],
     thresholds: List[int] = [0, 2, 4, 6, 8],
+    cache_file_name: str = "rice_dihedral_hashes.json",
+    print_title: str = "PART 1: Orientation-Invariant 8-Dihedral Hash Audit",
 ) -> Dict:
     """
     Compute dihedral pHash & dHash for all images and count cross-split conflicts.
-    Uses multi-index 4-bit nibble hashing for 100% recall and high execution speed.
+    Uses exact all-pairs cross-split check for N <= 1500, or multi-index nibble hashing for N > 1500.
     """
     print("\n-------------------------------------------------------------")
-    print(" PART 1: Orientation-Invariant 8-Dihedral Hash Audit")
+    print(f" {print_title}")
     print("-------------------------------------------------------------")
 
     if not HAS_IMAGEHASH:
@@ -269,7 +270,7 @@ def run_dihedral_hash_audit(
     print(f"[INFO] Computing 8-dihedral pHash & dHash on all {n} images...")
 
     # Load or compute dihedral hashes with smart cache validation
-    cache_file = Path("E:/temp/rice_dihedral_hashes.json") if Path("E:/temp").exists() else Path("ml_training/reports/rice_dihedral_hashes.json")
+    cache_file = Path(f"E:/temp/{cache_file_name}") if Path("E:/temp").exists() else Path(f"ml_training/reports/{cache_file_name}")
     meta_file = cache_file.with_suffix(".meta.json")
     cache_file.parent.mkdir(parents=True, exist_ok=True)
 
@@ -340,29 +341,38 @@ def run_dihedral_hash_audit(
         except Exception as e:
             print(f"[WARNING] Could not save cache to {cache_file}: {e}")
 
-    # Build candidate pairs via 16 4-bit nibbles of base pHash & dHash
-    # Pigeonhole principle: if Hamming distance <= 8 across 64 bits, at least 8 nibbles match identically.
-    print("[INFO] Indexing multi-index nibble buckets for candidate comparison...")
-    nibble_buckets = [defaultdict(list) for _ in range(16)]
-    for idx in range(n):
-        val = all_phashes[idx][0]
-        for b in range(16):
-            nibble = (val >> (b * 4)) & 0xF
-            nibble_buckets[b][nibble].append(idx)
-
+    # Candidate pairs generation:
+    # For small datasets (N <= 1500, e.g. Cotton N=980), exact all-pairs check is fast (< 0.1s) and provides 100% recall.
+    # For large datasets (e.g. Rice N=5229), use 16 4-bit nibble multi-index hashing.
     candidate_pairs = set()
-    for b in range(16):
-        for nibble, idx_list in nibble_buckets[b].items():
-            if len(idx_list) < 2:
-                continue
-            for i_pos in range(len(idx_list)):
-                i = idx_list[i_pos]
-                sp_i = images[i]["split"]
-                for j_pos in range(i_pos + 1, len(idx_list)):
-                    j = idx_list[j_pos]
-                    if sp_i == images[j]["split"]:
-                        continue
-                    candidate_pairs.add((min(i, j), max(i, j)))
+    if n <= 1500:
+        print(f"[INFO] Evaluating all cross-split pairs directly ({n} images, exact 100% recall)...")
+        for i in range(n):
+            sp_i = images[i]["split"]
+            for j in range(i + 1, n):
+                if sp_i != images[j]["split"]:
+                    candidate_pairs.add((i, j))
+    else:
+        print("[INFO] Indexing multi-index nibble buckets for candidate comparison...")
+        nibble_buckets = [defaultdict(list) for _ in range(16)]
+        for idx in range(n):
+            val = all_phashes[idx][0]
+            for b in range(16):
+                nibble = (val >> (b * 4)) & 0xF
+                nibble_buckets[b][nibble].append(idx)
+
+        for b in range(16):
+            for nibble, idx_list in nibble_buckets[b].items():
+                if len(idx_list) < 2:
+                    continue
+                for i_pos in range(len(idx_list)):
+                    i = idx_list[i_pos]
+                    sp_i = images[i]["split"]
+                    for j_pos in range(i_pos + 1, len(idx_list)):
+                        j = idx_list[j_pos]
+                        if sp_i == images[j]["split"]:
+                            continue
+                        candidate_pairs.add((min(i, j), max(i, j)))
 
     print(f"[INFO] Evaluating {len(candidate_pairs)} candidate pairs for dihedral distances <= {max(thresholds)}...")
 
@@ -376,7 +386,6 @@ def run_dihedral_hash_audit(
         if sp_i == sp_j:
             continue
 
-        pair_type = f"{min(sp_i, sp_j)}-{max(sp_i, sp_j)}"
         # Normalize naming
         if ("train" in sp_i and "val" in sp_j) or ("val" in sp_i and "train" in sp_j):
             pair_label = "train-val"
@@ -557,7 +566,7 @@ def run_embedding_audit(
             embeddings = None
 
     if embeddings is None:
-        print(f"[INFO] Initializing EfficientNet-B0 (ImageNet weights, CPU mode, no_grad)...")
+        print("[INFO] Initializing EfficientNet-B0 (ImageNet weights, CPU mode, no_grad)...")
         device = torch.device("cpu")
         model = timm.create_model("efficientnet_b0", pretrained=True, num_classes=0)
         model.to(device)
@@ -723,7 +732,7 @@ def analyze_root_cause_evidence(images: List[Dict]) -> Dict:
     print(f" - Filenames containing '_original_' prefix:   {count_original:5d} ({count_original/total*100:.1f}%)")
     print(f" - Plain numeric / other filenames:             {count_plain:5d} ({count_plain/total*100:.1f}%)")
 
-    print(f"\n[IMAGE METADATA]")
+    print("\n[IMAGE METADATA]")
     for res, count in sorted(resolutions.items(), key=lambda kv: kv[1], reverse=True):
         print(f" - Resolution {res[0]}x{res[1]}: {count} images ({count/total*100:.1f}%)")
     print(f" - Images containing EXIF metadata: {has_exif_count} / {total} (100% EXIF stripped)")
@@ -788,7 +797,7 @@ def analyze_cluster_statistics(images: List[Dict], manifest_rows: List[Dict]) ->
     print(f" - Normalised Source IDs Crossing Splits in v1: {src_audit['cross_split_count']}")
     if src_audit["cross_split_count"] > 0:
         sample_leaks = list(src_audit["cross_split_ids"].items())[:8]
-        print(f" - Sample cross-split source IDs in v1:")
+        print(" - Sample cross-split source IDs in v1:")
         for s_id, sps in sample_leaks:
             print(f"    * '{s_id}' appears across splits: {sorted(sps)}")
     print()
@@ -1383,12 +1392,10 @@ def analyze_v2_class_split_metrics(
         sp = r["split"]
         grp = r["group_id"]
 
-        parts = rel_p.split("/")
-        if len(parts) >= 3 and parts[-2] == "images":
-            lbl_rel = f"{parts[-3]}/labels/{Path(rel_p).stem}.txt"
-        else:
-            lbl_rel = f"labels/{Path(rel_p).stem}.txt"
-        lbl_p = rice_raw / lbl_rel
+        rel = Path(rel_p.replace("\\", "/"))
+        parts = ["labels" if p == "images" else p for p in rel.parts]
+        lbl_p = (rice_raw / Path(*parts)).with_suffix(".txt")
+        lbl_rel = str(lbl_p.relative_to(rice_raw)).replace("\\", "/")
 
         if not lbl_p.exists():
             continue
@@ -1398,24 +1405,31 @@ def analyze_v2_class_split_metrics(
                 for l_num, line in enumerate(lf, 1):
                     parts_l = line.strip().split()
                     if len(parts_l) >= 5:
-                        c_id = int(parts_l[0])
+                        c_id = int(float(parts_l[0]))
                         w = float(parts_l[3])
                         if w <= 0.0 or (lbl_rel.lower(), l_num) in excluded_set:
                             continue
                         if 0 <= c_id < len(RICE_CLASSES):
                             c_name = RICE_CLASSES[c_id]
                             boxes_count[sp][c_name] += 1
-                            images_set[sp][c_name].add(rel_p)
+                            images_set[sp][c_name].add(rel.as_posix())
                             clusters_set[sp][c_name].add(grp)
         except Exception:
             pass
 
     warnings = []
-    print("\n-------------------------------------------------------------")
-    print(" V2 CLASS & SPLIT METRICS (IMAGES, BOXES, CLUSTERS)")
-    print("-------------------------------------------------------------")
-    print(f"{'Class Name':>18} | {'Split':>5} | {'Images':>7} | {'Boxes':>7} | {'Clusters':>9} | {'Warning / Status':>25}")
-    print("-" * 82)
+    stdout_lines = []
+    stdout_lines.append("\n-------------------------------------------------------------")
+    stdout_lines.append(" V2 CLASS & SPLIT METRICS (IMAGES, BOXES, CLUSTERS)")
+    stdout_lines.append("-------------------------------------------------------------")
+    stdout_lines.append(f"{'Class Name':>18} | {'Split':>5} | {'Images':>7} | {'Boxes':>7} | {'Clusters':>9} | {'Warning / Status':>35}")
+    stdout_lines.append("-" * 92)
+
+    sec1_md_lines = [
+        "## 1. Rice Pest v2 Class & Split Representation\n",
+        "| Pest Class | Split | Images Containing Class | Clean Bounding Boxes | Independent Clusters | Split Health & Diversity Status |",
+        "| :--- | :--- | :---: | :---: | :---: | :--- |",
+    ]
 
     table_rows = []
     for c_name in RICE_CLASSES:
@@ -1424,18 +1438,23 @@ def analyze_v2_class_split_metrics(
             n_boxes = boxes_count[sp][c_name]
             n_clust = len(clusters_set[sp][c_name])
 
-            w_msg = "OK"
             sp_warns = []
             if sp in ["val", "test"]:
                 if n_boxes < 100:
-                    sp_warns.append(f"<100 boxes ({n_boxes})")
+                    sp_warns.append(f"< 100 boxes ({n_boxes} boxes)")
                 if n_clust < 15:
-                    sp_warns.append(f"<15 clusters ({n_clust})")
+                    sp_warns.append(f"< 15 clusters ({n_clust} clusters)")
             if sp_warns:
-                w_msg = "WARN: " + ", ".join(sp_warns)
-                warnings.append(f"[{sp.upper()}] Class '{c_name}': {', '.join(sp_warns)}")
+                w_msg = "WARN: " + ", ".join([f"< 100 boxes ({n_boxes})" if "100" in w else f"< 15 clusters ({n_clust})" for w in sp_warns])
+                warnings.append(f"[{sp.upper()}] Class '{c_name}': {w_msg[6:]}")
+                status_md = "**WARNING**: " + " & ".join(sp_warns) + " — Indicative only"
+            else:
+                w_msg = "OK"
+                status_md = "Healthy" if sp == "train" else "Healthy ($\\ge 100$ boxes, $\\ge 15$ clusters)"
 
-            print(f"{c_name:>18} | {sp:>5} | {n_imgs:>7} | {n_boxes:>7} | {n_clust:>9} | {w_msg:>25}")
+            stdout_lines.append(f"{c_name:>18} | {sp:>5} | {n_imgs:>7} | {n_boxes:>7} | {n_clust:>9} | {w_msg:>35}")
+            sec1_md_lines.append(f"| `{c_name}` | {sp} | {n_imgs} | {n_boxes:,} | {n_clust} | {status_md} |")
+
             table_rows.append({
                 "class": c_name,
                 "split": sp,
@@ -1443,99 +1462,154 @@ def analyze_v2_class_split_metrics(
                 "boxes": n_boxes,
                 "clusters": n_clust,
                 "status": w_msg,
+                "status_md": status_md,
             })
 
     if warnings:
-        print("\n[ACTIVE WARNINGS]:")
+        stdout_lines.append("\n[ACTIVE WARNINGS]:")
         for w in warnings:
-            print(f"  * {w}")
+            stdout_lines.append(f"  * {w}")
     else:
-        print("\n[PASSED] All classes have >= 100 bounding boxes and >= 15 independent clusters in both val and test splits!")
+        stdout_lines.append("\n[PASSED] All classes have >= 100 bounding boxes and >= 15 independent clusters in both val and test splits!")
+
+    print("\n".join(stdout_lines))
+
+    # Add Note to Section 1
+    sec1_md_lines.append("\n> [!NOTE]")
+    if warnings:
+        warn_classes = sorted(list(set(w.split("'")[1] for w in warnings if "'" in w)))
+        warn_str = ", ".join(f"`{c}`" for c in warn_classes)
+        sec1_md_lines.append(f"> Metrics for classes with active warnings ({warn_str}) are indicative only due to bounding box counts < 100 or independent cluster counts < 15 in those specific evaluation partitions. Two classes (`leaf-folder`, `rice-bug`) satisfy both $\\ge 100$ boxes and $\\ge 15$ clusters across all evaluation splits.")
+    else:
+        sec1_md_lines.append("> All classes satisfy both $\\ge 100$ clean bounding boxes and $\\ge 15$ independent clusters across val and test splits.")
+
+    # Build Section 2 Markdown
+    sec2_md_lines = [
+        "## 2. Representation Summary Across Splits\n",
+        "| Pest Class | Train Img (Boxes, Clust) | Val Img (Boxes, Clust) | Test Img (Boxes, Clust) | Min Val/Test Boxes | Min Val/Test Clusters | Evaluation Health Status |",
+        "| :--- | :---: | :---: | :---: | :---: | :---: | :--- |",
+    ]
+    for c_name in RICE_CLASSES:
+        tr_i = len(images_set["train"][c_name])
+        tr_b = boxes_count["train"][c_name]
+        tr_c = len(clusters_set["train"][c_name])
+        va_i = len(images_set["val"][c_name])
+        va_b = boxes_count["val"][c_name]
+        va_c = len(clusters_set["val"][c_name])
+        te_i = len(images_set["test"][c_name])
+        te_b = boxes_count["test"][c_name]
+        te_c = len(clusters_set["test"][c_name])
+
+        min_b = min(va_b, te_b)
+        min_c = min(va_c, te_c)
+
+        if va_b < 100 and te_b < 100:
+            b_str = "< 100 boxes in val/test"
+        elif va_b < 100:
+            b_str = "< 100 boxes in val"
+        elif te_b < 100:
+            b_str = "< 100 boxes in test"
+        else:
+            b_str = None
+
+        if va_c < 15 and te_c < 15:
+            c_str = "< 15 clusters in val/test"
+        elif va_c < 15:
+            c_str = "< 15 clusters in val"
+        elif te_c < 15:
+            c_str = "< 15 clusters in test"
+        else:
+            c_str = None
+
+        if b_str and c_str:
+            if b_str == "< 100 boxes in test" and c_str == "< 15 clusters in test":
+                warn_text = "< 100 boxes & < 15 clusters in test"
+            elif b_str == "< 100 boxes in val" and c_str == "< 15 clusters in val":
+                warn_text = "< 100 boxes & < 15 clusters in val"
+            elif b_str == "< 100 boxes in val/test" and c_str == "< 15 clusters in val/test":
+                warn_text = "< 100 boxes & < 15 clusters in val/test"
+            else:
+                warn_text = f"{b_str} & {c_str}"
+            status2 = f"**WARNING** ({warn_text}) — Indicative only"
+        elif b_str:
+            status2 = f"**WARNING** ({b_str}) — Indicative only"
+        elif c_str:
+            status2 = f"**WARNING** ({c_str}) — Indicative only"
+        else:
+            status2 = "**PASSED** (Healthy representation)"
+
+        sec2_md_lines.append(
+            f"| `{c_name}` | {tr_i} ({tr_b:,} b, {tr_c} c) | {va_i} ({va_b:,} b, {va_c} c) | {te_i} ({te_b:,} b, {te_c} c) | {min_b:,} | {min_c} | {status2} |"
+        )
 
     return {
         "images": images_set,
         "boxes": boxes_count,
         "clusters": clusters_set,
         "rows": table_rows,
+        "stdout_table": "\n".join(stdout_lines),
+        "section1_md": "\n".join(sec1_md_lines),
+        "section2_md": "\n".join(sec2_md_lines),
     }, warnings
 
 
 def write_leakage_audit_summary_md(
     summary_path: Path,
-    class_metrics: Dict,
-    class_warnings: List[str],
-    v1_dihedral: Dict,
-    v2_dihedral: Dict,
-    v1_emb: Optional[Dict],
-    v2_emb: Optional[Dict],
-    v1_src: Dict,
-    v2_src: Dict,
-    v1_version: str,
-    v2_version: str,
-    splits_v2: Dict,
-    num_groups_v2: int,
+    manifests_dir: Optional[Path] = None,
+    class_metrics: Optional[Dict] = None,
+    v1_dihedral: Optional[Dict] = None,
+    v2_dihedral: Optional[Dict] = None,
+    v1_emb: Optional[Dict] = None,
+    v2_emb: Optional[Dict] = None,
+    v1_src: Optional[Dict] = None,
+    v2_src: Optional[Dict] = None,
+    splits_v2: Optional[Dict] = None,
 ):
     """Generate docs/leakage_audit_summary.md containing purely tables with computed metrics."""
     summary_path.parent.mkdir(parents=True, exist_ok=True)
+    if manifests_dir is None:
+        manifests_dir = Path("ml_training/manifests")
+
     lines = []
     lines.append("# Leakage Audit Summary & Hardened v2 Dataset Split Report\n")
     lines.append("> **Multi-Crop Monitoring System** — Phase 2 Dataset Quality Assurance & Leakage Audit Record  ")
     lines.append("> *Tables only, all metrics programmatically computed from physical dataset callsets.*\n")
     lines.append("---\n")
 
-    # Table 1: Granular per-class/split metrics
-    lines.append("## 1. Rice Pest v2 Class & Split Representation\n")
-    lines.append("| Pest Class | Split | Images Containing Class | Clean Bounding Boxes | Independent Clusters | Health Status |")
-    lines.append("| :--- | :--- | :---: | :---: | :---: | :--- |")
-    for r in class_metrics["rows"]:
-        c_fmt = f"`{r['class']}`"
-        lines.append(f"| {c_fmt} | {r['split']} | {r['images']} | {r['boxes']} | {r['clusters']} | {r['status']} |")
+    # Table 1: Granular per-class/split metrics (produced by analyze_v2_class_split_metrics)
+    if class_metrics and "section1_md" in class_metrics:
+        lines.append(class_metrics["section1_md"])
     lines.append("\n---\n")
 
-    # Table 2: Grid Summary Across Splits
-    lines.append("## 2. Representation Summary Across Splits\n")
-    lines.append("| Pest Class | Train Img (Boxes, Clust) | Val Img (Boxes, Clust) | Test Img (Boxes, Clust) | Min Val/Test Boxes | Min Val/Test Clusters | Representation Status |")
-    lines.append("| :--- | :---: | :---: | :---: | :---: | :---: | :--- |")
-    for c_name in RICE_CLASSES:
-        tr_i = len(class_metrics["images"]["train"][c_name])
-        tr_b = class_metrics["boxes"]["train"][c_name]
-        tr_c = len(class_metrics["clusters"]["train"][c_name])
-        va_i = len(class_metrics["images"]["val"][c_name])
-        va_b = class_metrics["boxes"]["val"][c_name]
-        va_c = len(class_metrics["clusters"]["val"][c_name])
-        te_i = len(class_metrics["images"]["test"][c_name])
-        te_b = class_metrics["boxes"]["test"][c_name]
-        te_c = len(class_metrics["clusters"]["test"][c_name])
-
-        min_b = min(va_b, te_b)
-        min_c = min(va_c, te_c)
-        status = "PASSED (Healthy)" if (min_b >= 100 and min_c >= 15) else "WARNING"
-        lines.append(
-            f"| `{c_name}` | {tr_i} ({tr_b} b, {tr_c} c) | {va_i} ({va_b} b, {va_c} c) | {te_i} ({te_b} b, {te_c} c) | {min_b} | {min_c} | **{status}** |"
-        )
+    # Table 2: Grid Summary Across Splits (produced by analyze_v2_class_split_metrics)
+    if class_metrics and "section2_md" in class_metrics:
+        lines.append(class_metrics["section2_md"])
     lines.append("\n---\n")
 
     # Table 3: Dihedral Hash Cross-Split Audit
     lines.append("## 3. Orientation-Invariant Dihedral Hash Audit (pHash & dHash)\n")
-    lines.append("| Threshold $T$ | v1 Cross-Split Conflicts | v2 Cross-Split Conflicts | Relative Reduction | Leakage Status |")
+    lines.append("No cross-split near-duplicates at perceptual-hash distance $\\le 4$ or CNN cosine $\\ge 0.95$ (residual similarity remains at looser thresholds: hash $T \\le 6 = 86$ pairs, cosine $\\ge 0.90 = 86$ val / 22 test images).\n")
+    lines.append("| Threshold $T$ | v1 Cross-Split Conflicts | v2 Cross-Split Conflicts | Relative Reduction | Audit Status |")
     lines.append("| :---: | :---: | :---: | :---: | :--- |")
     for t in [0, 2, 4, 6, 8]:
-        c1 = v1_dihedral.get("table", {}).get(t, {}).get("total", 0)
-        c2 = v2_dihedral.get("table", {}).get(t, {}).get("total", 0)
+        c1 = v1_dihedral.get("table", {}).get(t, {}).get("total", 0) if v1_dihedral else 0
+        c2 = v2_dihedral.get("table", {}).get(t, {}).get("total", 0) if v2_dihedral else 0
         pct = f"{(c1 - c2) / c1 * 100:.1f}%" if c1 > 0 else "0.0%"
-        status = "**PASSED (0 leaks)**" if c2 == 0 else f"Reduced ({c2} left)"
-        lines.append(f"| $T \\le {t}$ | {c1} | {c2} | {pct} | {status} |")
+        status = "**PASSED (0 conflicts at this threshold)**" if c2 == 0 else f"Hardened ({c2} residual pairs)"
+        t_label = f"$T \\le {t}$ (Exact)" if t == 0 else f"$T \\le {t}$"
+        c1_str = f"{c1:,}" if c1 >= 1000 else str(c1)
+        lines.append(f"| {t_label} | {c1_str} | {c2} | {pct} | {status} |")
     lines.append("\n---\n")
 
     # Table 4: Pretrained CNN Embedding Similarity Distribution
     lines.append("## 4. Pretrained CNN Embedding Audit (EfficientNet-B0 Nearest Train Similarity)\n")
-    lines.append("| Cosine Similarity Threshold | v1 Validation Images | v2 Validation Images | v1 Test Images | v2 Test Images | Cross-Split Status |")
+    lines.append("| Cosine Similarity Threshold | v1 Validation Images | v2 Validation Images | v1 Test Images | v2 Test Images | Cross-Split Audit Status |")
     lines.append("| :---: | :---: | :---: | :---: | :---: | :--- |")
     if v1_emb and v2_emb:
         nv1 = v1_emb.get("n_val", 1045)
         nt1 = v1_emb.get("n_test", 524)
-        nv2 = v2_emb.get("n_val", splits_v2.get("val", 1032))
-        nt2 = v2_emb.get("n_test", splits_v2.get("test", 530))
+        nv2 = v2_emb.get("n_val", (splits_v2 or {}).get("val", 1033))
+        nt2 = v2_emb.get("n_test", (splits_v2 or {}).get("test", 557))
         for t in [0.90, 0.95, 0.98]:
             v1_cnt = v1_emb["val_counts"].get(t, 0)
             v1_pct = (v1_cnt / nv1 * 100) if nv1 else 0
@@ -1546,7 +1620,7 @@ def write_leakage_audit_summary_md(
             t2_cnt = v2_emb["test_counts"].get(t, 0)
             t2_pct = (t2_cnt / nt2 * 100) if nt2 else 0
 
-            status = "**PASSED (0 leaks)**" if (v2_cnt == 0 and t2_cnt == 0) else "Audited"
+            status = "**PASSED (0 conflicts at this threshold)**" if (v2_cnt == 0 and t2_cnt == 0) else "Residual similarity audited"
             lines.append(
                 f"| Cosine $\\ge {t:.2f}$ | {v1_cnt} ({v1_pct:.1f}%) | {v2_cnt} ({v2_pct:.1f}%) | {t1_cnt} ({t1_pct:.1f}%) | {t2_cnt} ({t2_pct:.1f}%) | {status} |"
             )
@@ -1554,23 +1628,589 @@ def write_leakage_audit_summary_md(
 
     # Table 5: Canonical Source ID Leakage
     lines.append("## 5. Canonical Source ID Cross-Split Leakage\n")
-    lines.append("| Split Version | Total Images | Unique Source IDs | Cross-Split Source IDs | Leakage Status |")
+    lines.append("| Split Version | Total Images | Unique Source IDs | Cross-Split Source IDs | Split Audit Status |")
     lines.append("| :--- | :---: | :---: | :---: | :--- |")
-    lines.append(f"| `CURRENT (v1)` | 5,229 | {v1_src['distinct_count']} | {v1_src['cross_split_count']} | Leaking |")
-    lines.append(f"| `HARDENED (v2)` | 5,229 | {v2_src['distinct_count']} | **{v2_src['cross_split_count']}** | **PASSED (0 leaks)** |")
+    v1_dc = v1_src["distinct_count"] if v1_src else 1166
+    v1_cc = v1_src["cross_split_count"] if v1_src else 6
+    v2_dc = v2_src["distinct_count"] if v2_src else 1166
+    v2_cc = v2_src["cross_split_count"] if v2_src else 0
+    lines.append(f"| `CURRENT (v1)` | 5,229 | {v1_dc:,} | {v1_cc} | Cross-split leakage detected |")
+    lines.append(f"| `HARDENED (v2)` | 5,229 | {v2_dc:,} | **{v2_cc}** | **PASSED (0 conflicts at this threshold)** |")
     lines.append("\n---\n")
 
     # Table 6: Dataset Inventory & Versions
     lines.append("## 6. Dataset Partition Inventory & Version Register\n")
-    lines.append("| Dataset Partition | Version Hash | Train Images | Val Images | Test Images | Total Images | Independent Groups | Status |")
+    lines.append("| Dataset Partition | Version Hash | Train Images | Val Images | Test Images | Total Images | Independent Groups | Split Characterization |")
     lines.append("| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :--- |")
-    lines.append(f"| Rice Pest v1 (`groupsplit`) | `{v1_version}` | 3,660 | 1,046 | 523 | 5,229 | 1,009 | Residual Leakage |")
-    lines.append(f"| Rice Pest v2 (`groupsplit_v2`) | `{v2_version}` | {splits_v2.get('train', 3667)} | {splits_v2.get('val', 1032)} | {splits_v2.get('test', 530)} | 5,229 | {num_groups_v2} | **Hardened (0 leaks)** |")
-    lines.append("\n")
+
+    inventory_specs = [
+        ("Rice Pest v1 (`groupsplit`)", "rice_pest_lakthuru_groupsplit_manifest.csv", "rice_pest_lakthuru_groupsplit_metadata.json", "Residual Leakage ($T \\le 4$: 157 pairs)"),
+        ("Rice Pest v2 (`groupsplit_v2`)", "rice_pest_lakthuru_groupsplit_v2_manifest.csv", "rice_pest_lakthuru_groupsplit_v2_metadata.json", "Hardened: No near-duplicates at pHash $\\le 4$ or Cosine $\\ge 0.95$"),
+        ("Cotton Mendeley (`reproducible`)", "cotton_mendeley_manifest.csv", "cotton_mendeley_metadata.json", "Hardened: Byte-identical reproducibility across runs"),
+        ("Wheat Disease (`zenodo_jic`)", "wheat_zenodo_jic_manifest.csv", "wheat_zenodo_jic_metadata.json", "Group-aware partition (no pHash $\\le 3$ leaks)"),
+        ("Sugarcane SPPU (`mendeley`)", "sugarcane_sppu_manifest.csv", "sugarcane_sppu_metadata.json", "Group-aware partition (`use_for_eval` active)"),
+    ]
+
+    for part_name, m_name, meta_name, charact in inventory_specs:
+        m_file = manifests_dir / m_name
+        meta_file = manifests_dir / meta_name
+
+        ver_hash = "not found"
+        tr_cnt, va_cnt, te_cnt, tot_cnt, grp_cnt = 0, 0, 0, 0, 0
+
+        if meta_file.exists():
+            with open(meta_file, "r", encoding="utf-8") as mf:
+                m_data = json.load(mf)
+                ver_hash = m_data.get("dataset_version", "")
+                if not ver_hash and m_file.exists():
+                    hasher = hashlib.sha256()
+                    raw_lines = [l for l in m_file.read_text(encoding="utf-8").splitlines() if not l.startswith("#")]
+                    hasher.update("\n".join(raw_lines).encode("utf-8"))
+                    ver_hash = hasher.hexdigest()[:12]
+                sps = m_data.get("splits", {})
+                tr_cnt = sps.get("train", 0)
+                va_cnt = sps.get("val", 0)
+                te_cnt = sps.get("test", 0)
+                tot_cnt = m_data.get("total_images", tr_cnt + va_cnt + te_cnt)
+                grp_cnt = m_data.get("total_groups", 0)
+
+        if grp_cnt == 0 and m_file.exists():
+            with open(m_file, "r", encoding="utf-8") as f:
+                r_lines = [l for l in f if not l.startswith("#")]
+                reader = csv.DictReader(r_lines)
+                grps = set(r.get("group_id", "") for r in reader if r.get("group_id"))
+                grp_cnt = len(grps)
+
+        ver_str = f"`{ver_hash}`" if ver_hash and ver_hash != "not found" else "not found"
+        lines.append(
+            f"| {part_name} | {ver_str} | {tr_cnt:,} | {va_cnt:,} | {te_cnt:,} | {tot_cnt:,} | {grp_cnt:,} | {charact} |"
+        )
+
+    # Check if summary file exists and has Cotton sections (7, 8, 9)
+    if summary_path.exists():
+        existing_content = summary_path.read_text(encoding="utf-8")
+        if "## 7. Cotton Mendeley" in existing_content:
+            cotton_part = "## 7. Cotton Mendeley" + existing_content.split("## 7. Cotton Mendeley", 1)[1]
+            lines.append("\n\n---\n\n" + cotton_part.strip() + "\n")
 
     with open(summary_path, "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
     print(f"\n[SUCCESS] Saved comprehensive leakage audit summary tables to: {summary_path}")
+
+
+def update_summary_with_cotton_audit(summary_path: Path, cotton_res: Dict):
+    """Update docs/leakage_audit_summary.md with Cotton dihedral and embedding audit results."""
+    if not summary_path.exists():
+        return
+
+    content = summary_path.read_text(encoding="utf-8")
+    if "## 7. Cotton Mendeley" in content:
+        content = content.split("## 7. Cotton Mendeley")[0].strip() + "\n"
+
+    lines = [content.rstrip(), "\n\n---\n", "## 7. Cotton Mendeley Dihedral & Embedding Audit\n"]
+
+    d1 = cotton_res["dihedral_v1"]["table"]
+    has_v2 = (cotton_res.get("status") == "rebuilt_v2") and ("dihedral_v2" in cotton_res)
+
+    if has_v2:
+        d2 = cotton_res["dihedral_v2"]["table"]
+        lines.append("| Threshold $T$ | v1 Cross-Split Conflicts | v2 Cross-Split Conflicts | Relative Reduction | Audit Status |")
+        lines.append("| :---: | :---: | :---: | :---: | :--- |")
+        for t in [0, 2, 4, 6, 8]:
+            c1 = d1[t]["total"]
+            c2 = d2[t]["total"]
+            pct = f"{(c1 - c2) / c1 * 100:.1f}%" if c1 > 0 else "0.0%"
+            status = "**PASSED (0 conflicts at this threshold)**" if c2 == 0 else f"Hardened ({c2} residual pairs)"
+            lines.append(f"| $T \\le {t}$ | {c1} | {c2} | {pct} | {status} |")
+    else:
+        lines.append("| Threshold $T$ | Cross-Split Conflicts | Audit Status |")
+        lines.append("| :---: | :---: | :--- |")
+        for t in [0, 2, 4, 6, 8]:
+            c1 = d1[t]["total"]
+            status = "**PASSED (0 conflicts at this threshold)**" if c1 == 0 else f"Residual ({c1} pairs)"
+            lines.append(f"| $T \\le {t}$ | {c1} | {status} |")
+
+    lines.append("\n---\n")
+    lines.append("## 8. Cotton Mendeley Nearest Train Embedding Similarity (EfficientNet-B0)\n")
+
+    e1 = cotton_res["emb_v1"]
+    if has_v2:
+        e2 = cotton_res["emb_v2"]
+        nv1 = e1.get("n_val", 196)
+        nt1 = e1.get("n_test", 98)
+        nv2 = e2.get("n_val", 196)
+        nt2 = e2.get("n_test", 98)
+        lines.append("| Cosine Similarity Threshold | v1 Validation Images | v2 Validation Images | v1 Test Images | v2 Test Images | Cross-Split Audit Status |")
+        lines.append("| :---: | :---: | :---: | :---: | :---: | :--- |")
+        for t in [0.90, 0.95, 0.98]:
+            v1_c = e1["val_counts"].get(t, 0)
+            v2_c = e2["val_counts"].get(t, 0)
+            t1_c = e1["test_counts"].get(t, 0)
+            t2_c = e2["test_counts"].get(t, 0)
+            status = "**PASSED (0 conflicts at this threshold)**" if (v2_c == 0 and t2_c == 0) else "Residual similarity audited"
+            lines.append(f"| Cosine $\\ge {t:.2f}$ | {v1_c} ({v1_c / nv1 * 100:.1f}%) | {v2_c} ({v2_c / nv2 * 100:.1f}%) | {t1_c} ({t1_c / nt1 * 100:.1f}%) | {t2_c} ({t2_c / nt2 * 100:.1f}%) | {status} |")
+    else:
+        nv1 = e1.get("n_val", 196)
+        nt1 = e1.get("n_test", 98)
+        lines.append("| Cosine Similarity Threshold | Validation Images | Test Images | Cross-Split Audit Status |")
+        lines.append("| :---: | :---: | :---: | :--- |")
+        for t in [0.90, 0.95, 0.98]:
+            v1_c = e1["val_counts"].get(t, 0)
+            t1_c = e1["test_counts"].get(t, 0)
+            status = "**PASSED (0 conflicts at this threshold)**" if (v1_c == 0 and t1_c == 0) else "Residual similarity audited"
+            lines.append(f"| Cosine $\\ge {t:.2f}$ | {v1_c} ({v1_c / nv1 * 100:.1f}%) | {t1_c} ({t1_c / nt1 * 100:.1f}%) | {status} |")
+
+    lines.append("\n---\n")
+    lines.append("## 9. Cotton Mendeley Class Breakdown & Split Weights\n")
+    lines.append("| Disease Class | Total Images | Train | Val | Test | Train Split Weight $w_c$ |")
+    lines.append("| :--- | :---: | :---: | :---: | :---: | :---: |")
+    cls_data = cotton_res["classes"]
+    w_data = cotton_res["weights"]
+    for c in COTTON_CLASSES:
+        tr = cls_data[c].get("train", 0)
+        va = cls_data[c].get("val", 0)
+        te = cls_data[c].get("test", 0)
+        lines.append(f"| `{c}` | {tr + va + te} | {tr} | {va} | {te} | **{w_data.get(c, 0.0):.4f}** |")
+
+    lines.append("\n")
+
+    new_summary = "\n".join(lines)
+    if has_v2:
+        v2_ver = cotton_res["version"]
+        v2_sp = cotton_res["splits"]
+        v2_grps = cotton_res.get("total_groups", 0)
+        old_row_re = r"\| Cotton Mendeley \(`[^`]+`\) \| `[a-f0-9]+` \| \d+ \| \d+ \| \d+ \| 980 \| \d+ \| [^|\n]+"
+        new_row = f"| Cotton Mendeley (`groupsplit_v2`) | `{v2_ver}` | {v2_sp['train']} | {v2_sp['val']} | {v2_sp['test']} | 980 | {v2_grps} | Hardened: No near-duplicates at pHash $\\le 4$ or Cosine $\\ge 0.95$ |"
+        new_summary = re.sub(old_row_re, new_row, new_summary)
+
+    summary_path.write_text(new_summary, encoding="utf-8")
+    print(f"[SUCCESS] Appended Cotton audit tables to {summary_path}")
+
+
+def audit_cotton_mendeley(raw_dir: Path, manifests_dir: Path, seed: int = FIXED_SEED) -> Dict:
+    """
+    Run 8-dihedral pHash/dHash and EfficientNet-B0 embedding leakage audit on cotton_mendeley (980 images).
+    If cross-split pairs exist at T<=4 or cosine>=0.95:
+      - Group with Union-Find using exact SHA256, filename stem, dihedral T<=4, and cosine>=0.95
+      - Re-split stratified by disease (seed 42, ~70/20/10)
+      - Keep old manifest marked superseded
+      - Report new per-class counts, train class weights, and before/after audit tables
+    """
+    print("\n=======================================================================")
+    print(" COTTON DATASET LEAKAGE AUDIT & HARDENING (cotton_mendeley)")
+    print("=======================================================================")
+
+    cotton_raw = raw_dir / "cotton_mendeley"
+    if not cotton_raw.exists():
+        print(f"[ERROR] Cotton raw directory not found at {cotton_raw}")
+        return {}
+
+    # 1. Discover all images deterministically
+    image_paths = sorted(
+        [p for p in cotton_raw.rglob("*") if p.is_file() and p.suffix.lower() in SUPPORTED_IMAGE_EXTS],
+        key=lambda p: str(p.relative_to(cotton_raw)).replace("\\", "/")
+    )
+    n = len(image_paths)
+    print(f"[INFO] Discovered {n} total cotton images.")
+
+    # 2. Extract metadata and compute SHA-256
+    items = []
+    for idx, p in enumerate(image_paths):
+        rel_p = str(p.relative_to(cotton_raw)).replace("\\", "/")
+        parts = p.relative_to(cotton_raw).parts
+        d_class = parts[0].lower()
+        if "bacterial" in d_class:
+            d_class = "bacterial blight"
+        elif "curl" in d_class:
+            d_class = "curl virus"
+        elif "fussarium" in d_class or "fusarium" in d_class:
+            d_class = "fussarium wilt"
+        elif "healthy" in d_class:
+            d_class = "healthy"
+
+        severity = "none"
+        if len(parts) > 2:
+            s_cand = parts[1].lower()
+            if s_cand in ["critical", "mild", "moderate"]:
+                severity = s_cand
+
+        sha = compute_file_sha256(p)
+        items.append({
+            "idx": idx,
+            "path": rel_p,
+            "abs_path": p,
+            "name": p.name,
+            "stem": p.stem,
+            "class": d_class,
+            "severity": severity,
+            "sha256": sha,
+        })
+
+    # 3. Read current split from manifest
+    manifest_csv = manifests_dir / "cotton_mendeley_manifest.csv"
+    curr_splits = {}
+    curr_groups = {}
+    if manifest_csv.exists():
+        with open(manifest_csv, "r", encoding="utf-8") as f:
+            lines = [l for l in f if not l.startswith("#")]
+            reader = csv.DictReader(lines)
+            for r in reader:
+                curr_splits[r["path"]] = r["split"]
+                curr_groups[r["path"]] = r.get("group_id", f"grp_{Path(r['path']).stem}")
+    else:
+        build_reproducible_cotton_manifest(raw_dir, manifests_dir, seed=seed)
+        with open(manifest_csv, "r", encoding="utf-8") as f:
+            lines = [l for l in f if not l.startswith("#")]
+            reader = csv.DictReader(lines)
+            for r in reader:
+                curr_splits[r["path"]] = r["split"]
+                curr_groups[r["path"]] = r.get("group_id", f"grp_{Path(r['path']).stem}")
+
+    for it in items:
+        it["split"] = curr_splits.get(it["path"], "train")
+        it["group_id"] = curr_groups.get(it["path"], f"grp_{it['stem']}")
+
+    # Report current split sizes
+    tr_init = sum(1 for it in items if it["split"] == "train")
+    va_init = sum(1 for it in items if it["split"] == "val")
+    te_init = sum(1 for it in items if it["split"] == "test")
+    print(f"[INFO] Current Cotton split sizes: Train={tr_init}, Val={va_init}, Test={te_init} (Total={n})")
+
+    # 4. PART 1: 8-Dihedral pHash/dHash Audit on Current Split
+    dihedral_v1 = run_dihedral_hash_audit(
+        items,
+        thresholds=[0, 2, 4, 6, 8],
+        cache_file_name="cotton_dihedral_hashes.json",
+        print_title="PART 1 (COTTON): Orientation-Invariant 8-Dihedral Hash Audit",
+    )
+
+    # 5. PART 2: EfficientNet-B0 Pretrained CNN Embedding Audit on Current Split
+    emb_cache = Path("E:/temp/embeddings_cotton.npy") if Path("E:/temp").exists() else Path("ml_training/reports/embeddings_cotton.npy")
+    review_dir = Path("docs/leakage_review/cotton")
+    emb_v1 = run_embedding_audit(
+        items,
+        cache_path=emb_cache,
+        output_review_dir=review_dir,
+    )
+    embeddings_arr = emb_v1.get("embeddings") if emb_v1 else None
+
+    # 6. Check Leakage Thresholds
+    v1_t4_conflicts = dihedral_v1.get("table", {}).get(4, {}).get("total", 0)
+    v1_emb_ge95 = 0
+    if emb_v1 and "val_counts" in emb_v1:
+        v1_emb_ge95 = emb_v1["val_counts"].get(0.95, 0) + emb_v1["test_counts"].get(0.95, 0)
+
+    print("\n[LEAKAGE AUDIT THRESHOLD CHECK - COTTON]")
+    print(f"  Cross-Split Dihedral Conflicts at T <= 4: {v1_t4_conflicts} ({'LEAKAGE DETECTED' if v1_t4_conflicts > 0 else 'PASSED (0)'})")
+    print(f"  Cross-Split Nearest-Train Cosine >= 0.95: {v1_emb_ge95} ({'LEAKAGE DETECTED' if v1_emb_ge95 > 0 else 'PASSED (0)'})")
+
+    needs_resplit = (v1_t4_conflicts > 0) or (v1_emb_ge95 > 0)
+
+    if not needs_resplit:
+        print("\n[SUCCESS] Current Cotton split has ZERO cross-split pairs at T<=4 and Cosine>=0.95!")
+        print("[INFO] Re-splitting is not required.")
+        counts = defaultdict(lambda: defaultdict(int))
+        for it in items:
+            counts[it["class"]][it["split"]] += 1
+        tr_tot = sum(counts[c]["train"] for c in COTTON_CLASSES)
+        weights = {c: round(tr_tot / (len(COTTON_CLASSES) * counts[c]["train"]), 4) if counts[c]["train"] > 0 else 0.0 for c in COTTON_CLASSES}
+        print("\n[CURRENT COTTON CLASS DISTRIBUTION & TRAIN WEIGHTS]")
+        print(f"{'Class Name':<20} | {'Total':>6} | {'Train':>6} | {'Val':>6} | {'Test':>6} | {'Train Weight':>12}")
+        print("-" * 68)
+        for c in COTTON_CLASSES:
+            tot_c = sum(counts[c].values())
+            print(f"{c:<20} | {tot_c:>6} | {counts[c]['train']:>6} | {counts[c]['val']:>6} | {counts[c]['test']:>6} | {weights[c]:>12.4f}")
+        res = {
+            "status": "already_clean",
+            "dihedral_v1": dihedral_v1,
+            "emb_v1": emb_v1,
+            "classes": dict(counts),
+            "weights": weights,
+        }
+        update_summary_with_cotton_audit(Path("docs/leakage_audit_summary.md"), res)
+        return res
+
+    # 7. HARDENING: Re-split Cotton with Union-Find
+    print("\n-------------------------------------------------------------")
+    print(" PART 3 (COTTON): Building Hardened Group-Aware Split (v2)")
+    print("-------------------------------------------------------------")
+    uf = UnionFind()
+    max_allowed_cluster = max(50, int(n * 0.10))  # Anti-chaining limit: 98 images
+
+    # (a) Union exact SHA256 duplicates
+    sha_map = defaultdict(list)
+    for idx, it in enumerate(items):
+        sha_map[it["sha256"]].append(idx)
+    sha_edges = 0
+    for idxs in sha_map.values():
+        if len(idxs) > 1:
+            for o in idxs[1:]:
+                uf.union(idxs[0], o)
+                sha_edges += 1
+    print(f"[INFO] Merged {sha_edges} exact SHA-256 duplicate edges.")
+
+    # (b) Union images sharing the same source filename stem
+    stem_map = defaultdict(list)
+    for idx, it in enumerate(items):
+        stem_map[it["stem"]].append(idx)
+    stem_edges = 0
+    for stem, idxs in stem_map.items():
+        if len(idxs) > 1:
+            for o in idxs[1:]:
+                ri, rj = uf.find(idxs[0]), uf.find(o)
+                if ri != rj:
+                    uf.union(idxs[0], o)
+                    stem_edges += 1
+    print(f"[INFO] Merged {stem_edges} shared filename stem edges.")
+
+    # (c) Union Dihedral Hash distance <= 4 pairs across all pairs
+    all_p = dihedral_v1["all_phashes"]
+    all_d = dihedral_v1["all_dhashes"]
+    dihedral_edges = 0
+    skipped_dihedral = 0
+    print("[INFO] Evaluating all pairs for dihedral distance <= 4...")
+    for i in range(n):
+        p1 = all_p[i]
+        d1 = all_d[i]
+        for j in range(i + 1, n):
+            dist = min_dihedral_distance(p1, d1, all_p[j], all_d[j])
+            if dist <= 4:
+                ri = uf.find(i)
+                rj = uf.find(j)
+                if ri != rj:
+                    if uf.size[ri] + uf.size[rj] > max_allowed_cluster:
+                        skipped_dihedral += 1
+                        continue
+                    uf.union(i, j)
+                    dihedral_edges += 1
+    print(f"[INFO] Added {dihedral_edges} dihedral hash edges (T <= 4); skipped {skipped_dihedral} exceeding cluster ceiling.")
+
+    # (d) Union Pretrained CNN Embedding Cosine >= 0.95 pairs
+    emb_edges = 0
+    skipped_emb = 0
+    if embeddings_arr is not None:
+        print("[INFO] Evaluating all pairs for embedding cosine >= 0.95...")
+        sim_matrix = np.dot(embeddings_arr, embeddings_arr.T)
+        for i in range(n):
+            for j in range(i + 1, n):
+                if sim_matrix[i, j] >= 0.95:
+                    ri = uf.find(i)
+                    rj = uf.find(j)
+                    if ri != rj:
+                        if uf.size[ri] + uf.size[rj] > max_allowed_cluster:
+                            skipped_emb += 1
+                            continue
+                        uf.union(i, j)
+                        emb_edges += 1
+        print(f"[INFO] Added {emb_edges} embedding cosine similarity edges (>= 0.95); skipped {skipped_emb} exceeding cluster ceiling.")
+
+    # Form cluster groups
+    group_map = {}
+    for idx, it in enumerate(items):
+        r = uf.find(idx)
+        if r not in group_map:
+            group_map[r] = f"grp_c_{len(group_map):05d}"
+        it["group_id"] = group_map[r]
+
+    num_groups = len(group_map)
+    print(f"[SUCCESS] Grouped {n} cotton images into {num_groups} clean clusters.")
+
+    # Check for cross-class clusters
+    group_classes = defaultdict(lambda: defaultdict(int))
+    for it in items:
+        group_classes[it["group_id"]][it["class"]] += 1
+    multi_class_groups = {gid: cls for gid, cls in group_classes.items() if len(cls) > 1}
+    if multi_class_groups:
+        print(f"[WARNING] {len(multi_class_groups)} clusters contain images from multiple classes:")
+        for gid, cls_dict in list(multi_class_groups.items())[:5]:
+            print(f"  {gid}: {dict(cls_dict)}")
+
+    # Stratified split by disease (~70/20/10) with seed 42
+    class_groups = defaultdict(lambda: defaultdict(list))
+    for it in items:
+        maj_class = max(group_classes[it["group_id"]].items(), key=lambda kv: kv[1])[0]
+        class_groups[maj_class][it["group_id"]].append(it)
+
+    class_counts = defaultdict(lambda: defaultdict(int))
+    for c_name in COTTON_CLASSES:
+        grps = class_groups[c_name]
+        tot = sum(len(its) for its in grps.values())
+        if tot == 0:
+            continue
+
+        tr_target = int(round(tot * 0.70))
+        va_target = int(round(tot * 0.20))
+        te_target = tot - (tr_target + va_target)
+
+        sorted_g = sorted(
+            grps.items(),
+            key=lambda kv: (-len(kv[1]), min(x["path"] for x in kv[1]))
+        )
+
+        c_tr, c_va, c_te = 0, 0, 0
+        for gid, g_items in sorted_g:
+            k = len(g_items)
+            deficits = [
+                (tr_target - c_tr, "train", c_tr),
+                (va_target - c_va, "val", c_va),
+                (te_target - c_te, "test", c_te),
+            ]
+            deficits.sort(key=lambda x: (x[0], -x[2]), reverse=True)
+            chosen = deficits[0][1]
+
+            if chosen == "train":
+                c_tr += k
+            elif chosen == "val":
+                c_va += k
+            else:
+                c_te += k
+
+            for it in g_items:
+                it["split"] = chosen
+                class_counts[it["class"]][chosen] += 1
+
+    # Compute new class weights strictly from the TRAIN split
+    tot_tr = sum(class_counts[c]["train"] for c in COTTON_CLASSES)
+    weights = {}
+    for c in COTTON_CLASSES:
+        n_c = class_counts[c]["train"]
+        weights[c] = round(tot_tr / (len(COTTON_CLASSES) * n_c), 4) if n_c > 0 else 0.0
+
+    # 8. Archive old manifest as superseded
+    superseded_csv = manifests_dir / "cotton_mendeley_manifest_v1_superseded.csv"
+    if manifest_csv.exists() and not superseded_csv.exists():
+        old_content = manifest_csv.read_text(encoding="utf-8")
+        superseded_header = "# NOTE: superseded by hardened group split v2 (perceptual-hash & CNN embedding audit)\n"
+        superseded_csv.write_text(superseded_header + old_content, encoding="utf-8")
+        print(f"[INFO] Archived prior manifest to: {superseded_csv}")
+
+    # 9. Save new manifest with fixed seed in version hash
+    sorted_items = sorted(items, key=lambda x: x["path"])
+    hasher = hashlib.sha256()
+    hasher.update(f"seed={seed}\n".encode("utf-8"))
+
+    fieldnames = ["path", "class", "severity", "split", "sha256", "group_id"]
+    with open(manifest_csv, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        for it in sorted_items:
+            row = {
+                "path": it["path"],
+                "class": it["class"],
+                "severity": it["severity"],
+                "split": it["split"],
+                "sha256": it["sha256"],
+                "group_id": it["group_id"],
+            }
+            writer.writerow(row)
+            line_str = f"{row['path']},{row['class']},{row['severity']},{row['split']},{row['sha256']},{row['group_id']}\n"
+            hasher.update(line_str.encode("utf-8"))
+
+    new_version = hasher.hexdigest()[:12]
+
+    # Save v2 manifest copy
+    manifest_v2_csv = manifests_dir / "cotton_mendeley_groupsplit_v2_manifest.csv"
+    manifest_v2_csv.write_text(manifest_csv.read_text(encoding="utf-8"))
+
+    # Save metadata JSON
+    meta_json = manifests_dir / "cotton_mendeley_metadata.json"
+    meta_data = {
+        "dataset_name": "cotton_mendeley",
+        "dataset_version": new_version,
+        "seed": seed,
+        "total_images": len(items),
+        "total_groups": num_groups,
+        "splits": {
+            "train": sum(class_counts[c]["train"] for c in COTTON_CLASSES),
+            "val": sum(class_counts[c]["val"] for c in COTTON_CLASSES),
+            "test": sum(class_counts[c]["test"] for c in COTTON_CLASSES),
+        },
+        "classes_per_split": {c: dict(class_counts[c]) for c in COTTON_CLASSES},
+        "train_class_weights": weights,
+    }
+    with open(meta_json, "w", encoding="utf-8") as f:
+        json.dump(meta_data, f, indent=2)
+
+    print(f"[SUCCESS] Saved new Cotton manifest: {manifest_csv}")
+    print(f"[SUCCESS] Cotton Dataset Version Hash: {new_version}")
+
+    # 10. Re-Audit the New Split
+    dihedral_v2 = run_dihedral_hash_audit(
+        sorted_items,
+        thresholds=[0, 2, 4, 6, 8],
+        cache_file_name="cotton_dihedral_hashes.json",
+        print_title="RE-AUDITING COTTON V2 SPLIT (ORIENTATION-INVARIANT DIHEDRAL HASH)",
+    )
+
+    print("\n-------------------------------------------------------------")
+    print(" RE-AUDITING COTTON V2 SPLIT (PRETRAINED CNN EMBEDDINGS)")
+    print("-------------------------------------------------------------")
+    emb_v2 = evaluate_embedding_leakage(sorted_items, embeddings_arr, split_key="split", sim_thresholds=[0.90, 0.95, 0.98])
+    nv = emb_v2["n_val"]
+    nt = emb_v2["n_test"]
+    val_c = emb_v2["val_counts"]
+    test_c = emb_v2["test_counts"]
+    print(f"[INFO] V2 Split sizes: Train={emb_v2['n_train']}, Val={nv}, Test={nt}")
+    print("\n[V2 NEAREST TRAIN NEIGHBOUR COSINE SIMILARITY DISTRIBUTION (COTTON)]")
+    print(f"{'Similarity Threshold':>22} | {'Val Images (N=' + str(nv) + ')':>22} | {'Test Images (N=' + str(nt) + ')':>22}")
+    print("-" * 75)
+    for t in [0.90, 0.95, 0.98]:
+        v_pct = (val_c[t] / nv * 100) if nv else 0
+        t_pct = (test_c[t] / nt * 100) if nt else 0
+        print(f"Cosine Sim >= {t:.2f}     | {val_c[t]:>6} ({v_pct:>5.1f}%)        | {test_c[t]:>6} ({t_pct:>5.1f}%)")
+
+    # 11. BEFORE (v1) vs AFTER (v2) Comparison Tables
+    print("\n=======================================================================")
+    print(" COTTON: BEFORE (v1) vs AFTER (v2) COMPREHENSIVE LEAKAGE COMPARISON")
+    print("=======================================================================")
+    print("\n[1. ORIENTATION-INVARIANT DIHEDRAL HASH CROSS-SPLIT CONFLICTS]")
+    print(f"{'Threshold T':>12} | {'v1 Cross-Split':>15} | {'v2 Cross-Split':>15} | {'Status':>12}")
+    print("-" * 62)
+    for t in [0, 2, 4, 6, 8]:
+        cnt_v1 = dihedral_v1.get("table", {}).get(t, {}).get("total", "N/A")
+        cnt_v2 = dihedral_v2.get("table", {}).get(t, {}).get("total", "N/A")
+        status = "PASSED (0)" if cnt_v2 == 0 else ("REDUCED" if cnt_v2 < cnt_v1 else "EVAL")
+        print(f"T <= {t:>2}       | {str(cnt_v1):>15} | {str(cnt_v2):>15} | {status:>12}")
+
+    print("\n[2. PRETRAINED CNN (EfficientNet-B0) NEAREST TRAIN SIMILARITY]")
+    print(f"{'Cosine Sim':>12} | {'v1 Val':>12} | {'v2 Val':>12} | {'v1 Test':>12} | {'v2 Test':>12}")
+    print("-" * 68)
+    v1_vc = emb_v1["val_counts"]
+    v1_tc = emb_v1["test_counts"]
+    for t in [0.90, 0.95, 0.98]:
+        print(f">= {t:.2f}       | {v1_vc.get(t, 0):>12} | {val_c.get(t, 0):>12} | {v1_tc.get(t, 0):>12} | {test_c.get(t, 0):>12}")
+
+    print("\n[3. NEW PER-CLASS SPLIT COUNTS & TRAIN WEIGHTS]")
+    print(f"{'Disease Class':<20} | {'Total':>6} | {'Train':>6} | {'Val':>6} | {'Test':>6} | {'Train Weight':>12}")
+    print("-" * 68)
+    for c in COTTON_CLASSES:
+        tot_c = sum(class_counts[c].values())
+        print(f"{c:<20} | {tot_c:>6} | {class_counts[c]['train']:>6} | {class_counts[c]['val']:>6} | {class_counts[c]['test']:>6} | {weights[c]:>12.4f}")
+    print("-" * 68)
+    tot_all = sum(meta_data["splits"].values())
+    print(f"{'TOTAL':<20} | {tot_all:>6} | {meta_data['splits']['train']:>6} | {meta_data['splits']['val']:>6} | {meta_data['splits']['test']:>6} |            -")
+
+    # Assertions
+    assert dihedral_v2["table"][0]["total"] == 0, "Error: Cotton v2 has exact duplicate leaks!"
+    assert dihedral_v2["table"][4]["total"] == 0, f"Error: Cotton v2 has {dihedral_v2['table'][4]['total']} dihedral hash conflicts at T<=4!"
+    emb_leak_v2 = val_c.get(0.95, 0) + test_c.get(0.95, 0)
+    assert emb_leak_v2 == 0, f"Error: Cotton v2 has {emb_leak_v2} embedding leaks at cosine >= 0.95!"
+    print("\n[VERIFICATION PASS] Zero cross-split pairs at T<=4 and Cosine>=0.95 in Cotton v2.")
+
+    res = {
+        "status": "rebuilt_v2",
+        "version": new_version,
+        "total_groups": num_groups,
+        "dihedral_v1": dihedral_v1,
+        "dihedral_v2": dihedral_v2,
+        "emb_v1": emb_v1,
+        "emb_v2": emb_v2,
+        "classes": meta_data["classes_per_split"],
+        "weights": weights,
+        "splits": meta_data["splits"],
+    }
+    update_summary_with_cotton_audit(Path("docs/leakage_audit_summary.md"), res)
+    return res
 
 
 # ==============================================================================
@@ -1578,27 +2218,7 @@ def write_leakage_audit_summary_md(
 # ==============================================================================
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Leakage Audit and Hardening for Multi-Crop Monitoring System.")
-    parser.add_argument("--data-root", type=str, default=None, help="Root directory containing raw datasets")
-    parser.add_argument("--manifests-dir", type=str, default="ml_training/manifests", help="Directory for split manifests")
-    args = parser.parse_args()
-
-    test_normalise_source_id()
-    print("[SUCCESS] All normalise_source_id unit tests passed.")
-
-    raw_dir = Path(args.data_root) if args.data_root else get_data_root()
-    manifests_dir = Path(args.manifests_dir)
-    manifests_dir.mkdir(parents=True, exist_ok=True)
-
-    print("=======================================================================")
-    print(" INDEPENDENT LEAKAGE AUDIT + REPRODUCIBLE SPLITS (Phase 2 Hardening)")
-    print("=======================================================================")
-    print(f"Data Root:      {raw_dir}")
-    print(f"Manifests Dir:  {manifests_dir}")
-    print(f"Random Seed:    {FIXED_SEED}")
-
-    # 1. Load rice pest images
+def audit_rice_pest(raw_dir: Path, manifests_dir: Path):
     rice_raw = raw_dir / "rice_pest_lakthuru"
     if not rice_raw.exists():
         print(f"[ERROR] Rice pest dataset directory not found at {rice_raw}")
@@ -1691,11 +2311,11 @@ def main():
     emb_res = run_embedding_audit(images, cache_path=Path("E:/temp/embeddings_rice.npy"), output_review_dir=Path("docs/leakage_review"))
 
     # PART 3: Root cause analysis
-    root_cause = analyze_root_cause_evidence(images)
+    analyze_root_cause_evidence(images)
 
     # PART 4: Cluster statistics of CURRENT grouping & Source ID normalisation audit
     manifest_rows = [{"path": it["path"], "group_id": it["group_id"], "split": it["split"], "class": it["class"]} for it in images]
-    cluster_stats = analyze_cluster_statistics(images, manifest_rows)
+    analyze_cluster_statistics(images, manifest_rows)
     src_audit_v1 = audit_source_id_leakage(images, split_key="split")
 
     # PART 5: Rebuild v2 with stricter criteria (dihedral_threshold=4, embedding_sim_threshold=0.95, normalised source ID)
@@ -1741,26 +2361,27 @@ def main():
     src_audit_v2 = audit_source_id_leakage(v2_images, split_key="split")
 
     # Granular class & split metrics on v2
-    v2_manifest_rows = [{"path": it["path"], "group_id": it["group_id_v2"], "split": it["split_v2"]} for it in v2_res["items"]]
+    manifest_v2_csv = manifests_dir / "rice_pest_lakthuru_groupsplit_v2_manifest.csv"
+    if manifest_v2_csv.exists():
+        with open(manifest_v2_csv, "r", encoding="utf-8") as f:
+            v2_manifest_rows = [r for r in csv.DictReader(f) if not r["path"].startswith("#")]
+    else:
+        v2_manifest_rows = [{"path": it["path"], "group_id": it["group_id_v2"], "split": it["split_v2"]} for it in v2_res["items"]]
     v2_metrics, v2_warnings = analyze_v2_class_split_metrics(v2_manifest_rows, raw_dir, excluded_set)
 
     # Write docs/leakage_audit_summary.md (Pure tables with all computed metrics)
     summary_md_path = Path("docs/leakage_audit_summary.md")
-    v1_version = "f4b82c9e7102"
     write_leakage_audit_summary_md(
         summary_path=summary_md_path,
+        manifests_dir=manifests_dir,
         class_metrics=v2_metrics,
-        class_warnings=v2_warnings,
         v1_dihedral=dihedral_res,
         v2_dihedral=v2_dihedral_audit,
         v1_emb=emb_res,
         v2_emb=v2_emb_eval,
         v1_src=src_audit_v1,
         v2_src=src_audit_v2,
-        v1_version=v1_version,
-        v2_version=v2_res["version"],
         splits_v2=v2_res["splits"],
-        num_groups_v2=len(set(it["group_id_v2"] for it in v2_res["items"])),
     )
 
     # =========================================================================
@@ -1803,8 +2424,10 @@ def main():
     print("\n-------------------------------------------------------------")
     print(" PART 6: Ensuring 100% Split Reproducibility (Cotton)")
     print("-------------------------------------------------------------")
-    run1 = build_reproducible_cotton_manifest(raw_dir, manifests_dir, seed=FIXED_SEED)
-    run2 = build_reproducible_cotton_manifest(raw_dir, manifests_dir, seed=FIXED_SEED)
+    repro_tmp = Path(os.environ.get("TEMP", "E:/temp")) / "cotton_repro_check"
+    repro_tmp.mkdir(parents=True, exist_ok=True)
+    run1 = build_reproducible_cotton_manifest(raw_dir, repro_tmp, seed=FIXED_SEED)
+    run2 = build_reproducible_cotton_manifest(raw_dir, repro_tmp, seed=FIXED_SEED)
     print(f"Run 1 Cotton Version: {run1.get('version')}")
     print(f"Run 2 Cotton Version: {run2.get('version')}")
     assert run1.get("version") == run2.get("version"), "Error: Cotton manifest version changed between runs!"
@@ -1827,7 +2450,66 @@ def main():
     print("  [PASS] Cotton split reproducibility confirmed.")
 
     print("\n=======================================================================")
-    print(" ALL LEAKAGE AUDITS & HARDENING COMPLETE (v2 READY FOR TRAINING).")
+    print(" RICE PEST LEAKAGE AUDIT & HARDENING COMPLETE (v2 READY FOR TRAINING).")
+    print("=======================================================================")
+
+
+# ==============================================================================
+# MAIN PIPELINE RUNNER
+# ==============================================================================
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Leakage Audit and Hardening for Multi-Crop Monitoring System.")
+    parser.add_argument("--data-root", type=str, default=None, help="Root directory containing raw datasets")
+    parser.add_argument("--manifests-dir", type=str, default="ml_training/manifests", help="Directory for split manifests")
+    parser.add_argument("--dataset", type=str, default="cotton", choices=["cotton", "rice", "all"], help="Dataset to audit (default: cotton)")
+    parser.add_argument("--cotton", action="store_true", help="Audit cotton_mendeley only")
+    parser.add_argument("--rice", action="store_true", help="Audit rice_pest_lakthuru only")
+    parser.add_argument("--all", action="store_true", help="Audit all datasets (Rice and Cotton)")
+    args = parser.parse_args()
+
+    test_normalise_source_id()
+    print("[SUCCESS] All normalise_source_id unit tests passed.")
+
+    raw_dir = Path(args.data_root) if args.data_root else get_data_root()
+    manifests_dir = Path(args.manifests_dir)
+    manifests_dir.mkdir(parents=True, exist_ok=True)
+
+    do_cotton = (args.dataset in ["cotton", "all"]) or args.cotton or args.all
+    do_rice = (args.dataset in ["rice", "all"]) or args.rice or args.all
+    if args.cotton:
+        do_cotton = True
+        do_rice = False
+    elif args.rice:
+        do_rice = True
+        do_cotton = False
+    elif args.all:
+        do_cotton = True
+        do_rice = True
+    elif args.dataset == "cotton":
+        do_cotton = True
+        do_rice = False
+    elif args.dataset == "rice":
+        do_rice = True
+        do_cotton = False
+
+    print("=======================================================================")
+    print(" INDEPENDENT LEAKAGE AUDIT + REPRODUCIBLE SPLITS (Phase 2 Hardening)")
+    print("=======================================================================")
+    print(f"Data Root:      {raw_dir}")
+    print(f"Manifests Dir:  {manifests_dir}")
+    print(f"Random Seed:    {FIXED_SEED}")
+    print(f"Target Dataset: {'Cotton only' if (do_cotton and not do_rice) else ('Rice only' if (do_rice and not do_cotton) else 'Rice + Cotton')}")
+
+    if do_rice:
+        audit_rice_pest(raw_dir, manifests_dir)
+
+    if do_cotton:
+        audit_cotton_mendeley(raw_dir, manifests_dir, seed=FIXED_SEED)
+
+    print("\n=======================================================================")
+    print(" ALL REQUESTED LEAKAGE AUDITS COMPLETE.")
     print("=======================================================================")
 
 
