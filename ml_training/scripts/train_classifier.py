@@ -423,7 +423,7 @@ def train_classifier(args):
 
     # Optional 5-Fold Cross Validation for Cotton on train+val
     cv_summary = None
-    if crop == "cotton" or args.cv:
+    if crop == "cotton" or getattr(args, "cv", False):
         cv_samples = train_samples + val_samples
         cv_summary = run_stratified_5fold_cv_cotton(
             cv_samples, all_classes, class_weights, args, device
@@ -435,17 +435,18 @@ def train_classifier(args):
     val_ds = CropDataset(val_samples, transform=eval_tf)
     test_ds = CropDataset(test_samples, transform=eval_tf)
 
+    num_workers = getattr(args, "num_workers", 0)
     train_loader = DataLoader(
         train_ds, batch_size=args.batch_size, shuffle=True,
-        num_workers=args.num_workers, pin_memory=(device.type == "cuda")
+        num_workers=num_workers, pin_memory=(device.type == "cuda")
     )
     val_loader = DataLoader(
         val_ds, batch_size=args.batch_size, shuffle=False,
-        num_workers=args.num_workers, pin_memory=(device.type == "cuda")
+        num_workers=num_workers, pin_memory=(device.type == "cuda")
     )
     test_loader = DataLoader(
         test_ds, batch_size=args.batch_size, shuffle=False,
-        num_workers=args.num_workers, pin_memory=(device.type == "cuda")
+        num_workers=num_workers, pin_memory=(device.type == "cuda")
     )
 
     # Build Model
@@ -453,7 +454,7 @@ def train_classifier(args):
 
     # Loss, Optimizer, Scheduler, Scaler
     criterion = nn.CrossEntropyLoss(weight=class_weights.to(device) if class_weights is not None else None)
-    optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=getattr(args, "weight_decay", 1e-2))
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epochs, eta_min=1e-6)
     scaler = torch.amp.GradScaler("cuda") if device.type == "cuda" else None
 
@@ -605,7 +606,7 @@ def train_classifier(args):
         print(f"Epoch {epoch:2d}/{args.epochs:2d} [{elapsed:4.1f}s] | Train Loss: {train_loss:.4f} Acc: {train_acc*100:5.1f}% | Val Loss: {val_loss:.4f} Acc: {val_acc*100:5.1f}% Macro-F1: {val_macro_f1*100:5.1f}% {tag}")
 
         # Early stopping
-        if no_improve_epochs >= args.patience:
+        if no_improve_epochs >= getattr(args, "patience", 10):
             print(f"\n[INFO] Early stopping triggered after {no_improve_epochs} epochs without validation macro-F1 improvement.")
             break
 

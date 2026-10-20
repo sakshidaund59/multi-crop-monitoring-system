@@ -364,7 +364,7 @@ def test_register_model_rejects_smoke_checkpoint(tmp_path):
 
 def test_resume_refuses_smoke_checkpoint(tmp_path):
     """Enforce rule: --resume must REFUSE (raise ValueError) if checkpoint has is_smoke_test = true."""
-    smoke_dir = tmp_path / "smoke_dir"
+    smoke_dir = tmp_path / "_smoke_sugarcane"
     smoke_dir.mkdir(parents=True, exist_ok=True)
     smoke_ckpt = smoke_dir / "last_checkpoint.pt"
     torch.save({
@@ -389,6 +389,10 @@ def test_resume_refuses_smoke_checkpoint(tmp_path):
         device = "cpu"
         resume = True
         smoke = True
+        cv = False
+        patience = 10
+        weight_decay = 1e-2
+        num_workers = 0
 
     with pytest.raises(ValueError) as exc_info:
         train_classifier(MockArgs())
@@ -419,6 +423,10 @@ def test_real_run_refuses_folder_with_smoke_artifacts(tmp_path):
         device = "cpu"
         resume = False
         smoke = False
+        cv = False
+        patience = 10
+        weight_decay = 1e-2
+        num_workers = 0
 
     with pytest.raises(ValueError) as exc_info:
         train_classifier(MockArgs())
