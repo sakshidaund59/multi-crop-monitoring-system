@@ -52,6 +52,7 @@ postgres-data/
 redis-data/
 
 # Machine Learning & Datasets
+checkpoints/
 ml/datasets/*
 !ml/datasets/.gitkeep
 ml/models/*
